@@ -49,9 +49,7 @@
       </nav>
 
       <div class="nav-tools">
-        <a href="#contact" class="status-chip" title="三门峡 · 全国远程">
-          <span class="pulse" aria-hidden="true"></span>开放远程工作与项目合作
-        </a>
+        <a href="#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
         <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
           <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
           <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
@@ -97,7 +95,11 @@
         <!-- 名片 / 头像区 -->
         <aside class="profile-card reveal" aria-label="个人名片">
           <div class="profile-top">
-            <div class="avatar" role="img" aria-label="史晓河 头像">史</div>
+            <div class="avatar">
+              <span class="avatar-fallback" aria-hidden="true"><svg class="avatar-sil" viewBox="0 0 64 64"><circle cx="32" cy="24" r="11"/><path d="M10 60c2-12 11-19 22-19s20 7 22 19z"/></svg><span class="avatar-initial">史</span></span>
+              <!-- 个人照片：把照片放到 assets/avatar.jpg 即可（建议 ≥ 480×480 正方形）；文件不存在时自动显示上面的占位 -->
+              <img class="avatar-img" src="./assets/avatar.jpg" width="480" height="480" alt="史晓河 照片" decoding="async" onerror="this.remove()">
+            </div>
             <div class="profile-id">
               <div class="profile-name">史晓河 <span class="profile-en">Shi Xiaohe</span></div>
               <div class="profile-role">技术架构师 · 信言科技</div>
@@ -118,6 +120,24 @@
           </ul>
         </aside>
       </div>
+
+      <div class="container hero-peek-wrap">
+        <nav class="hero-peek reveal" aria-label="代表作品速览">
+          <a class="scroll-cue" href="#work"><span class="cue-line" aria-hidden="true"></span><span class="cue-txt"><span class="mono">01 / 代表作品</span><span>两个正在线上运行的产品，可以直接打开看</span></span></a>
+          <div class="peek-list">
+            <a class="peek" href="#work-ciftopay">
+              <img src="./assets/ciftopay.jpg" width="1200" height="750" alt="" decoding="async">
+              <span class="peek-txt"><b>信付通 CiftoPay</b><small class="mono"><span class="pulse" aria-hidden="true"></span>ciftopay.com</small></span>
+              <span class="peek-go" aria-hidden="true">↓</span>
+            </a>
+            <a class="peek" href="#work-ecommica">
+              <img src="./assets/deals.jpg" width="1200" height="750" alt="" decoding="async">
+              <span class="peek-txt"><b>Ecommica</b><small class="mono"><span class="pulse" aria-hidden="true"></span>deals.ecommica.com</small></span>
+              <span class="peek-go" aria-hidden="true">↓</span>
+            </a>
+          </div>
+        </nav>
+      </div>
     </section>
 
     <!-- 2. 代表作品 -->
@@ -131,11 +151,11 @@
         </header>
 
         <div class="works">
-          <article class="work reveal">
+          <article class="work reveal" id="work-ciftopay">
             <a class="work-shot" href="https://ciftopay.com/" target="_blank" rel="noopener" aria-label="打开 信付通 官网">
               <span class="browser">
                 <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-lock"></i> ciftopay.com</span><span class="browser-go">↗</span></span>
-                <img src="./assets/ciftopay.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="信付通 ciftopay.com 首页截图">
+                <img src="./assets/ciftopay.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="信付通 ciftopay.com 行业方案页截图">
               </span>
             </a>
             <div class="work-body">
@@ -150,7 +170,7 @@
             </div>
           </article>
 
-          <article class="work reveal">
+          <article class="work reveal" id="work-ecommica">
             <a class="work-shot" href="https://deals.ecommica.com/" target="_blank" rel="noopener" aria-label="打开 Ecommica 网站">
               <span class="browser">
                 <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-lock"></i> deals.ecommica.com</span><span class="browser-go">↗</span></span>
@@ -188,6 +208,12 @@
             <div>
               <h3 class="svc-title">支付 / 收单 / 清结算系统</h3>
               <p class="svc-text">聚合支付接入、代理商多级分润、交易对账与复式记账。</p>
+              <ol class="svc-flow" aria-hidden="true">
+                <li><span class="mono">01</span>聚合支付接入</li>
+                <li><span class="mono">02</span>代理商多级分润</li>
+                <li><span class="mono">03</span>交易对账</li>
+                <li><span class="mono">04</span>复式记账</li>
+              </ol>
               <p class="svc-proof">做过：信付通、收单平台矩阵、考拉畅付</p>
             </div>
           </li>
@@ -474,6 +500,7 @@ public class ReconciliationEngine {
       <div class="footer-bottom">
         <div>© 2026 史晓河 (Shi Xiaohe)</div>
         <div>技术架构师 · 河南信言电子科技有限公司</div>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
       </div>
     </div>
   </footer>

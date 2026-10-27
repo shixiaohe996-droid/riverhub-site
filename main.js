@@ -289,10 +289,11 @@
       var ci = esc.indexOf('//');
       var codePart = ci >= 0 ? esc.slice(0, ci) : esc;
       var comment = ci >= 0 ? '<span class="tk-c">' + esc.slice(ci) + '</span>' : '';
-      codePart = codePart
-        .replace(/("[^"]*")/g, '<span class="tk-s">$1</span>')
-        .replace(/(@\w+)/g, '<span class="tk-a">$1</span>')
-        .replace(/\b(public|class|void|byte|private|static|return|new)\b/g, '<span class="tk-k">$1</span>');
+      // 单次扫描，避免关键字替换误伤已插入的 <span class="…">
+      codePart = codePart.replace(/(&quot;.*?&quot;|"[^"]*")|(@\w+)|\b(public|class|void|byte|private|static|return|new)\b/g, function (all, str, ann, kw) {
+        var cls = str ? 'tk-s' : (ann ? 'tk-a' : 'tk-k');
+        return '<span class="' + cls + '">' + all + '</span>';
+      });
       return codePart + comment;
     }).join('\n');
   }
