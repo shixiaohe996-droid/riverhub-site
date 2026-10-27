@@ -502,6 +502,9 @@ button { font: inherit; color: inherit; }
 .profile-contact a { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 650; font-size: 14.5px; color: var(--text); }
 .profile-contact a:hover { color: var(--accent); }
 .profile-contact a i { width: 18px; text-align: center; color: var(--accent); margin-right: 4px; }
+.contact-wx { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 650; font-size: 14.5px; color: var(--text); }
+.contact-wx i { width: 18px; text-align: center; color: var(--accent); margin-right: 4px; }
+.contact-wx small { font-weight: 500; color: var(--text-3); }
 .copy-mini { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; cursor: pointer; color: var(--text-3); background: var(--surface); border: 1px solid var(--border); }
 .copy-mini:hover { color: var(--accent); border-color: var(--accent); }
 
@@ -670,3 +673,5 @@ button { font: inherit; color: inherit; }
   .site-header, .terminal-actions, .terminal-input-row, .toast, .hero-bg { display: none !important; }
   .js .reveal { opacity: 1; transform: none; }
 }
+
+@media (max-width: 480px) { .wx-note { display: none; } }
