@@ -607,4 +607,16 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+
+  // 移动端折叠：技术细节
+  document.querySelectorAll('.collapse-btn').forEach(function (btn) {
+    var box = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!box) return;
+    btn.addEventListener('click', function () {
+      var open = !box.classList.contains('is-open');
+      box.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (!open) box.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  });
 })();

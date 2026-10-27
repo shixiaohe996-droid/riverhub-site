@@ -162,8 +162,10 @@
               <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>在线运行</span><span class="work-url mono">ciftopay.com</span></div>
               <h3 class="work-title">信付通 CiftoPay · 三门峡本地支付与行业数字化服务</h3>
               <p class="card-text">以聚合收款为核心，联合行业软件伙伴服务餐饮、零售商超、民生缴费、教育校园、停车出行、酒店文旅六类行业，并围绕支付做定制开发。资金由持牌机构直接结算，平台不经手。面向三类用户：商户（收款码 + 云音箱）、代理商（分润后台）、平台与开发者（开放 API）。</p>
-              <p class="work-role"><i class="fa-solid fa-user-gear" aria-hidden="true"></i> 我的角色：<strong>全栈</strong>。在信言科技任技术架构师，主导平台整体架构（2026.06 — 至今）。Java 21 微服务底座、复式记账清结算、运营 / 代理 / 商户三端 Web 与 uni-app 四端移动端。</p>
-              <div class="tags"><span class="tag-strong">Java 21</span><span>Spring Boot 3</span><span>Spring Cloud Alibaba</span><span class="tag-strong">复式记账清结算</span><span>RabbitMQ</span><span>XXL-Job</span><span>Vue3 Monorepo</span><span>uni-app</span></div>
+              <dl class="work-facts">
+                <div class="wf-row"><dt>我的角色</dt><dd><strong>全栈</strong>。在信言科技任技术架构师，主导平台整体架构（2026.06 — 至今）。Java 21 微服务底座、复式记账清结算、运营 / 代理 / 商户三端 Web 与 uni-app 四端移动端。</dd></div>
+                <div class="wf-row"><dt>技术栈</dt><dd class="tags"><span class="tag-strong">Java 21</span><span>Spring Boot 3</span><span>Spring Cloud Alibaba</span><span class="tag-strong">复式记账清结算</span><span>RabbitMQ</span><span>XXL-Job</span><span>Vue3 Monorepo</span><span>uni-app</span></dd></div>
+              </dl>
               <div class="work-links">
                 <a class="btn btn-primary btn-sm" href="https://ciftopay.com/" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
               </div>
@@ -181,8 +183,10 @@
               <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>在线运行</span><span class="work-url mono">deals.ecommica.com</span></div>
               <h3 class="work-title">Ecommica · 多语言优惠券与折扣码平台</h3>
               <p class="card-text">面向多个国家和地区购物者的优惠信息站：汇集各电商平台的优惠、优惠券与折扣码，可按商家或分类（电子产品、家居园艺、时尚、工具、汽车、健康美妆、玩具、运动）浏览，支持中英文切换与地区选择，并有博客内容。站内商家包括 Walmart US、Sam's Club US、Shopee MX 等。</p>
-              <p class="work-role"><i class="fa-solid fa-user-gear" aria-hidden="true"></i> 我的角色：<strong>全栈</strong>。多语言、多地区的内容型站点，中文版与 English 版均已上线。</p>
-              <div class="tags"><span>多语言 i18n</span><span>多地区</span><span>商家 / 分类聚合</span><span>博客内容</span></div>
+              <dl class="work-facts">
+                <div class="wf-row"><dt>我的角色</dt><dd><strong>全栈</strong>。多语言、多地区的内容型站点，中文版与 English 版均已上线。</dd></div>
+                <div class="wf-row"><dt>技术栈</dt><dd class="tags"><span>多语言 i18n</span><span>多地区</span><span>商家 / 分类聚合</span><span>博客内容</span></dd></div>
+              </dl>
               <div class="work-links">
                 <a class="btn btn-primary btn-sm" href="https://deals.ecommica.com/" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
                 <a class="btn btn-ghost btn-sm" href="https://deals.ecommica.com/en" target="_blank" rel="noopener"><i class="fa-solid fa-language" aria-hidden="true"></i> English 版</a>
@@ -276,9 +280,10 @@
           <span class="section-kicker"><span class="kicker-idx">03</span><span class="kicker-sep">/</span>Other Projects</span>
           <h2 class="section-title">其他做过的项目</h2>
           <p class="section-desc">金融支付与智慧城市两个方向的代表项目</p>
+          <p class="swipe-hint mono" aria-hidden="true">← 左右滑动 · 共 4 个 →</p>
         </header>
 
-        <div class="cases">
+        <div class="cases scroller">
           <article class="card case reveal">
             <div class="case-head"><span class="case-period mono">2022.02 — 2026.04</span><span class="role-badge">技术负责人 / 架构师</span></div>
             <h3 class="case-title">润臻智慧大脑（社区 + 教育一体化平台）</h3>
@@ -321,6 +326,7 @@
           <p class="section-desc">给技术同行看的：几个项目里的关键设计，点左侧切换，或在终端里输入 help</p>
         </header>
 
+        <div class="collapse" id="approach-body">
         <div class="topology reveal">
           <div class="topo-list" role="tablist" aria-label="架构节点">
             <button class="topo-node active" type="button" role="tab" aria-selected="true" data-node="payment-recon">
@@ -367,7 +373,7 @@
               <div class="topo-metric"><span class="val">99.999%</span><span class="lbl">系统高可用率</span></div>
               <div class="topo-metric"><span class="val">0 事故</span><span class="lbl">线上中等以上事故</span></div>
             </div>
-            <pre class="topo-code" id="topo-code"><code>// [核心设计模式]: RabbitMQ 实时推送 + XXL-Job 定时双补偿机制
+            <div class="topo-code-wrap"><span class="sim-tag" aria-label="示意代码，非生产源码">示意代码</span><pre class="topo-code" id="topo-code"><code>// [核心设计模式]: RabbitMQ 实时推送 + XXL-Job 定时双补偿机制
 @Service
 public class ReconciliationEngine {
     @RabbitListener(queues = "payment.settlement.queue")
@@ -376,7 +382,7 @@ public class ReconciliationEngine {
         // 2. 代理商分润多级阶梯算法实时计算
         // 3. 自动入账与对账明细生成，保障零资损
     }
-}</code></pre>
+}</code></pre></div>
           </div>
         </div>
 
@@ -385,7 +391,7 @@ public class ReconciliationEngine {
           <div class="terminal-bar">
             <div class="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
             <div class="terminal-title">shixiaohe@riverhub:~ (interactive zsh)</div>
-            <div class="terminal-live"><span class="pulse" aria-hidden="true"></span>LIVE</div>
+            <div class="terminal-live" title="浏览器内模拟的终端，非真实服务器"><span class="pulse" aria-hidden="true"></span>交互演示</div>
           </div>
 
           <div class="terminal-body" id="terminal-output" aria-live="polite">
@@ -414,6 +420,8 @@ public class ReconciliationEngine {
           </div>
         </div>
         </div>
+        </div>
+        <button class="collapse-btn" type="button" aria-expanded="false" aria-controls="approach-body"><span class="cb-more">展开全部技术细节</span><span class="cb-less">收起</span> <span class="cb-ico" aria-hidden="true">↓</span></button>
       </div>
     </section>
 
