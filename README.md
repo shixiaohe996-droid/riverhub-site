@@ -18,7 +18,7 @@ python3 -m http.server 8000
 - `index.html` 页面结构与内容
 - `site.css` 视觉系统（设计令牌、双主题、响应式布局）
 - `main.js` 终端模拟器（交互演示，页面已标注「交互演示 / 示意代码」）、架构拓扑切换、主题与导航
-- `assets/` 代表作品截图（ciftopay.com 行业方案区、deals.ecommica.com 首页，均为线上站点真实截图，1200×750 JPEG）
+- `assets/` 代表作品截图，均为线上站点真实截图：`ciftopay.jpg`（ciftopay.com「行业方案」+「服务对象」两段长截图，1200×1500）、`deals.jpg`（deals.ecommica.com 首页，1200×750）
 
 ## 替换个人照片
 

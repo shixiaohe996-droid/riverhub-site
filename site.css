@@ -117,8 +117,9 @@ body {
   transition: background-color .4s var(--ease), color .4s var(--ease);
 }
 /* 胶片颗粒 */
-body::after {
-  content: ""; position: fixed; inset: 0; z-index: 80; pointer-events: none;
+body { position: relative; }
+body::after { /* 覆盖整页平铺，长截图也无断层 */
+  content: ""; position: absolute; inset: 0; z-index: 80; pointer-events: none;
   opacity: var(--noise-opacity);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -946,4 +947,21 @@ button { font: inherit; color: inherit; }
   .collapse-btn[aria-expanded="true"] .cb-less { display: inline; }
   .collapse-btn[aria-expanded="true"] .cb-ico { transform: rotate(180deg); }
   .cb-ico { transition: transform .3s var(--ease); }
+}
+
+/* 信付通：截图撑满卡片高度，无空带 */
+@media (min-width: 1000px) {
+  #work-ciftopay .work-shot { align-items: stretch; }
+  #work-ciftopay .browser { display: flex; flex-direction: column; }
+  #work-ciftopay .browser img { flex: 1 1 0; height: 0; min-height: 0; aspect-ratio: auto; object-fit: cover; object-position: center top; }
+}
+/* 移动端：服务卡横滑，与「其他项目」一致 */
+@media (max-width: 719px) {
+  .svc-list.scroller { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -20px; padding: 2px 20px 14px; scroll-padding: 0 20px; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .svc-list.scroller::-webkit-scrollbar { display: none; }
+  .svc-list.scroller > .svc { flex: 0 0 82%; scroll-snap-align: start; }
+}
+@media (max-width: 480px) {
+  .modes-label { flex-basis: 100%; margin-bottom: 2px; }
+  .mode { font-size: 13px; padding: 6px 11px; }
 }
