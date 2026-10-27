@@ -33,8 +33,8 @@
       { type: 'success', text: '[MODEL] 计费 CPS / CPA / CPC / CPL / CPM · 归因 最后点击 / 首次点击 / 线性' }
     ],
     payment: [
-      { type: 'cmd', text: 'run payment-engine --scale=million-daily --mq=rabbit' },
-      { type: 'res', text: '[MQ ENGINE] 初始化 RabbitMQ 双通道广播队列...' },
+      { type: 'cmd', text: 'run payment-engine --scale=million-daily --mq=rocketmq' },
+      { type: 'res', text: '[MQ ENGINE] 初始化 RocketMQ 生产者与结算消费组...' },
       { type: 'res', text: '[RECON] 开启多级代理商分润计算与自动扣还机制...' },
       { type: 'success', text: '[SUCCESS] 实时交易处理完成: 1,248,930 笔 | 资损风险: 0 | 延时: < 0.4ms' }
     ],
@@ -251,7 +251,7 @@
         { val: '99.999%', lbl: '系统高可用率' },
         { val: '0 事故', lbl: '线上中等以上事故' }
       ],
-      code: '// [核心设计模式]: RabbitMQ 实时推送 + XXL-Job 定时双补偿机制\n@Service\npublic class ReconciliationEngine {\n    @RabbitListener(queues = "payment.settlement.queue")\n    public void processTrade(TradeMessage trade) {\n        // 1. 幂等性校验 (Redis 分布式状态锁)\n        // 2. 代理商分润多级阶梯算法实时计算\n        // 3. 自动入账与对账明细生成，保障零资损\n    }\n}'
+      code: '// [核心设计模式]: RocketMQ 实时推送 + XXL-Job 定时双补偿机制\n@Service\n@RocketMQMessageListener(topic = "payment-settlement", consumerGroup = "settlement-consumer")\npublic class ReconciliationEngine implements RocketMQListener<TradeMessage> {\n    @Override\n    public void onMessage(TradeMessage trade) {\n        // 1. 幂等性校验 (Redis 分布式状态锁)\n        // 2. 代理商分润多级阶梯算法实时计算\n        // 3. 自动入账与对账明细生成，保障零资损\n    }\n}'
     },
     'iot-hub': {
       title: '智慧社区 / 食安 IoT 云端接入控制塔',

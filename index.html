@@ -323,7 +323,7 @@
             <div class="case-head"><span class="case-period mono">2018.05 — 2020.10 · 远程至 2022.02</span><span class="role-badge">项目副组长 / 核心后端</span></div>
             <h3 class="case-title">收单业务平台矩阵（闪POS / 帮展业 / 新银惠通）</h3>
             <p class="card-text">多品牌收单系统：交易、代理体系、分润与对账结算。主导分润与对账引擎，MQ 实时 + 定时双推送补偿，日均百万级交易无事故；带 4–5 人研发小组。2020.10 — 2022.02 以自由职业、远程兼职的方式继续参与新银惠通项目。</p>
-            <div class="tags"><span>Java</span><span>RabbitMQ</span><span>XXL-Job</span><span>Redis</span><span>React Native</span></div>
+            <div class="tags"><span>Java</span><span>RocketMQ</span><span>XXL-Job</span><span>Redis</span><span>React Native</span></div>
           </article>
 
           <article class="card case reveal">
@@ -394,11 +394,12 @@
               <div class="topo-metric"><span class="val">99.999%</span><span class="lbl">系统高可用率</span></div>
               <div class="topo-metric"><span class="val">0 事故</span><span class="lbl">线上中等以上事故</span></div>
             </div>
-            <div class="topo-code-wrap"><span class="sim-tag" aria-label="示意代码，非生产源码">示意代码</span><pre class="topo-code" id="topo-code"><code>// [核心设计模式]: RabbitMQ 实时推送 + XXL-Job 定时双补偿机制
+            <div class="topo-code-wrap"><span class="sim-tag" aria-label="示意代码，非生产源码">示意代码</span><pre class="topo-code" id="topo-code"><code>// [核心设计模式]: RocketMQ 实时推送 + XXL-Job 定时双补偿机制
 @Service
-public class ReconciliationEngine {
-    @RabbitListener(queues = "payment.settlement.queue")
-    public void processTrade(TradeMessage trade) {
+@RocketMQMessageListener(topic = "payment-settlement", consumerGroup = "settlement-consumer")
+public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt; {
+    @Override
+    public void onMessage(TradeMessage trade) {
         // 1. 幂等性校验 (Redis 分布式状态锁)
         // 2. 代理商分润多级阶梯算法实时计算
         // 3. 自动入账与对账明细生成，保障零资损
@@ -462,7 +463,7 @@ public class ReconciliationEngine {
           <div class="stack">
             <span class="stack-label">常用技术</span>
             <div class="pills">
-              <span class="pill is-key">Java / Spring Boot / Spring Cloud</span><span class="pill">MySQL</span><span class="pill">Redis</span><span class="pill">RabbitMQ</span><span class="pill">XXL-Job</span><span class="pill is-key">Vue3 / ECharts</span><span class="pill is-key">uni-app / React Native</span><span class="pill">IoT 蓝牙/串口协议</span><span class="pill is-key">Claude Code / SDD / TDD</span><span class="pill">微服务 / DDD</span>
+              <span class="pill is-key">Java / Spring Boot / Spring Cloud</span><span class="pill">MySQL</span><span class="pill">Redis</span><span class="pill">RocketMQ</span><span class="pill">XXL-Job</span><span class="pill is-key">Vue3 / ECharts</span><span class="pill is-key">uni-app / React Native</span><span class="pill">IoT 蓝牙/串口协议</span><span class="pill is-key">Claude Code / SDD / TDD</span><span class="pill">微服务 / DDD</span>
             </div>
           </div>
         </div>
