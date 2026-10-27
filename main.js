@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var PROMPT = 'shixiaohe@arch-consultant:~$';
+  var PROMPT = 'shixiaohe@riverhub:~$';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ------------------------------------------------------------------
@@ -18,10 +18,10 @@
       { type: 'res', text: '[PLATFORM] 加载信付通 (pay-hub) 聚合支付微服务核心架构...' },
       { type: 'res-highlight', text: '[ACCOUNTING ENGINE] 复式记账子账系统校验完成: 借贷平衡 (Assets = Liabilities + Equity)' },
       { type: 'res', text: '[MONOREPO] 加载 Web Ops/Merchant/Agent 三端与 uni-app 小程序/APP 矩阵...' },
-      { type: 'success', text: '[STATUS] Java 21 微服务与信付通底座运行稳健，支持千万级交易平滑扩容.' }
+      { type: 'success', text: '[STATUS] Java 21 微服务与信付通底座运行稳健，支持百万级日均交易平滑扩容.' }
     ],
     payment: [
-      { type: 'cmd', text: 'run payment-engine --tps=1000000 --mq=rabbit' },
+      { type: 'cmd', text: 'run payment-engine --scale=million-daily --mq=rabbit' },
       { type: 'res', text: '[MQ ENGINE] 初始化 RabbitMQ 双通道广播队列...' },
       { type: 'res', text: '[RECON] 开启多级代理商分润计算与自动扣还机制...' },
       { type: 'success', text: '[SUCCESS] 实时交易处理完成: 1,248,930 笔 | 资损风险: 0 | 延时: < 0.4ms' }
@@ -36,22 +36,22 @@
       { type: 'cmd', text: 'run vibe-coding --agent=claude-code --sdd=true' },
       { type: 'res', text: '[AI SDD] 读取规格说明书 Specification.md...' },
       { type: 'res', text: '[TDD] 自动生成 42 组单元测试与架构存根...' },
-      { type: 'success', text: '[CODEGEN] 核心逻辑极速构建完毕，测试覆盖率: 98.6% (人机协同效能 x3)' }
+      { type: 'success', text: '[CODEGEN] 核心逻辑极速构建完毕，测试覆盖率: 98%+ (人机协同交付效能 3 倍)' }
     ],
     packages: [
-      { type: 'cmd', text: 'cat packages.json' },
-      { type: 'res-highlight', text: '{\n  "architect": "史晓河 (Shi Xiaohe)",\n  "company": "河南信言科技电子技术有限公司 (2026.06 - 至今)",\n  "current_title": "技术架构师 (Technical Architect)",\n  "core_product": "「信付通」整体架构设计与开发",\n  "phone": "18618387956",\n  "location": "三门峡 / 郑州 / 西安 / 全国远程",\n  "engagement_packages": [\n    "套餐 A: 架构顾问与高并发治理 (Advisory)",\n    "套餐 B: 0 到 1 全栈系统包干交付 (Turnkey Build - Recommended)",\n    "套餐 C: 售前标书与投标拿单支撑 (Pre-sales Support)",\n    "套餐 D: 企业级 AI 编程 (Vibe Coding) 落地指导"\n  ]\n}' }
+      { type: 'cmd', text: 'cat profile.json' },
+      { type: 'res-highlight', text: '{\n  "architect": "史晓河 (Shi Xiaohe)",\n  "company": "河南信言科技电子技术有限公司 (2026.06 - 至今)",\n  "current_title": "技术架构师 (Technical Architect)",\n  "core_product": "「信付通」整体架构设计与开发",\n  "phone": "18618387956",\n  "location": "三门峡 / 郑州 / 西安 / 全国远程",\n  "open_to": [\n    "远程全职 / 兼职技术岗位 (架构 / 技术负责人 / Java·全栈)",\n    "项目外包与交付",\n    "技术顾问 / 代码审查",\n    "方案与标书支持"\n  ]\n}' }
     ],
     contact: [
       { type: 'cmd', text: 'contact' },
-      { type: 'res', text: '[CONTACT] 项目合作咨询: 18618387956' },
+      { type: 'res', text: '[CONTACT] 远程工作 / 项目合作: 18618387956' },
       { type: 'res', text: '[LOC] 三门峡 / 郑州 / 西安 / 全国远程' },
-      { type: 'success', text: '[TIP] 点击页面底部「拨打电话」或「复制联系电话」即可联系.' }
+      { type: 'success', text: '[TIP] 页面底部可直接拨打或复制电话号码.' }
     ],
     help: [
       { type: 'cmd', text: 'help' },
       { type: 'res', text: '可用指令 (Available commands):' },
-      { type: 'dim', text: '  run pay-hub         信付通 (pay-hub) 聚合支付底座\n  run payment-engine  金融级分润与对账引擎\n  run iot-scale       智慧食安 IoT 智能秤协议解析\n  run vibe-coding     AI Vibe Coding & SDD 敏捷交付\n  cat packages.json   合作套餐与联系方式\n  contact             项目合作咨询电话\n  clear               清空终端\n  ↑ / ↓               浏览历史指令' }
+      { type: 'dim', text: '  run pay-hub         信付通 (pay-hub) 聚合支付底座\n  run payment-engine  金融级分润与对账引擎\n  run iot-scale       智慧食安 IoT 智能秤协议解析\n  run vibe-coding     AI Vibe Coding & SDD 敏捷交付\n  cat profile.json    个人信息与合作方式\n  contact             远程工作 / 项目合作联系电话\n  clear               清空终端\n  ↑ / ↓               浏览历史指令' }
     ]
   };
 
@@ -61,7 +61,7 @@
     'run payment-engine': 'payment', 'payment-engine': 'payment', 'payment': 'payment',
     'run iot-scale': 'iot', 'iot-scale': 'iot', 'iot': 'iot',
     'run vibe-coding': 'vibe', 'vibe-coding': 'vibe', 'vibe': 'vibe',
-    'cat packages.json': 'packages', 'packages.json': 'packages', 'packages': 'packages', 'ls': 'help',
+    'cat profile.json': 'packages', 'profile.json': 'packages', 'profile': 'packages', 'cat packages.json': 'packages', 'packages.json': 'packages', 'packages': 'packages', 'ls': 'help',
     'contact': 'contact', 'phone': 'contact', 'help': 'help', '?': 'help', 'clear': 'clear', 'cls': 'clear'
   };
 
@@ -232,7 +232,7 @@
       title: '金融级分润与对账引擎架构',
       tag: 'HIGH CONCURRENCY',
       metrics: [
-        { val: '1,000,000+', lbl: '日均交易 TPS' },
+        { val: '百万级', lbl: '日均交易量' },
         { val: '99.999%', lbl: '系统高可用率' },
         { val: '0 事故', lbl: '线上中等以上事故' }
       ],
@@ -252,7 +252,7 @@
       title: 'AI Vibe Coding & SDD 规格驱动流程',
       tag: 'AI NATIVE ENGINEERING',
       metrics: [
-        { val: '300%', lbl: '人机协同交付效能' },
+        { val: '3 倍', lbl: '人机协同交付效能' },
         { val: '98%+', lbl: '单元测试覆盖率' },
         { val: 'Claude Code', lbl: '工程化实践落地' }
       ],
