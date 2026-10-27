@@ -428,8 +428,7 @@
    * ------------------------------------------------------------------ */
   function currentTheme() {
     var explicit = document.documentElement.getAttribute('data-theme');
-    if (explicit) return explicit;
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return explicit || 'dark'; // 深色为默认体验
   }
 
   function initTheme() {
@@ -518,6 +517,79 @@
     });
   }
 
+
+  /* ------------------------------------------------------------------
+   * 8. 视觉动效：光标聚光、作品倾斜、磁吸按钮、数字滚动
+   *    全部在 prefers-reduced-motion 下关闭；触屏设备不启用指针效果
+   * ------------------------------------------------------------------ */
+  function initFx() {
+    var finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    // 数字滚动（count-up）
+    var counters = document.querySelectorAll('.count[data-count]');
+    if (!reduceMotion && 'IntersectionObserver' in window && counters.length) {
+      var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          cio.unobserve(el);
+          var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+          var start = null, dur = 1400;
+          function step(ts) {
+            if (start === null) start = ts;
+            var p = Math.min((ts - start) / dur, 1);
+            var eased = 1 - Math.pow(1 - p, 4);
+            el.textContent = String(Math.round(target * eased));
+            if (p < 1) requestAnimationFrame(step);
+          }
+          el.textContent = '0';
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.6 });
+      counters.forEach(function (c) { cio.observe(c); });
+    }
+
+    if (reduceMotion || !finePointer) return;
+
+    // 光标聚光
+    document.querySelectorAll('.svc, .card, .work, .profile-card').forEach(function (el) {
+      el.classList.add('spot');
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+
+    // 作品浏览器框倾斜视差
+    document.querySelectorAll('.work').forEach(function (work) {
+      var frame = work.querySelector('.browser');
+      if (!frame) return;
+      work.addEventListener('pointermove', function (e) {
+        var r = work.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5;
+        var y = (e.clientY - r.top) / r.height - 0.5;
+        frame.style.setProperty('--ry', (x * 6).toFixed(2) + 'deg');
+        frame.style.setProperty('--rx', (-y * 5).toFixed(2) + 'deg');
+      });
+      work.addEventListener('pointerleave', function () {
+        frame.style.setProperty('--ry', '0deg');
+        frame.style.setProperty('--rx', '0deg');
+      });
+    });
+
+    // 磁吸按钮
+    document.querySelectorAll('.hero-cta .btn, .work-links .btn, .contact-row .btn-primary').forEach(function (btn) {
+      btn.addEventListener('pointermove', function (e) {
+        var r = btn.getBoundingClientRect();
+        var dx = e.clientX - (r.left + r.width / 2);
+        var dy = e.clientY - (r.top + r.height / 2);
+        btn.style.transform = 'translate(' + (dx * 0.18).toFixed(1) + 'px,' + (dy * 0.28).toFixed(1) + 'px)';
+      });
+      btn.addEventListener('pointerleave', function () { btn.style.transform = ''; });
+    });
+  }
+
   /* ------------------------------------------------------------------
    * Init
    * ------------------------------------------------------------------ */
@@ -529,6 +601,7 @@
     initFilters();
     initCopy();
     initReveal();
+    initFx();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
