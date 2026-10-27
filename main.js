@@ -40,18 +40,19 @@
     ],
     packages: [
       { type: 'cmd', text: 'cat profile.json' },
-      { type: 'res-highlight', text: '{\n  "architect": "史晓河 (Shi Xiaohe)",\n  "company": "河南信言科技电子技术有限公司 (2026.06 - 至今)",\n  "current_title": "技术架构师 (Technical Architect)",\n  "core_product": "「信付通」整体架构设计与开发",\n  "phone": "18618387956",\n  "location": "三门峡 / 郑州 / 西安 / 全国远程",\n  "open_to": [\n    "远程全职 / 兼职技术岗位 (架构 / 技术负责人 / Java·全栈)",\n    "项目外包与交付",\n    "技术顾问 / 代码审查",\n    "方案与标书支持"\n  ]\n}' }
+      { type: 'res-highlight', text: '{\n  "architect": "史晓河 (Shi Xiaohe)",\n  "company": "河南信言电子科技有限公司 (2026.06 - 至今)",\n  "current_title": "技术架构师 (Technical Architect)",\n  "core_product": "「信付通」整体架构设计与开发",\n  "phone": "18618387956",\n  "email": "shixiaohe996@gmail.com",\n  "telegram": "@river_data",\n  "location": "三门峡 / 郑州 / 西安 / 全国远程",\n  "open_to": [\n    "远程全职 / 兼职技术岗位 (架构 / 技术负责人 / Java·全栈)",\n    "项目外包与交付",\n    "技术顾问 / 代码审查",\n    "方案与标书支持"\n  ]\n}' }
     ],
     contact: [
       { type: 'cmd', text: 'contact' },
       { type: 'res', text: '[CONTACT] 远程工作 / 项目合作: 18618387956' },
+      { type: 'res', text: '[EMAIL] shixiaohe996@gmail.com  |  [TELEGRAM] @river_data (https://t.me/river_data)' },
       { type: 'res', text: '[LOC] 三门峡 / 郑州 / 西安 / 全国远程' },
-      { type: 'success', text: '[TIP] 页面底部可直接拨打或复制电话号码.' }
+      { type: 'success', text: '[TIP] 页面底部可直接拨打电话、发邮件或打开 Telegram.' }
     ],
     help: [
       { type: 'cmd', text: 'help' },
       { type: 'res', text: '可用指令 (Available commands):' },
-      { type: 'dim', text: '  run pay-hub         信付通 (pay-hub) 聚合支付底座\n  run payment-engine  金融级分润与对账引擎\n  run iot-scale       智慧食安 IoT 智能秤协议解析\n  run vibe-coding     AI Vibe Coding & SDD 敏捷交付\n  cat profile.json    个人信息与合作方式\n  contact             远程工作 / 项目合作联系电话\n  clear               清空终端\n  ↑ / ↓               浏览历史指令' }
+      { type: 'dim', text: '  run pay-hub         信付通 (pay-hub) 聚合支付底座\n  run payment-engine  金融级分润与对账引擎\n  run iot-scale       智慧食安 IoT 智能秤协议解析\n  run vibe-coding     AI Vibe Coding & SDD 敏捷交付\n  cat profile.json    个人信息与合作方式\n  contact             电话 / 邮箱 / Telegram\n  clear               清空终端\n  ↑ / ↓               浏览历史指令' }
     ]
   };
 
@@ -413,9 +414,9 @@
         e.preventDefault();
         var text = btn.getAttribute('data-copy') || '18618387956';
         copyText(text).then(function () {
-          showToast('[COPIED] 已成功复制史晓河联系电话: ' + text);
+          showToast('已复制' + (btn.getAttribute('data-label') || '电话') + ': ' + text);
         }).catch(function () {
-          showToast('[CONTACT] 史晓河电话: ' + text);
+          showToast((btn.getAttribute('data-label') || '电话') + ': ' + text);
         });
       });
     });

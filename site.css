@@ -497,9 +497,13 @@ button { font: inherit; color: inherit; }
 .trust-list li { display: flex; align-items: baseline; gap: 12px; padding: 11px 14px; background: var(--surface); }
 .trust-val { flex: 0 0 64px; font-weight: 800; color: var(--accent); font-size: 15.5px; }
 .trust-lbl { min-width: 0; font-size: 13.5px; color: var(--text-2); }
-.profile-contact { margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-.profile-phone { font-weight: 700; font-size: 16px; color: var(--text); }
-.profile-phone i { color: var(--accent); margin-right: 4px; }
+.profile-contact { margin-top: 16px; display: grid; gap: 6px; }
+.profile-contact li { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; }
+.profile-contact a { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 650; font-size: 14.5px; color: var(--text); }
+.profile-contact a:hover { color: var(--accent); }
+.profile-contact a i { width: 18px; text-align: center; color: var(--accent); margin-right: 4px; }
+.copy-mini { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; cursor: pointer; color: var(--text-3); background: var(--surface); border: 1px solid var(--border); }
+.copy-mini:hover { color: var(--accent); border-color: var(--accent); }
 
 /* ---------- Featured work ---------- */
 .works { display: grid; gap: 24px; }
@@ -618,6 +622,9 @@ button { font: inherit; color: inherit; }
 .contact-desc { margin-top: 12px; max-width: 46em; color: rgba(255, 255, 255, .86); font-size: 15px; }
 .contact-desc strong { color: #fff; }
 .contact-actions { display: flex; flex-direction: column; gap: 12px; }
+.contact-row { display: flex; gap: 8px; min-width: 0; }
+.contact-row > .btn:first-child { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.btn-icon { flex-shrink: 0; padding: 10px 14px; gap: 4px; }
 .contact-note { font-size: 13.5px; color: rgba(255, 255, 255, .82); text-align: center; }
 .paths { margin-top: 20px; display: grid; gap: 12px; }
 @media (min-width: 640px) { .paths { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
