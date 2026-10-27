@@ -9,16 +9,28 @@
   var PROMPT = 'shixiaohe@riverhub:~$';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // 手机上「架构与实现」默认收起，减少页面长度
+  if (window.matchMedia && window.matchMedia('(max-width: 719px)').matches) {
+    Array.prototype.forEach.call(document.querySelectorAll('details.arch'), function (d) { d.removeAttribute('open'); });
+  }
+
   /* ------------------------------------------------------------------
    * 1. Terminal 命令行交互引擎
    * ------------------------------------------------------------------ */
   var commandLogs = {
     payhub: [
-      { type: 'cmd', text: 'run pay-hub --jdk=21 --arch=double-entry-accounting' },
-      { type: 'res', text: '[PLATFORM] 加载信付通 (pay-hub) 聚合支付微服务核心架构...' },
-      { type: 'res-highlight', text: '[ACCOUNTING ENGINE] 复式记账子账系统校验完成: 借贷平衡 (Assets = Liabilities + Equity)' },
-      { type: 'res', text: '[MONOREPO] 加载 Web Ops/Merchant/Agent 三端与 uni-app 小程序/APP 矩阵...' },
-      { type: 'success', text: '[STATUS] Java 21 微服务与信付通底座运行稳健，支持百万级日均交易平滑扩容.' }
+      { type: 'cmd', text: 'run pay-hub --jdk=25 --topology=monolith|microservice' },
+      { type: 'res', text: '[DOMAINS] merchant · agent · channel · payment · account · integration · assistant' },
+      { type: 'res-highlight', text: '[PAYMENT] 幂等先落库 → 商户路由组选通道 → 固定请求号调用机构 → 回调验签归一 → 单入口收敛状态' },
+      { type: 'res', text: '[ACCOUNT] 支付成功经 Outbox + RocketMQ 入账 · 复式分录只追加 · 余额不透支 · 日终内部对账' },
+      { type: 'success', text: '[SOURCE] Java 25 · Spring Boot 4 · Spring Cloud Alibaba · Web 三端 + uni-app x 四端' }
+    ],
+    ecommica: [
+      { type: 'cmd', text: 'run ecommica --locales=en,zh' },
+      { type: 'res', text: '[WEB] Next.js 16 · React 19 · next-intl 中 / 英 · GeoIP 地区识别 · ISR 缓存' },
+      { type: 'res-highlight', text: '[TRACK] /go/{type}/{id} → 记录点击 → 302 跳转 → 联盟 Postback → 去重 → 按 clickId 归因' },
+      { type: 'res', text: '[SERVER] Spring Boot 3.5 · affiliate · coupon · tracking · stats · campaign · blog' },
+      { type: 'success', text: '[MODEL] 计费 CPS / CPA / CPC / CPL / CPM · 归因 最后点击 / 首次点击 / 线性' }
     ],
     payment: [
       { type: 'cmd', text: 'run payment-engine --scale=million-daily --mq=rabbit' },
@@ -53,13 +65,14 @@
     help: [
       { type: 'cmd', text: 'help' },
       { type: 'res', text: '可用指令 (Available commands):' },
-      { type: 'dim', text: '  run pay-hub         信付通 (pay-hub) 聚合支付底座\n  run payment-engine  金融级分润与对账引擎\n  run iot-scale       智慧食安 IoT 智能秤协议解析\n  run vibe-coding     AI Vibe Coding & SDD 敏捷交付\n  cat profile.json    个人信息与合作方式\n  contact             电话 / 微信 / 邮箱 / Telegram\n  clear               清空终端\n  ↑ / ↓               浏览历史指令' }
+      { type: 'dim', text: '  run pay-hub         信付通 (pay-hub) 聚合支付底座\n  run ecommica        Ecommica 优惠站与联盟追踪\n  run payment-engine  金融级分润与对账引擎\n  run iot-scale       智慧食安 IoT 智能秤协议解析\n  run vibe-coding     AI Vibe Coding & SDD 敏捷交付\n  cat profile.json    个人信息与合作方式\n  contact             电话 / 微信 / 邮箱 / Telegram\n  clear               清空终端\n  ↑ / ↓               浏览历史指令' }
     ]
   };
 
   // 输入文本 → 指令 key 的映射（兼容多种写法）
   var aliases = {
     'run pay-hub': 'payhub', 'pay-hub': 'payhub', 'payhub': 'payhub',
+    'run ecommica': 'ecommica', 'ecommica': 'ecommica',
     'run payment-engine': 'payment', 'payment-engine': 'payment', 'payment': 'payment',
     'run iot-scale': 'iot', 'iot-scale': 'iot', 'iot': 'iot',
     'run vibe-coding': 'vibe', 'vibe-coding': 'vibe', 'vibe': 'vibe',
