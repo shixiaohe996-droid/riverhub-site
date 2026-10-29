@@ -12,6 +12,9 @@
   <meta property="og:description" content="支付清结算、IoT 端云协同、0 到 1 全栈与 AI 工程化。代表作品：Ecommica、信付通。">
   <meta property="og:url" content="https://riverhub.top/">
   <link rel="canonical" href="https://riverhub.top/">
+  <link rel="alternate" hreflang="zh-CN" href="https://riverhub.top/">
+  <link rel="alternate" hreflang="en" href="https://riverhub.top/en/">
+  <link rel="alternate" hreflang="x-default" href="https://riverhub.top/">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="author" content="史晓河">
   <meta name="keywords" content="史晓河,技术架构师,远程工作,项目合作,聚合支付,清结算,信付通,Ecommica,IoT,全栈开发,Java,Spring Boot,RocketMQ,AI 编程">
@@ -41,7 +44,7 @@
   </script>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./site.css?v=202610282349">
+  <link rel="stylesheet" href="./site.css?v=202610290100">
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -60,14 +63,16 @@
       <nav class="nav" id="nav-menu" aria-label="主导航">
         <a href="#work" class="nav-link">代表作品</a>
         <a href="#services" class="nav-link">找我能做什么</a>
+        <a href="#collab" class="nav-link">合作方式</a>
         <a href="#cases" class="nav-link">其他项目</a>
-        <a href="#approach" class="nav-link">技术细节</a>
         <a href="#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link">笔记</a>
         <a href="#contact" class="nav-link nav-link-cta">联系我</a>
       </nav>
 
       <div class="nav-tools">
         <a href="#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
         <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
           <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
           <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
@@ -185,7 +190,8 @@
                 <div class="wf-row"><dt>技术栈</dt><dd class="tags"><span class="tag-strong">Java 25</span><span>Spring Boot 4</span><span>Spring Cloud Alibaba</span><span class="tag-strong">复式记账清结算</span><span>RocketMQ</span><span>Redis</span><span>Nacos</span><span>XXL-Job</span><span>Vue 3 Monorepo</span><span>uni-app x</span></dd></div>
               </dl>
               <div class="work-links">
-                <a class="btn btn-primary btn-sm" href="https://ciftopay.com/" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
+                <a class="btn btn-primary btn-sm" href="/work/ciftopay/">查看案例 <span class="arrow" aria-hidden="true">→</span></a>
+                <a class="btn btn-ghost btn-sm" href="https://ciftopay.com/" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
               </div>
             </div>
                       <details class="arch" open>
@@ -216,7 +222,8 @@
                 <div class="wf-row"><dt>技术栈</dt><dd class="tags"><span class="tag-strong">Next.js 16</span><span>React 19</span><span>Tailwind 4</span><span>next-intl</span><span class="tag-strong">Spring Boot 3.5</span><span>MySQL</span><span>Redis</span><span>Vue 3 后台</span><span>Docker</span></dd></div>
               </dl>
               <div class="work-links">
-                <a class="btn btn-primary btn-sm" href="https://deals.ecommica.com/" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
+                <a class="btn btn-primary btn-sm" href="/work/ecommica/">查看案例 <span class="arrow" aria-hidden="true">→</span></a>
+                <a class="btn btn-ghost btn-sm" href="https://deals.ecommica.com/" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
                 <a class="btn btn-ghost btn-sm" href="https://deals.ecommica.com/en" target="_blank" rel="noopener"><i class="fa-solid fa-language" aria-hidden="true"></i> English 版</a>
               </div>
             </div>
@@ -302,12 +309,104 @@
           </li>
         </ul>
 
-        <div class="modes reveal" aria-label="合作方式">
-          <span class="modes-label">合作方式</span>
-          <span class="mode"><i class="fa-solid fa-laptop-house" aria-hidden="true"></i> 远程全职 / 兼职岗位</span>
-          <span class="mode"><i class="fa-solid fa-box-open" aria-hidden="true"></i> 项目外包与交付</span>
-          <span class="mode"><i class="fa-solid fa-user-gear" aria-hidden="true"></i> 技术顾问 / 代码审查</span>
-          <span class="mode"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> 方案与标书支持</span>
+      </div>
+    </section>
+
+    <!-- 3½. 合作方式 -->
+    <section class="section" id="collab">
+      <div class="container">
+        <header class="section-head reveal">
+          <span class="section-kicker"><span class="kicker-idx">03</span><span class="kicker-sep">/</span>How We Work</span>
+          <h2 class="section-title">合作方式</h2>
+          <p class="section-desc">远程岗位、技术顾问、项目交付或评审都可以，从一次免费沟通开始</p>
+        </header>
+
+        <ul class="collab-forms">
+          <li class="card cform reveal">
+            <div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-laptop-house" aria-hidden="true"></i></span><span class="cform-idx">FULL-TIME</span></div>
+            <h3 class="cform-title">远程全职</h3>
+            <p class="cform-fit">适合需要长期负责人的团队：架构师、技术负责人、Java 后端 / 全栈。</p>
+            <ul class="cform-list">
+              <li>按团队节奏参与日常研发与评审</li>
+              <li>负责核心模块，带着团队把规范落地</li>
+            </ul>
+          </li>
+          <li class="card cform reveal">
+            <div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-user-gear" aria-hidden="true"></i></span><span class="cform-idx">ADVISOR</span></div>
+            <h3 class="cform-title">兼职技术顾问</h3>
+            <p class="cform-fit">适合已有团队、需要一位资深的人定方向、把关键设计。</p>
+            <ul class="cform-list">
+              <li>技术选型、架构方案与关键设计评审</li>
+              <li>定期答疑，陪团队解决疑难问题</li>
+            </ul>
+          </li>
+          <li class="card cform reveal">
+            <div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-box-open" aria-hidden="true"></i></span><span class="cform-idx">DELIVERY</span></div>
+            <h3 class="cform-title">项目外包交付</h3>
+            <p class="cform-fit">适合有明确目标的系统：支付清结算、IoT 端云、管理后台、0 到 1 产品。</p>
+            <ul class="cform-list">
+              <li>从方案、开发、测试到上线全流程负责</li>
+              <li>交付代码、文档和部署说明，方便你接手</li>
+            </ul>
+          </li>
+          <li class="card cform reveal">
+            <div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></span><span class="cform-idx">REVIEW</span></div>
+            <h3 class="cform-title">架构与代码评审</h3>
+            <p class="cform-fit">适合系统已经在跑，但担心资金正确性、性能或可维护性。</p>
+            <ul class="cform-list">
+              <li>梳理现状，找出风险点与瓶颈</li>
+              <li>给出书面评审报告和分优先级的改进建议</li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="collab-sub reveal">
+          <h3>怎么开始</h3>
+          <p>一般是这四步，规模小的项目可以合并</p>
+        </div>
+        <ol class="steps reveal">
+          <li class="step">
+            <span class="step-no">STEP 01</span>
+            <h4 class="step-title">免费 30 分钟沟通</h4>
+            <p class="step-text">电话、微信语音或视频都行。聊清楚背景、目标、时间线，我会直接说能不能做、适合哪种合作方式。</p>
+            <span class="step-tag">免费</span>
+          </li>
+          <li class="step">
+            <span class="step-no">STEP 02</span>
+            <h4 class="step-title">需求梳理与方案</h4>
+            <p class="step-text">把需求拆成范围清楚的功能清单，给出技术方案、关键风险和需要你确认的问题。</p>
+          </li>
+          <li class="step">
+            <span class="step-no">STEP 03</span>
+            <h4 class="step-title">报价区间与排期</h4>
+            <p class="step-text">按范围给出报价区间、里程碑和交付物，双方确认后再开工，不做模糊承诺。</p>
+          </li>
+          <li class="step">
+            <span class="step-no">STEP 04</span>
+            <h4 class="step-title">迭代交付</h4>
+            <p class="step-text">按里程碑小步交付，每周同步进度和风险；代码、文档、部署说明随交付一起移交。</p>
+          </li>
+        </ol>
+
+        <div class="collab-style reveal">
+          <div class="cstyle">
+            <h4 class="cstyle-title"><i class="fa-solid fa-satellite-dish" aria-hidden="true"></i>远程协作习惯</h4>
+            <p>2020 — 2022 年以远程兼职方式持续参与支付项目。以异步为主：进度在 Git、Issue 和文档里留痕，关键节点再开会对齐。</p>
+          </div>
+          <div class="cstyle">
+            <h4 class="cstyle-title"><i class="fa-solid fa-file-lines" aria-hidden="true"></i>文档化</h4>
+            <p>需求、方案、决策记录和接口文档随代码一起维护；为什么这么做写清楚，换人接手也看得懂。</p>
+          </div>
+          <div class="cstyle">
+            <h4 class="cstyle-title"><i class="fa-solid fa-clock" aria-hidden="true"></i>时区灵活</h4>
+            <p>以北京时间工作为主，可以和不同时区的团队约定固定的重叠时段，用于例会和即时沟通。</p>
+          </div>
+        </div>
+
+        <div class="collab-cta reveal">
+          <a class="btn btn-primary" href="#contact">先约 30 分钟聊聊 <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 下载简历 PDF</a>
+          <span class="collab-cta-note">不需要先准备完整需求文档，说清楚想解决什么就行。</span>
         </div>
       </div>
     </section>
@@ -316,7 +415,7 @@
     <section class="section section-alt" id="cases">
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">03</span><span class="kicker-sep">/</span>Other Projects</span>
+          <span class="section-kicker"><span class="kicker-idx">04</span><span class="kicker-sep">/</span>Other Projects</span>
           <h2 class="section-title">其他做过的项目</h2>
           <p class="section-desc">金融支付与智慧城市两个方向的代表项目</p>
           <p class="swipe-hint mono" aria-hidden="true">← 左右滑动 · 共 4 个 →</p>
@@ -360,7 +459,7 @@
       <span id="terminal" class="anchor-alias" aria-hidden="true"></span>
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">04</span><span class="kicker-sep">/</span>Under The Hood</span>
+          <span class="section-kicker"><span class="kicker-idx">05</span><span class="kicker-sep">/</span>Under The Hood</span>
           <h2 class="section-title">技术细节</h2>
           <p class="section-desc">给技术同行看的：几个项目里的关键设计，点左侧切换，或在终端里输入 help</p>
         </header>
@@ -470,7 +569,7 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
     <section class="section section-alt" id="about">
       <div class="container about">
         <div class="about-intro reveal">
-          <span class="section-kicker"><span class="kicker-idx">05</span><span class="kicker-sep">/</span>About</span>
+          <span class="section-kicker"><span class="kicker-idx">06</span><span class="kicker-sep">/</span>About</span>
           <h2 class="section-title about-title">关于我</h2>
           <p class="about-text">
             郑州轻工业学院计算机科学与技术专业毕业，2013 年起做 Java 后端，之后一路走到技术负责人和架构师。做得最久的是支付：收单、分润、对账、清结算；也做过智慧社区、智慧教育和食安 IoT。现在在<strong>河南信言电子科技有限公司</strong>任技术架构师，主导「信付通」。
@@ -483,6 +582,10 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
             <div class="pills">
               <span class="pill is-key">Java / Spring Boot / Spring Cloud</span><span class="pill">MySQL</span><span class="pill">Redis</span><span class="pill">RocketMQ</span><span class="pill">XXL-Job</span><span class="pill is-key">Vue3 / ECharts</span><span class="pill is-key">uni-app / React Native</span><span class="pill">IoT 蓝牙/串口协议</span><span class="pill is-key">Claude Code / SDD / TDD</span><span class="pill">微服务 / DDD</span>
             </div>
+          </div>
+          <div class="about-actions">
+            <a class="btn btn-primary" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 下载简历 PDF</a>
+            <a class="btn btn-ghost" href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
           </div>
         </div>
 
@@ -499,14 +602,43 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
         </div>
       </div>
     </section>
+
+    <!-- 8. 笔记 -->
+    <section class="section" id="notes">
+      <div class="container">
+        <header class="section-head reveal">
+          <span class="section-kicker"><span class="kicker-idx">07</span><span class="kicker-sep">/</span>Notes</span>
+          <h2 class="section-title">技术笔记</h2>
+          <p class="section-desc">把做项目时想清楚的事写下来，也方便你判断我怎么思考问题</p>
+        </header>
+        <div class="notes-grid">
+          <a class="card note-card reveal" href="/notes/payment-reconciliation-idempotency/">
+            <span class="note-meta"><span class="note-tag">支付 · 架构</span><time datetime="2026-10-29">2026-10-29</time></span>
+            <h3 class="note-title">聚合支付清结算的对账与幂等设计</h3>
+            <p class="note-excerpt">超时不等于失败，重复回调不等于重复入账。从“先落库再调用”、通道请求号、账务幂等，到复式记账和日终对账，讲讲我是怎么让钱和账对得上的。</p>
+            <span class="note-more">阅读全文 <span class="arrow" aria-hidden="true">→</span></span>
+          </a>
+          <a class="card note-card reveal" href="/notes/ai-coding-delivery/">
+            <span class="note-meta"><span class="note-tag">AI 工程化</span><time datetime="2026-10-29">2026-10-29</time></span>
+            <h3 class="note-title">用 AI 编程（Claude Code / SDD / TDD）做交付的实践</h3>
+            <p class="note-excerpt">让 AI 写代码不难，难的是让它写出能上线、能维护的代码。我的做法：规格先行、决策成文、测试先红后绿、验证门禁兜底。</p>
+            <span class="note-more">阅读全文 <span class="arrow" aria-hidden="true">→</span></span>
+          </a>
+        </div>
+        <div class="notes-foot reveal">
+          <p>会持续更新，主要写支付、架构和 AI 工程化。</p>
+          <a class="btn btn-ghost btn-sm" href="/notes/">全部笔记 <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- 7. 联系 -->
+  <!-- 9. 联系 -->
   <footer class="footer" id="contact">
     <div class="container">
       <div class="contact reveal">
         <div class="contact-copy">
-          <span class="section-kicker"><span class="kicker-idx">06</span><span class="kicker-sep">/</span>Get In Touch</span>
+          <span class="section-kicker"><span class="kicker-idx">08</span><span class="kicker-sep">/</span>Get In Touch</span>
           <h2 class="contact-title"><span class="nw">远程工作或项目合作，</span><span class="nw">都欢迎聊聊</span></h2>
           <p class="contact-desc">打电话、加微信、发邮件或 Telegram 说说你的情况就行，我会如实告诉你我能不能做、怎么做。</p>
           <div class="paths">
@@ -542,13 +674,28 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
             <span class="btn btn-ghost"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 微信 <span class="mono">18618387956</span><span class="wx-note">（同手机号）</span></span>
             <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号" aria-label="复制微信号"><i class="fa-regular fa-copy" aria-hidden="true"></i></button>
           </div>
+          <div class="contact-row">
+            <a href="https://github.com/shixiaohe996-droid" class="btn btn-ghost" target="_blank" rel="noopener">
+              <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub <span class="mono">shixiaohe996-droid</span>
+            </a>
+          </div>
+          <div class="contact-row contact-resume">
+            <a href="/assets/shixiaohe-resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener">
+              <i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 下载简历 PDF
+            </a>
+          </div>
           <span class="contact-note"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 三门峡 · 可远程对接全国</span>
         </div>
       </div>
 
       <div class="footer-bottom">
         <div>© 2026 史晓河 (Shi Xiaohe)</div>
-        <div>技术架构师 · 河南信言电子科技有限公司</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
         <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
       </div>
     </div>
@@ -556,6 +703,6 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="./main.js?v=202610282349" defer></script>
+  <script src="./main.js?v=202610290100" defer></script>
 </body>
 </html>

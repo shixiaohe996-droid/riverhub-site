@@ -429,7 +429,8 @@
         e.preventDefault();
         var text = btn.getAttribute('data-copy') || '18618387956';
         copyText(text).then(function () {
-          showToast('已复制' + (btn.getAttribute('data-label') || '电话') + ': ' + text);
+          var en = /^en/i.test(document.documentElement.lang || '');
+          showToast((en ? 'Copied ' : '已复制') + (btn.getAttribute('data-label') || (en ? 'phone' : '电话')) + ': ' + text);
         }).catch(function () {
           showToast((btn.getAttribute('data-label') || '电话') + ': ' + text);
         });
@@ -477,8 +478,10 @@
       });
     }
 
-    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
-    links.forEach(function (link) { link.addEventListener('click', function () { setMenu(false); }); });
+    var allLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+    allLinks.forEach(function (link) { link.addEventListener('click', function () { setMenu(false); }); });
+    // 只有页内锚点参与滚动高亮；跨页链接（/notes/、/#work）保持静态状态
+    var links = allLinks.filter(function (l) { return (l.getAttribute('href') || '').charAt(0) === '#'; });
 
     var sections = links.map(function (l) {
       var id = (l.getAttribute('href') || '').slice(1);
@@ -494,7 +497,7 @@
       sections.forEach(function (sec) {
         if (y >= sec.offsetTop - 140) current = sec.id;
       });
-      if (window.innerHeight + y >= document.documentElement.scrollHeight - 4) current = 'contact';
+      if (window.innerHeight + y >= document.documentElement.scrollHeight - 4 && document.getElementById('contact')) current = 'contact';
       links.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
     }
     window.addEventListener('scroll', function () {
@@ -607,8 +610,34 @@
   /* ------------------------------------------------------------------
    * Init
    * ------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------
+   * 9. 案例页目录高亮
+   * ------------------------------------------------------------------ */
+  function initToc() {
+    var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+    if (!tocLinks.length) return;
+    var secs = tocLinks.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    var ticking = false;
+    function spy() {
+      ticking = false;
+      var y = (window.pageYOffset || document.documentElement.scrollTop) + 160;
+      var idx = 0;
+      secs.forEach(function (sec, i) { if (sec && sec.getBoundingClientRect().top + window.pageYOffset <= y) idx = i; });
+      if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 4) idx = secs.length - 1;
+      tocLinks.forEach(function (a, i) {
+        a.classList.toggle('active', i === idx);
+        if (i === idx) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(spy); }
+    }, { passive: true });
+    spy();
+  }
+
   function init() {
     initTheme();
+    initToc();
     initNav();
     initTerminal();
     initTopology();

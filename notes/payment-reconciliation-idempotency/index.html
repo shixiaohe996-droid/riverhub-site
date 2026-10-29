@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>聚合支付清结算的对账与幂等设计 · 史晓河的技术笔记</title>
+  <meta name="description" content="超时不等于失败，重复回调不等于重复入账。从先落库再调用、通道请求号、账务幂等，到复式记账和日终对账，讲讲聚合支付平台怎么让钱和账对得上。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/notes/payment-reconciliation-idempotency/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="聚合支付清结算的对账与幂等设计">
+  <meta property="og:description" content="超时不等于失败，重复回调不等于重复入账。从先落库再调用、通道请求号、账务幂等，到复式记账和日终对账，讲讲聚合支付平台怎么让钱和账对得上。">
+  <meta property="og:url" content="https://riverhub.top/notes/payment-reconciliation-idempotency/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="聚合支付清结算的对账与幂等设计">
+  <meta name="twitter:description" content="超时不等于失败，重复回调不等于重复入账。从先落库再调用、通道请求号、账务幂等，到复式记账和日终对账，讲讲聚合支付平台怎么让钱和账对得上。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "聚合支付清结算的对账与幂等设计", "description": "超时不等于失败，重复回调不等于重复入账。从先落库再调用、通道请求号、账务幂等，到复式记账和日终对账，讲讲聚合支付平台怎么让钱和账对得上。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/payment-reconciliation-idempotency/", "image": "https://riverhub.top/assets/og.jpg", "mainEntityOfPage": "https://riverhub.top/notes/payment-reconciliation-idempotency/", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css?v=202610290100">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#cases" class="nav-link">其他项目</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link" aria-current="page">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top" class="anchor-top" aria-hidden="true"></span>
+    <section class="page-hero">
+      <div class="container">
+        <div class="article">
+          <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">笔记</a><span class="sep">/</span><span aria-current="page">支付 · 架构</span></nav>
+          <h1 class="page-title">聚合支付清结算的对账与幂等设计</h1>
+          <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 12 分钟</span><span class="dot"></span><span class="note-tag">支付 · 架构</span></div>
+          <nav class="article-toc" aria-label="文章目录"><b>CONTENTS</b><ol><li><a href="#s1">问题从三种“不确定”开始</a></li><li><a href="#s2">支付侧：先落库，再调用</a></li><li><a href="#s3">一次尝试，一个请求号</a></li><li><a href="#s4">回调与状态收敛</a></li><li><a href="#s5">从支付到账务：Outbox + 消息</a></li><li><a href="#s6">账务幂等：身份 + 摘要</a></li><li><a href="#s7">复式记账的几条硬规则</a></li><li><a href="#s8">日终对账：截点与水位</a></li><li><a href="#s9">出错之后：冲销，而不是改库</a></li><li><a href="#s10">一份检查清单</a></li></ol></nav>
+        </div>
+      </div>
+    </section>
+    <div class="container article-wrap">
+      <article class="article">
+        <div class="prose">
+          <p>做了这么多年支付，我越来越确定一件事：支付系统里最难的不是“把钱收进来”，而是<strong>在各种异常下，钱和账始终对得上</strong>。这篇是我在设计聚合支付平台清结算链路时的一些思路，写的是通用的设计原则，不涉及任何具体机构和内部实现。</p>
+
+          <h2 id="s1">问题从三种“不确定”开始</h2>
+          <p>聚合支付平台夹在商户和多家持牌支付机构之间，链路上至少有三种不确定：</p>
+          <ul>
+            <li><strong>外部调用结果不确定</strong>：调用支付机构超时或断连，不代表对方没受理。你以为失败了，其实钱已经扣了。</li>
+            <li><strong>回调会重复、会乱序</strong>：同一笔交易的成功通知可能来好几次，也可能比主动查单的结果更晚到。</li>
+            <li><strong>内部投递会重复</strong>：消息队列至少投递一次，消费方一定会遇到重复消息。</li>
+          </ul>
+          <p>所以“幂等”不是某个接口加个唯一索引就完事了，而是要在每一个可能重放的环节都回答清楚：<strong>同一件事发生第二次，系统应该做什么？</strong></p>
+
+          <h2 id="s2">支付侧：先落库，再调用</h2>
+          <p>我坚持的第一条规则是：<strong>调用外部机构之前，先把“我要做这件事”持久化。</strong></p>
+          <p>具体来说，在一个本地事务里同时写入：幂等键、支付订单、路由决策（这笔走哪个通道）、本次执行尝试，以及一条“状态恢复任务”。事务提交之后，只有真正创建了这些记录的那个请求，才去发起外部调用。外部调用本身绝不放进数据库事务里——否则一次网络抖动就能把连接池拖垮。</p>
+          <p>这样做的好处是，无论进程在哪一步崩溃，数据库里都留着“有一笔交易处于待确认状态”的证据，恢复任务会把它推到终态，不会出现“钱扣了、系统里没记录”的情况。</p>
+          <blockquote>数据库里的恢复任务是“必须完成”的义务来源；消息队列只负责尽快唤醒处理，不作为事实来源。</blockquote>
+          <p>消息可能丢、可能延迟，但只要数据库里的义务还在，定时扫描就能兜底。</p>
+
+          <h2 id="s3">一次尝试，一个请求号</h2>
+          <p>第二条规则：<strong>请求一旦可能已经发出，结果未知时只能查，不能重发。</strong></p>
+          <ul>
+            <li>同一次执行尝试，始终复用同一个发给机构的请求号。这个请求号在首次外呼前就生成并落库，后续重试、查单、回调定位和对账都用它。</li>
+            <li>超时、断连都按“待确认”处理：用原请求号查单或关单，<strong>不换号、不改路由、不新建替代交易</strong>。</li>
+            <li>只有确认原交易已经关闭或明确失败，才允许以新的尝试重新发起。</li>
+          </ul>
+          <p>很多重复扣款事故，根源都是“超时了就换个号再试一次”。换号意味着机构那边是两笔独立的交易，两笔都可能成功。</p>
+          <p>另外，每家机构对请求号的格式、长度要求都不一样。我的做法是把这部分放进按机构版本化的适配层里：由适配器负责生成和解析机构侧的请求身份，业务层只认平台自己的订单号。机构协议升级时新增一个适配版本，不动业务代码。</p>
+
+          <h2 id="s4">回调与状态收敛</h2>
+          <p>回调、主动查单、恢复任务，三条路径都可能带来同一笔交易的结果。如果每条路径各自改状态，迟早会出现“成功被失败覆盖”这类问题。</p>
+          <p>所以我把状态变更收口到<strong>一个统一的收敛入口</strong>：</p>
+          <ol>
+            <li>回调先验签，再把机构的字段和状态码归一成平台语义；</li>
+            <li>所有来源的结果都进入同一个入口；</li>
+            <li>入口里用行锁加条件更新，只允许状态按合法方向前进（比如“处理中 → 成功”），重复或倒退的结果直接返回当前状态；</li>
+            <li>如果两个来源给出互相矛盾的终态，不自动覆盖，而是标记异常、告警，转人工处理。</li>
+          </ol>
+          <p>状态机本身不复杂，关键是<strong>入口唯一</strong>。入口唯一了，加锁、校验、审计都只需要做一次。</p>
+
+          <h2 id="s5">从支付到账务：Outbox + 消息</h2>
+          <p>支付成功之后，要通知账务域记账：商户应收、手续费、代理商分润……这里又是一个经典的分布式一致性问题。</p>
+          <p>我没有用分布式事务，而是用 <strong>Outbox 模式</strong>：在提交“支付成功”状态的同一个本地事务里，写一条待投递事件；事务提交后，由投递器把事件发到 RocketMQ，账务域消费后记账。</p>
+          <ul>
+            <li>业务状态和待投递事件同生共死，不会出现“状态改了、事件没发”的情况；</li>
+            <li>投递失败就重试，重试有退避、有上限，超过上限进入告警和人工处置；</li>
+            <li>消费方必须幂等，因为同一事件一定可能被投递多次。</li>
+          </ul>
+          <p>更一般地说，我会给跨业务域的协作分级：必须先批准或锁定的，用同步的前置命令；来源事实已经成立、目标域随后必须处理的，用持久化投递加目标域幂等，保证最终收敛；允许偶尔丢失的非关键通知（比如语音播报），才用尽力而为的调用。分级说清楚了，团队就不会在每个接口上反复争论“这里要不要保证一致”。</p>
+
+          <h2 id="s6">账务幂等：身份 + 摘要</h2>
+          <p>账务入口的幂等，我用的是“<strong>业务身份 + 规范化请求摘要</strong>”的组合：</p>
+          <ul>
+            <li>业务身份回答“这是哪件事”，比如某笔支付的成功入账；</li>
+            <li>请求摘要是对规范化后的请求内容做哈希（并带上摘要算法的版本），回答“这件事的内容是什么”。</li>
+          </ul>
+          <p>于是同一个业务身份再次到达时，可以区分两种完全不同的情况：</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>情况</th><th>含义</th><th>处理</th></tr></thead>
+            <tbody>
+              <tr><td>身份相同、摘要相同</td><td>正常的重复投递</td><td>直接返回第一次的处理结果</td></tr>
+              <tr><td>身份相同、摘要不同</td><td>同一件事，内容却变了</td><td>判为事实冲突，拒绝并告警，绝不覆盖</td></tr>
+              <tr><td>身份不存在</td><td>新的事实</td><td>正常记账</td></tr>
+            </tbody>
+          </table></div>
+          <p>第二种情况特别重要。只按业务号去重的系统，会把“金额被改过的重放”当成普通重复悄悄吞掉，问题被掩盖，直到对账时才发现差额。</p>
+          <p>账务入口的返回结果我也会明确分类：已记账、幂等返回、业务拒绝、依赖未就绪、事实冲突、可重试错误。调用方根据分类决定是结束、稍后重试还是转人工，而不是把所有异常都当成“失败重试”。</p>
+
+          <h2 id="s7">复式记账的几条硬规则</h2>
+          <ul>
+            <li><strong>有借必有贷，借贷必相等</strong>：每笔资金事实拆成平衡的分录，任何一笔不平衡都直接拒绝。</li>
+            <li><strong>分录只追加，不修改、不删除</strong>：历史是不可变的，余额是分录累积的结果。</li>
+            <li><strong>余额不允许透支</strong>：扣减前在同一事务里校验，校验和扣减不能分开。</li>
+            <li><strong>固定顺序加锁</strong>：一次记账可能涉及多个账户，按固定顺序（比如账户 ID 升序）加行锁，避免并发记账时互相死锁。</li>
+            <li><strong>锁内不做重活</strong>：持锁期间不扫描大量历史分录，统计类工作放到锁外或异步去做。</li>
+          </ul>
+          <p>容量规划上还有一个容易被忽略的点：一笔交易会拆成多条分录、触及多个账户，所以账务的压力要按“记账放大系数”估算，而不是直接拿交易笔数。</p>
+
+          <h2 id="s8">日终对账：截点与水位</h2>
+          <p>对账分两层：平台和支付机构之间的外部对账，以及平台内部各账户、各业务域之间的内部对账。这里说说内部对账的一个细节：<strong>截点怎么定</strong>。</p>
+          <p>如果日终任务“跑的时候查到哪算哪”，那任务晚跑五分钟，结果就不一样，对账结果不可复现。我的做法是：</p>
+          <ul>
+            <li>以自然日的逻辑零点作为截点，而不是任务实际运行的时间；</li>
+            <li>每个账户维护一个记账水位，记录已经处理到哪里；对账只统计截点之前、水位之内的分录；</li>
+            <li>截点之后才到达、但属于前一天的事实，按规则计入下一个周期或进入差异处理，不回头改已经出过的结果。</li>
+          </ul>
+          <p>这样无论任务几点跑、跑几次，同一天的对账结果都一样。</p>
+
+          <h2 id="s9">出错之后：冲销，而不是改库</h2>
+          <p>系统再严谨，也会遇到需要纠正的情况：渠道差错、人工操作失误、规则配置错误。我的原则是：</p>
+          <ul>
+            <li><strong>不直接改数据库</strong>。改库会破坏审计链，也很容易改错第二次。</li>
+            <li>纠错走受控流程：经过复核后，对原过账做一笔<strong>精确冲销</strong>，必要时再按正确的内容重新过账。冲销本身也是新的、可审计的记录。</li>
+            <li>自动重试有边界：超过次数或时间仍未收敛的，升级为告警和人工处置任务，处置动作同样留痕。</li>
+          </ul>
+
+          <h2 id="s10">一份检查清单</h2>
+          <p>最后把上面的内容压缩成一份清单，我在评审支付类系统时会逐条过：</p>
+          <ol>
+            <li>调用外部机构前，交易意图是否已经持久化？外部调用是否在事务之外？</li>
+            <li>超时后是查单还是重发？重发时是否换了请求号？</li>
+            <li>交易状态是否只有一个变更入口？状态能不能倒退？</li>
+            <li>跨域通知是否和业务状态在同一个本地事务里落库？</li>
+            <li>账务幂等能否区分“正常重复”和“内容被改过的重放”？</li>
+            <li>分录是否只追加？余额是否可能透支？多账户加锁顺序是否固定？</li>
+            <li>对账结果是否和任务运行时间无关？</li>
+            <li>纠错是否通过冲销完成，而不是直接改库？</li>
+          </ol>
+          <p>如果你的系统在这几条上有拿不准的地方，<a href="/#contact">欢迎找我聊聊</a>，也可以看看<a href="/work/ciftopay/">信付通的案例</a>里这些规则是怎么落到架构上的。</p>
+
+        </div>
+        <aside class="author-box">
+          <img src="/assets/avatar.jpg" width="56" height="56" alt="史晓河头像" loading="lazy">
+          <div>
+            <b>史晓河</b>
+            <p>技术架构师，13 年一线研发与架构经验，长期做支付收单与清结算。开放远程工作与项目合作，<a href="/#contact">欢迎联系</a>。</p>
+          </div>
+        </aside>
+
+        <nav class="pager" aria-label="更多笔记">
+          <a class="" href="/notes/"><small>← 全部笔记</small><b>技术笔记</b></a>
+          <a class="is-next" href="/notes/ai-coding-delivery/"><small>下一篇 →</small><b>用 AI 编程（Claude Code / SDD / TDD）做交付的实践</b></a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=202610290100" defer></script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>信付通 CiftoPay 案例：聚合支付平台的架构与全栈交付 · 史晓河</title>
+  <meta name="description" content="史晓河主导的信付通聚合支付平台案例：先落库再调用的支付链路、版本化通道适配、Outbox + RocketMQ 驱动的复式记账与日终对账、单体 / 微服务双拓扑，以及三端 Web、移动四端与开放 API 的全栈交付。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/work/ciftopay/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="信付通 CiftoPay 案例 · 史晓河">
+  <meta property="og:description" content="聚合支付平台的架构与全栈交付：支付链路幂等、通道适配、复式记账与日终对账、双拓扑部署。">
+  <meta property="og:url" content="https://riverhub.top/work/ciftopay/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="信付通 CiftoPay 案例 · 史晓河">
+  <meta name="twitter:description" content="聚合支付平台的架构与全栈交付：支付链路幂等、通道适配、复式记账与日终对账、双拓扑部署。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "Article", "headline": "信付通 CiftoPay：聚合支付平台的架构与全栈交付", "description": "史晓河主导的信付通聚合支付平台案例：先落库再调用的支付链路、版本化通道适配、Outbox + RocketMQ 驱动的复式记账与日终对账、单体 / 微服务双拓扑，以及三端 Web、移动四端与开放 API 的全栈交付。", "inLanguage": "zh-CN", "url": "https://riverhub.top/work/ciftopay/", "image": "https://riverhub.top/assets/work/cif-home.webp", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}, "about": {"@type": "WebSite", "name": "信付通", "url": "https://ciftopay.com/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css?v=202610290100">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link" aria-current="true">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#cases" class="nav-link">其他项目</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top" class="anchor-top" aria-hidden="true"></span>
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/#work">代表作品</a><span class="sep">/</span><span aria-current="page">信付通</span></nav>
+        <span class="section-kicker page-kicker"><span class="kicker-idx">Case 01</span><span class="kicker-sep">/</span>Payment Platform</span>
+        <h1 class="page-title">信付通 CiftoPay<span class="accent-text">把聚合支付的钱和账做对</span></h1>
+        <p class="page-lead">三门峡本地的支付与行业数字化服务平台。我在信言科技任技术架构师，主导平台整体架构，并参与从后端底座到 Web、移动端的全栈落地。这页讲清楚它要解决什么问题、我负责什么、关键链路是怎么设计的。</p>
+        <dl class="page-facts">
+          <div><dt>我的角色</dt><dd>技术架构师 · 全栈</dd></div>
+          <div><dt>时间</dt><dd>2026.06 — 至今</dd></div>
+          <div><dt>形态</dt><dd>后端 + 三端 Web + 移动四端 + 开放 API</dd></div>
+          <div><dt>线上</dt><dd><a href="https://ciftopay.com/" target="_blank" rel="noopener">ciftopay.com ↗</a></dd></div>
+        </dl>
+        <div class="page-actions">
+          <a class="btn btn-primary" href="https://ciftopay.com/" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="btn btn-ghost" href="/#contact"><i class="fa-solid fa-comments" aria-hidden="true"></i> 聊聊类似的项目</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <figure class="case-cover reveal" style="margin:0">
+        <span class="browser">
+          <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-lock"></i> ciftopay.com</span><span class="browser-go">↗</span></span>
+          <img src="/assets/work/cif-home.webp" width="1440" height="900" decoding="async" fetchpriority="high" alt="信付通 ciftopay.com 官网首页截图">
+        </span>
+      </figure>
+
+      <div class="case-layout">
+        <aside class="toc" aria-label="本页目录">
+          <span class="toc-label">ON THIS PAGE</span>
+          <ol>
+            <li><a href="#background"><span class="mono">01</span>背景</a></li>
+            <li><a href="#role"><span class="mono">02</span>我的角色</a></li>
+            <li><a href="#challenges"><span class="mono">03</span>关键挑战</a></li>
+            <li><a href="#architecture"><span class="mono">04</span>方案与架构</a></li>
+            <li><a href="#stack"><span class="mono">05</span>技术栈</a></li>
+            <li><a href="#results"><span class="mono">06</span>结果</a></li>
+            <li><a href="#screens"><span class="mono">07</span>截图</a></li>
+          </ol>
+          <a class="btn btn-ghost btn-sm toc-cta" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        </aside>
+
+        <div class="cs">
+          <section class="cs-sec" id="background">
+            <h2 class="cs-h"><span class="mono">01</span>背景</h2>
+            <div class="prose">
+              <p>信付通是信言科技面向三门峡本地商户的支付与行业数字化服务：以<strong>聚合收款</strong>为根基，联合成熟的行业软件伙伴，为餐饮、零售商超、民生缴费、教育校园、停车出行、酒店文旅等行业配齐点单、收银、会员、缴费系统；有特殊需求时，再围绕支付做定制开发。</p>
+              <p>资金由持牌支付机构直接结算给商户，平台不经手资金。但平台依然要对每一笔交易的状态、手续费、代理商分润和结算结果负责，而且要同时服务四类角色：</p>
+              <ul>
+                <li><strong>商户</strong>：收款码、云音箱播报、对账与结算查询；</li>
+                <li><strong>代理商</strong>：多级代理关系、分润规则与分润后台；</li>
+                <li><strong>平台运营</strong>：商户进件审核、通道与路由配置、风控与账务处理；</li>
+                <li><strong>开发者 / 合作伙伴</strong>：通过开放 API 把支付能力接进自己的行业软件。</li>
+              </ul>
+              <p>所以这不是做一个“能收钱的页面”，而是一套要长期跑下去、出了问题能说清楚每一分钱去向的支付平台。</p>
+            </div>
+          </section>
+
+          <section class="cs-sec" id="role">
+            <h2 class="cs-h"><span class="mono">02</span>我的角色 · 全栈</h2>
+            <p class="cs-intro">在信言科技任技术架构师（2026.06 — 至今），对平台整体架构负责，同时下场写核心代码和前端工程。</p>
+            <div class="role-grid">
+              <div class="role-item"><span class="role-k"><i class="fa-solid fa-sitemap" aria-hidden="true"></i>架构与领域划分</span><p>划分商户、代理、通道、支付、账务、集成等业务域及其边界；定下跨域一致性、幂等、分表和部署拓扑等关键决策，并以架构决策记录（ADR）沉淀。</p></div>
+              <div class="role-item"><span class="role-k"><i class="fa-solid fa-credit-card" aria-hidden="true"></i>核心资金链路</span><p>支付编排、通道路由与机构适配、回调与状态收敛、复式记账与日终对账等核心链路的设计与实现。</p></div>
+              <div class="role-item"><span class="role-k"><i class="fa-solid fa-display" aria-hidden="true"></i>前端与多端</span><p>运营 / 商户 / 代理三端 Web（Vue 3 Monorepo），uni-app x 移动四端，以及官网与开放 API 文档站的工程架构。</p></div>
+              <div class="role-item"><span class="role-k"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>工程化与 AI 协作</span><p>规格（spec）与 ADR 驱动的开发流程，AI 编程代理共用的仓库规则、Git 钩子与验证门禁，让人和 AI 按同一套约束交付。</p></div>
+            </div>
+          </section>
+
+          <section class="cs-sec" id="challenges">
+            <h2 class="cs-h"><span class="mono">03</span>关键挑战</h2>
+            <div class="chal-grid">
+              <article class="card chal"><span class="chal-no">C1 · 结果不确定</span><h3 class="chal-title">外部调用会超时、断连、重复回调</h3><p>调用支付机构时，“没收到响应”不等于“没扣款”。既不能重复扣款，也不能漏掉已经成功的交易。</p></article>
+              <article class="card chal"><span class="chal-no">C2 · 机构差异</span><h3 class="chal-title">每家机构的协议都不一样</h3><p>请求号格式、签名方式、回调语义、查单与关单规则各不相同，还会随机构升级而变化，不能让这些差异渗进业务代码。</p></article>
+              <article class="card chal"><span class="chal-no">C3 · 账要对得上</span><h3 class="chal-title">手续费、分润、结算、退款都要记账</h3><p>每一笔资金事实都要能追溯、可重放、不透支；出错时要能受控纠正，而不是直接改库。</p></article>
+              <article class="card chal"><span class="chal-no">C4 · 弹性与多端</span><h3 class="chal-title">早期要快上线，后期要能拆</h3><p>起步阶段希望单体部署、运维简单；业务增长后能按域拆成微服务。同时要支撑多租户、多角色、多端和敏感数据保护。</p></article>
+            </div>
+          </section>
+
+          <section class="cs-sec" id="architecture">
+            <h2 class="cs-h"><span class="mono">04</span>方案与架构</h2>
+            <p class="cs-intro">下图基于源码梳理，只展示高层设计，与首页「架构与实现」一致。</p>
+            <div class="cs-arch reveal">
+              <div class="arch-body">
+                <figure class="arch-fig">
+                  <div class="arch-canvas scroller"><svg class="dg" viewBox="0 0 1080 440" role="img" aria-labelledby="dpay-t dpay-d" xmlns="http://www.w3.org/2000/svg"><title id="dpay-t">信付通（pay-hub）系统架构示意</title><desc id="dpay-d">接入端经 Gateway 进入业务域；payment 幂等落库后经 channel 路由与版本化 Adapter 调用上游持牌机构，回调验签归一后由 payment 收敛状态；支付成功经 Outbox 与 RocketMQ 进入 account 复式记账与日终对账。</desc><defs><linearGradient id="dpay-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><marker id="dpay-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-arrow" d="M1 1 L9 5 L1 9 z"/></marker></defs><text class="dg-k" x="16" y="30">CLIENTS · 接入端</text><rect class="dg-box" x="16" y="46" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="70" font-size="14">Web 三端</text><text class="dg-s" x="30" y="88">运营 · 商户 · 代理</text><rect class="dg-box" x="16" y="116" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="140" font-size="14">移动四端</text><text class="dg-s" x="30" y="158">uni-app x</text><rect class="dg-box" x="16" y="186" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="210" font-size="14">开放 API</text><text class="dg-s" x="30" y="228">商户 / 代理应用</text><rect class="dg-box" x="16" y="256" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="280" font-size="14">官网 · 文档站</text><text class="dg-s" x="30" y="298">Vue 3 + Vite</text><text class="dg-k" x="206" y="30">EDGE · 网关</text><rect class="dg-box" x="206" y="46" width="148" height="268" rx="10"/><text class="dg-t" x="220" y="70" font-size="14">Gateway</text><text class="dg-s" x="220" y="88">按资源域转发</text><rect class="dg-pill" x="220" y="112" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="129" text-anchor="middle">/admin-api</text><rect class="dg-pill" x="220" y="148" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="165" text-anchor="middle">/app-api</text><rect class="dg-pill" x="220" y="184" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="201" text-anchor="middle">/merchant-api</text><rect class="dg-pill" x="220" y="220" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="237" text-anchor="middle">/agent-api</text><rect class="dg-pill" x="220" y="256" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="273" text-anchor="middle">/open-api</text><path class="dg-line" d="M172 75 L204 75" marker-end="url(#dpay-a)"/><path class="dg-line" d="M172 145 L204 145" marker-end="url(#dpay-a)"/><path class="dg-line" d="M172 215 L204 215" marker-end="url(#dpay-a)"/><path class="dg-line" d="M172 285 L204 285" marker-end="url(#dpay-a)"/><rect class="dg-frame" x="392" y="14" width="414" height="328" rx="16"/><text class="dg-k" x="408" y="36">DOMAINS · 业务域（api / server 两层）</text><rect class="dg-box" x="410" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="424" y="70" font-size="14">merchant</text><text class="dg-s" x="424" y="88">商户 · 进件 · 路由绑定</text><rect class="dg-box" x="608" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="622" y="70" font-size="14">agent</text><text class="dg-s" x="622" y="88">代理层级 · 分润规则</text><rect class="dg-box dg-hi" x="410" y="140" width="180" height="112" rx="10" stroke="url(#dpay-g)"/><text class="dg-t" x="424" y="164" font-size="14">payment</text><text class="dg-s" x="424" y="182">聚合交易编排</text><circle class="dg-dot" cx="428" cy="202" r="2.2"/><text class="dg-b" x="437" y="206">先落库 · 幂等键</text><circle class="dg-dot" cx="428" cy="221" r="2.2"/><text class="dg-b" x="437" y="225">固定请求号调用</text><circle class="dg-dot" cx="428" cy="240" r="2.2"/><text class="dg-b" x="437" y="244">单入口收敛状态</text><rect class="dg-box dg-hi" x="608" y="140" width="180" height="112" rx="10" stroke="url(#dpay-g)"/><text class="dg-t" x="622" y="164" font-size="14">channel</text><text class="dg-s" x="622" y="182">机构接入与路由</text><circle class="dg-dot" cx="626" cy="202" r="2.2"/><text class="dg-b" x="635" y="206">路由组策略选通道</text><circle class="dg-dot" cx="626" cy="221" r="2.2"/><text class="dg-b" x="635" y="225">版本化 Adapter</text><circle class="dg-dot" cx="626" cy="240" r="2.2"/><text class="dg-b" x="635" y="244">回调验签 · 结果归一</text><rect class="dg-box" x="410" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="424" y="300" font-size="13">account</text><text class="dg-s" x="424" y="318">复式记账 · 日终对账</text><rect class="dg-box" x="608" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="622" y="300" font-size="13">integration · assistant</text><text class="dg-s" x="622" y="318">OCR · 云音响 · 智能客服</text><path class="dg-line" d="M354 196 L408 196" marker-end="url(#dpay-a)"/><path class="dg-flow" d="M354 196 L408 196" stroke="url(#dpay-g)" pathLength="100"/><text class="dg-lbl" x="381.0" y="189" text-anchor="middle">请求</text><path class="dg-line" d="M500 104 L500 138" marker-end="url(#dpay-a)"/><text class="dg-lbl" x="508" y="126" text-anchor="start">路由绑定 / 报价</text><path class="dg-line" d="M590 176 L606 176" marker-end="url(#dpay-a)"/><path class="dg-line dg-dash" d="M606 214 L592 214" marker-end="url(#dpay-a)"/><path class="dg-line" d="M500 252 L500 274" marker-end="url(#dpay-a)"/><text class="dg-lbl" x="508" y="268">Outbox → RocketMQ</text><text class="dg-k" x="846" y="30">UPSTREAM · 上游</text><rect class="dg-box" x="846" y="140" width="218" height="112" rx="10"/><text class="dg-t" x="860" y="164" font-size="14">持牌支付机构 / 银行</text><text class="dg-s" x="860" y="182">资金由机构直接结算</text><circle class="dg-dot" cx="864" cy="202" r="2.2"/><text class="dg-b" x="873" y="206">支付 · 查单 · 关单</text><circle class="dg-dot" cx="864" cy="221" r="2.2"/><text class="dg-b" x="873" y="225">退款 · 结算</text><path class="dg-line" d="M788 176 L844 176" marker-end="url(#dpay-a)"/><path class="dg-flow" d="M788 176 L844 176" stroke="url(#dpay-g)" pathLength="100"/><text class="dg-lbl" x="816.0" y="169" text-anchor="middle">PAY / 查单</text><path class="dg-line dg-dash" d="M844 214 L790 214" marker-end="url(#dpay-a)"/><text class="dg-lbl" x="817" y="232" text-anchor="middle">异步回调</text><text class="dg-cap" x="846" y="290">单体 hub-server ⇄ 微服务</text><text class="dg-cap" x="846" y="310">同一套源码两种部署拓扑</text><text class="dg-k" x="16" y="380">INFRA</text><rect class="dg-pill" x="74" y="362" width="175.0" height="26" rx="13"/><text class="dg-p" x="161.5" y="379" text-anchor="middle">MySQL · biz_month 月表</text><rect class="dg-pill" x="259.0" y="362" width="60.5" height="26" rx="13"/><text class="dg-p" x="289.25" y="379" text-anchor="middle">Redis</text><rect class="dg-pill" x="329.5" y="362" width="60.5" height="26" rx="13"/><text class="dg-p" x="359.75" y="379" text-anchor="middle">Nacos</text><rect class="dg-pill" x="400.0" y="362" width="81.2" height="26" rx="13"/><text class="dg-p" x="440.6" y="379" text-anchor="middle">RocketMQ</text><rect class="dg-pill" x="491.2" y="362" width="144.60000000000002" height="26" rx="13"/><text class="dg-p" x="563.5" y="379" text-anchor="middle">XXL-Job · 状态恢复</text><rect class="dg-pill" x="645.8" y="362" width="158.3" height="26" rx="13"/><text class="dg-p" x="724.9499999999999" y="379" text-anchor="middle">多租户 · 字段加密脱敏</text><rect class="dg-pill" x="814.0999999999999" y="362" width="164.0" height="26" rx="13"/><text class="dg-p" x="896.0999999999999" y="379" text-anchor="middle">Spring Cloud Alibaba</text></svg></div>
+                  <p class="swipe-hint arch-hint mono" aria-hidden="true">← 左右滑动查看完整架构图 →</p>
+                </figure>
+                <ul class="arch-list"><li class="arch-item"><span class="arch-k mono">01 · 先落库再调用</span><p>调用支付机构前，先在本地事务里落库幂等键、订单、路由决策和状态恢复任务；结果未知时只查单、不重发。</p></li><li class="arch-item"><span class="arch-k mono">02 · 路由与适配</span><p>在商户路由组内按优先级或最低预计成本选择通道；机构协议固化在版本化 Adapter 中，回调统一验签、归一。</p></li><li class="arch-item"><span class="arch-k mono">03 · 复式记账</span><p>支付成功经 Outbox + RocketMQ 进入账务域，按业务身份幂等记账；分录只追加、余额不透支，每日做内部对账。</p></li><li class="arch-item"><span class="arch-k mono">04 · 月表与双拓扑</span><p>高频交易、回调和流水按月分表；同一套源码既能单体运行，也能拆成 Gateway + 各业务域微服务。</p></li></ul>
+              </div>
+            </div>
+            <div class="prose">
+              <h3>支付链路：先落库，再调用；结果未知只查不重发</h3>
+              <p>调用支付机构之前，先在一个本地事务里落库幂等键、支付订单、路由决策、本次执行尝试和状态恢复任务；只有真正创建了这些记录的请求，才在事务提交后发起外部调用，外部调用本身不放进数据库事务。</p>
+              <p>同一次尝试始终复用同一个机构请求号。一旦请求可能已经发出，超时、断连都按“待确认”处理：只能用原请求号查单或关单，不换号、不改路由、不新建替代交易。由数据库里的状态恢复任务承担“必须完成”的义务，消息队列只负责尽快唤醒，不作为事实来源。</p>
+              <h3>通道路由与版本化适配</h3>
+              <p>商户绑定路由组，在组内按优先级或最低预计成本选择通道。每家机构的协议细节——请求身份格式、签名、字段映射、回调解析——都收在版本化 Adapter 里；机构请求身份在首次外呼前固化，重试、查单、回调定位和对账都复用它。回调统一验签、归一成平台语义后，进入同一个状态收敛入口，用行锁加条件更新保证状态只按合法方向前进。</p>
+              <h3>账务：Outbox + RocketMQ，复式记账，日终对账</h3>
+              <p>支付成功在提交业务状态的同一本地事务里写入 Outbox，提交后经 RocketMQ 投递给账务域。账务按“业务身份 + 请求摘要”做全局幂等：同一事实重复到达返回原结果；同一身份却带着不同内容，判为冲突并告警，而不是悄悄覆盖。</p>
+              <p>记账采用复式分录，分录只追加、不修改；同一事务内按固定顺序加行锁，避免死锁；余额不允许透支。纠错走“原过账精确冲销”这类受控流程，形成新的、可审计的记录。每天以自然日的逻辑零点为截点做内部对账，任务晚跑几分钟也不影响结果。</p>
+              <h3>跨域一致性：本地事务 + 显式契约，不上分布式事务</h3>
+              <p>各业务域只在自己的本地事务里修改自己的数据。跨域协作按业务语义分级：必须先批准或锁定的用同步前置命令；来源事实已成立、目标随后必须处理的，用持久化投递 + 目标域幂等保证最终收敛；可以容忍少量丢失的非关键通知（比如播报）才用尽力而为的调用。网络超时一律视为“结果未知”，重试有退避、有超期告警、有人工处置入口。</p>
+              <h3>数据与部署</h3>
+              <p>高频交易、回调和流水按月分表，避免单表无限增长；多租户隔离，敏感字段按明文 / 加密 / 脱敏 / 哈希分级处理。同一套源码既能以单体运行（适合起步期），也能拆成 Gateway + 各业务域微服务，部署拓扑的变化不改变业务一致性规则。</p>
+            </div>
+          </section>
+
+          <section class="cs-sec" id="stack">
+            <h2 class="cs-h"><span class="mono">05</span>技术栈</h2>
+            <dl class="stack-groups">
+              <div class="stack-row"><dt>后端</dt><dd class="tags"><span class="tag-strong">Java 25</span><span class="tag-strong">Spring Boot 4</span><span>Spring Cloud Alibaba</span><span>Spring Cloud Gateway</span><span>MyBatis-Plus</span><span>OpenAPI 文档</span></dd></div>
+              <div class="stack-row"><dt>数据与中间件</dt><dd class="tags"><span>MySQL · 按月分表</span><span>Redis / Redisson</span><span class="tag-strong">RocketMQ</span><span>Nacos</span><span>XXL-Job</span></dd></div>
+              <div class="stack-row"><dt>前端与多端</dt><dd class="tags"><span class="tag-strong">Vue 3 Monorepo</span><span>TypeScript</span><span>Vite</span><span>uni-app x 移动四端</span><span>官网 · 开放 API 文档站</span></dd></div>
+              <div class="stack-row"><dt>工程实践</dt><dd class="tags"><span>ADR / spec 驱动</span><span>Claude Code · Codex 共用仓库规则</span><span>Git worktree 并行开发</span><span>lefthook 提交门禁</span><span>演示数据与业务旅程验证</span></dd></div>
+            </dl>
+          </section>
+
+          <section class="cs-sec" id="results">
+            <h2 class="cs-h"><span class="mono">06</span>结果</h2>
+            <div class="result-list">
+              <div class="result"><i class="fa-solid fa-globe" aria-hidden="true"></i><div><b>官网已上线，可以直接打开</b><p>行业方案、定制开发、资金与安全、开发者等内容已对外：<a href="https://ciftopay.com/" target="_blank" rel="noopener">ciftopay.com</a>。</p></div></div>
+              <div class="result"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i><div><b>一套源码，两种部署拓扑</b><p>同一代码库可单体运行，也可拆为 Gateway + 业务域微服务；起步期运维简单，扩展时不用重写。</p></div></div>
+              <div class="result"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i><div><b>资金链路的规则写成了“可执行的约定”</b><p>幂等、状态收敛、记账、对账、跨域一致性等关键规则以近百份架构决策记录沉淀，新成员和 AI 编程代理按同一套约束工作。</p></div></div>
+              <div class="result"><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i><div><b>多角色、多端覆盖</b><p>运营 / 商户 / 代理三端 Web、uni-app x 移动四端、开放 API 与文档站，共用同一套后端能力。</p></div></div>
+            </div>
+            <p class="note-honest"><i class="fa-solid fa-circle-info" aria-hidden="true"></i>平台的交易规模、商户数等经营数据属于公司信息，这里不展开；面谈时可以在不涉及保密信息的前提下具体聊。</p>
+          </section>
+
+          <section class="cs-sec" id="screens">
+            <h2 class="cs-h"><span class="mono">07</span>截图</h2>
+            <div class="shots">
+              <figure class="shot">
+                <span class="browser">
+                  <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-lock"></i> ciftopay.com</span><span class="browser-go">↗</span></span>
+                  <img src="/assets/ciftopay.jpg" width="1200" height="1500" loading="lazy" decoding="async" alt="信付通 行业方案与服务对象页面截图" style="aspect-ratio:16/12;object-position:center top">
+                </span>
+                <figcaption><b>桌面端</b> · 行业方案与服务对象</figcaption>
+              </figure>
+              <figure class="shot shot-phone">
+                <span class="phone"><img src="/assets/work/cif-m.webp" width="390" height="844" loading="lazy" decoding="async" alt="信付通 官网移动端首页截图"></span>
+                <figcaption style="text-align:center"><b>移动端</b> · 官网首页</figcaption>
+              </figure>
+            </div>
+          </section>
+
+      <section class="cta-band reveal" aria-label="联系我">
+        <div>
+          <h2 class="cta-title">有类似的系统要做，或者在找远程的架构 / 全栈？</h2>
+          <p class="cta-text">先约 30 分钟免费聊聊：你的背景、目标和时间线。我会如实告诉你我能不能做、怎么做、大概要多久。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+        </div>
+      </section>
+
+          <nav class="pager" aria-label="更多案例">
+            <a href="/#work"><small>← 返回</small><b>首页 · 代表作品</b></a>
+            <a class="is-next" href="/work/ecommica/"><small>下一个案例 →</small><b>Ecommica · 多语言优惠券平台</b></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=202610290100" defer></script>
+</body>
+</html>

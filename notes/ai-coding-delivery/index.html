@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>用 AI 编程（Claude Code / SDD / TDD）做交付的实践 · 史晓河的技术笔记</title>
+  <meta name="description" content="让 AI 写代码不难，难的是让它写出能上线、能维护的代码。规格先行、决策成文、测试先红后绿、验证门禁兜底：我用 Claude Code 等 AI 编程代理做真实项目交付的方法。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/notes/ai-coding-delivery/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="用 AI 编程（Claude Code / SDD / TDD）做交付的实践">
+  <meta property="og:description" content="让 AI 写代码不难，难的是让它写出能上线、能维护的代码。规格先行、决策成文、测试先红后绿、验证门禁兜底：我用 Claude Code 等 AI 编程代理做真实项目交付的方法。">
+  <meta property="og:url" content="https://riverhub.top/notes/ai-coding-delivery/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="用 AI 编程（Claude Code / SDD / TDD）做交付的实践">
+  <meta name="twitter:description" content="让 AI 写代码不难，难的是让它写出能上线、能维护的代码。规格先行、决策成文、测试先红后绿、验证门禁兜底：我用 Claude Code 等 AI 编程代理做真实项目交付的方法。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "用 AI 编程（Claude Code / SDD / TDD）做交付的实践", "description": "让 AI 写代码不难，难的是让它写出能上线、能维护的代码。规格先行、决策成文、测试先红后绿、验证门禁兜底：我用 Claude Code 等 AI 编程代理做真实项目交付的方法。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/ai-coding-delivery/", "image": "https://riverhub.top/assets/og.jpg", "mainEntityOfPage": "https://riverhub.top/notes/ai-coding-delivery/", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css?v=202610290100">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#cases" class="nav-link">其他项目</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link" aria-current="page">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top" class="anchor-top" aria-hidden="true"></span>
+    <section class="page-hero">
+      <div class="container">
+        <div class="article">
+          <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">笔记</a><span class="sep">/</span><span aria-current="page">AI 工程化</span></nav>
+          <h1 class="page-title">用 AI 编程（Claude Code / SDD / TDD）做交付的实践</h1>
+          <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 10 分钟</span><span class="dot"></span><span class="note-tag">AI 工程化</span></div>
+          <nav class="article-toc" aria-label="文章目录"><b>CONTENTS</b><ol><li><a href="#s1">我怎么分工：人定义问题，AI 写代码</a></li><li><a href="#s2">规格先行（SDD）</a></li><li><a href="#s3">把决策写成规则</a></li><li><a href="#s4">测试先红后绿（TDD）</a></li><li><a href="#s5">验证门禁：不靠自觉</a></li><li><a href="#s6">并行：一个任务一个工作区</a></li><li><a href="#s7">AI 常犯的错，和我的应对</a></li><li><a href="#s8">几点建议</a></li></ol></nav>
+        </div>
+      </div>
+    </section>
+    <div class="container article-wrap">
+      <article class="article">
+        <div class="prose">
+          <p>这两年我在真实项目里大量使用 Claude Code 这类 AI 编程代理，包括支付平台这种对正确性要求很高的系统。体会是：<strong>让 AI 写出代码很容易，让它写出能上线、能长期维护的代码，需要一整套工程方法托底。</strong>这篇记录我目前的做法。</p>
+
+          <h2 id="s1">我怎么分工：人定义问题，AI 写代码</h2>
+          <p>我给自己的定位是“定义问题、制定规则、验收结果”，大部分具体编码交给 AI 代理：</p>
+          <ul>
+            <li><strong>我负责</strong>：拆解需求、划定范围、写清验收标准；做架构决策；审查关键路径的改动；最终决定能不能合并。</li>
+            <li><strong>AI 负责</strong>：按规格实现功能、补测试、修复验证中发现的问题、更新相关文档。</li>
+          </ul>
+          <p>这个分工的前提是：AI 拿到的上下文必须足够清楚。所以下面几节其实都在回答同一个问题——<strong>怎么把“清楚”变成仓库里的东西</strong>，而不是停留在聊天记录里。</p>
+
+          <h2 id="s2">规格先行（SDD）</h2>
+          <p>SDD（Spec-Driven Development，规格驱动开发）的核心是：<strong>先写规格，再写代码</strong>。每个功能开工前，我会在仓库里写一份 Markdown 规格，至少包含：</p>
+          <ul>
+            <li>背景和目标：为什么做，解决谁的什么问题；</li>
+            <li>范围，以及<strong>明确不做什么</strong>——这一条对 AI 尤其重要，否则它很容易“顺手”改一堆不相关的东西；</li>
+            <li>业务规则和边界情况：比如金额精度、并发、重复请求怎么处理；</li>
+            <li>验收标准：可以直接翻译成测试用例的描述。</li>
+          </ul>
+          <p>规格和工单都以文件的形式放在仓库里，跟代码一起评审、一起版本化。AI 开工时先读规格，交付时对照验收标准自查。半年后有人问“这里为什么这么做”，答案也在仓库里。</p>
+
+          <h2 id="s3">把决策写成规则</h2>
+          <p>规格解决“这个功能做什么”，但还有一类知识是跨功能的：分层怎么划、跨域怎么保证一致、幂等怎么做、哪些写法禁止使用。这类知识我用两种方式沉淀：</p>
+          <ul>
+            <li><strong>架构决策记录（ADR）</strong>：每个重要决策一份短文档，写清背景、可选方案、最终选择和代价。在支付平台项目里，这样的记录积累到了近百份。</li>
+            <li><strong>仓库级的代理规则文件</strong>：把最重要的约束、目录约定、常用命令和验证方式写成一份给 AI 读的说明。我同时使用多个 AI 编程工具，它们共用同一份规则，不用为每个工具各维护一套。</li>
+          </ul>
+          <p>效果很直接：以前要在每次对话里反复强调的事，现在 AI 开工前自己就读到了；新加入的同事也是读同一套文档上手的。</p>
+
+          <h2 id="s4">测试先红后绿（TDD）</h2>
+          <p>AI 写代码很快，但“看起来对”和“真的对”之间的差距，只能靠测试来量。我的要求是：</p>
+          <ol>
+            <li>先根据验收标准写测试，跑一遍，确认它<strong>因为正确的原因失败</strong>（红）；</li>
+            <li>再写最少的实现让测试通过（绿）；</li>
+            <li>最后在测试保护下重构。</li>
+          </ol>
+          <p>“先看到红”这一步不能省。AI 有时会写出永远通过的测试，或者为了让测试通过去改测试本身。先红后绿能把这类问题挡在外面。</p>
+          <p>对资金相关的代码，我会特别要求覆盖这几类场景：重复请求、并发冲突、外部调用超时、金额边界和精度、状态不能倒退。这些恰恰是 AI 最容易忽略、出了问题代价最大的地方。</p>
+
+          <h2 id="s5">验证门禁：不靠自觉</h2>
+          <p>规则写得再好，如果没有自动检查，迟早会被绕过——不管是人还是 AI。所以我会把验证做成门禁：</p>
+          <ul>
+            <li>用 Git 钩子在提交前跑格式化、静态检查和相关测试，不通过就提交不了；</li>
+            <li>给每类改动定义“完成”的标准：编译、测试、构建都通过，才算这个任务结束；</li>
+            <li>准备演示数据和端到端的业务旅程验证，从用户视角确认主要流程能走通，而不只是单元测试是绿的。</li>
+          </ul>
+          <p>门禁的意义在于：AI 交付的东西，不需要我逐行信任，而是由机器先过一遍硬标准，我把注意力集中在设计和业务逻辑上。</p>
+
+          <h2 id="s6">并行：一个任务一个工作区</h2>
+          <p>AI 代理的一个优势是可以并行。我会用 Git worktree 给每个任务开一个独立的工作目录和分支，几个代理同时推进互不相关的任务，彼此不会踩到对方的改动。每个任务完成、通过门禁后，再单独评审合并。</p>
+          <p>并行的前提是任务拆得足够独立、边界清楚，这又回到了规格先行。</p>
+
+          <h2 id="s7">AI 常犯的错，和我的应对</h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>常见问题</th><th>表现</th><th>应对</th></tr></thead>
+            <tbody>
+              <tr><td>范围蔓延</td><td>顺手重构、改了不相关的文件</td><td>规格写明“不做什么”；评审时先看改动范围</td></tr>
+              <tr><td>绕过约束</td><td>为了跑通，跳过校验或吞掉异常</td><td>规则文件明确禁止；门禁检查；关键路径人工审查</td></tr>
+              <tr><td>虚构接口</td><td>调用不存在的方法或配置项</td><td>编译和测试门禁；要求先读现有代码再动手</td></tr>
+              <tr><td>测试放水</td><td>断言太弱，或改测试迁就实现</td><td>先红后绿；测试和实现分开评审</td></tr>
+              <tr><td>上下文遗忘</td><td>长任务后期忘了前面的约定</td><td>任务拆小；约定写进规格和规则文件，而不是只在对话里说</td></tr>
+            </tbody>
+          </table></div>
+
+          <h2 id="s8">几点建议</h2>
+          <ul>
+            <li><strong>先把工程基础打好再上 AI</strong>：没有测试和规范的项目，AI 只会更快地制造混乱。</li>
+            <li><strong>让知识进仓库</strong>：规格、决策、规则都写成文件，人和 AI 读同一份。</li>
+            <li><strong>验证自动化</strong>：能让机器检查的，就不要靠人盯。</li>
+            <li><strong>关键路径人来把关</strong>：资金、权限、数据一致性相关的改动，我一定自己看。</li>
+          </ul>
+          <p>如果你的团队想把 AI 编程引入正式交付流程，或者想找一位能用这套方法交付项目的人，<a href="/#contact">欢迎联系我</a>。</p>
+
+        </div>
+        <aside class="author-box">
+          <img src="/assets/avatar.jpg" width="56" height="56" alt="史晓河头像" loading="lazy">
+          <div>
+            <b>史晓河</b>
+            <p>技术架构师，13 年一线研发与架构经验，长期做支付收单与清结算。开放远程工作与项目合作，<a href="/#contact">欢迎联系</a>。</p>
+          </div>
+        </aside>
+
+        <nav class="pager" aria-label="更多笔记">
+          <a class="" href="/notes/payment-reconciliation-idempotency/"><small>← 上一篇</small><b>聚合支付清结算的对账与幂等设计</b></a>
+          <a class="is-next" href="/notes/"><small>全部笔记 →</small><b>技术笔记</b></a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=202610290100" defer></script>
+</body>
+</html>
