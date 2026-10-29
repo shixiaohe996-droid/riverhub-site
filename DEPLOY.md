@@ -1,21 +1,27 @@
 # 部署说明
 
-线上站点 https://riverhub.top （含 www）由 **Cloudflare Worker `riverhub`** 通过 Workers Static Assets 直接托管本仓库的静态文件。没有构建步骤，也**不会**在 push 到 GitHub 后自动部署。
+线上站点 https://riverhub.top （含 www）由 **Cloudflare Worker `riverhub`** 通过 Workers Static Assets 托管本仓库的静态文件，没有构建步骤。
 
-## 重新部署
+## 自动部署（GitHub Actions）
 
-1. 更新 `main` 分支（生产分支）。
-2. 为要上线的文件生成清单 `{"/路径": {hash, size}}`，调用
-   `POST /accounts/{account_id}/workers/scripts/riverhub/assets-upload-session`。
-3. 把返回 `buckets` 中列出的文件，用会话 JWT 以 base64 multipart 上传到
-   `POST /accounts/{account_id}/workers/assets/upload?base64=true`，最后一批会返回完成 JWT。
-4. `PUT /accounts/{account_id}/workers/scripts/riverhub`，在 metadata 里带上
-   `assets.jwt`、`assets.config = { html_handling: "auto-trailing-slash", not_found_handling: "404-page" }`
-   以及一个只转发 `env.ASSETS.fetch(request)` 的最小 Worker。
+- 每次 push 到 `main`（生产分支），`.github/workflows/deploy.yml` 会运行 `wrangler deploy`；也可以在 Actions 页手动 **Run workflow**。
+- 配置在 `wrangler.toml`：仓库根目录作为静态资源目录，`html_handling = auto-trailing-slash`，`not_found_handling = 404-page`；`riverhub.top` 与 `www.riverhub.top` 以 `custom_domain = true` 声明，部署不会解绑域名。
+- `.assetsignore` 排除了 `README.md`、`DEPLOY.md`、`wrangler.toml`、`.github`、`.git` 等，线上只发布 `index.html`、`main.js`、`site.css` 与 `assets/`。
+- 同一时间只跑一个部署（concurrency 组 `cloudflare-deploy-production`）。
+- 需要两个仓库 Secret：`CLOUDFLARE_ACCOUNT_ID`（已设置）和 `CLOUDFLARE_API_TOKEN`（需本人创建，见下）。
 
-等价的命令行方式：`npx wrangler deploy --name riverhub --assets . --compatibility-date 2026-10-01`（需要 Cloudflare 登录）。
+## 一次性设置：创建 API Token
 
-## 域名
+1. 打开 Cloudflare 控制台 **My Profile → API Tokens**（https://dash.cloudflare.com/profile/api-tokens），点 **Create Token**。
+2. 在模板列表里找到 **Edit Cloudflare Workers**，点 **Use template**。
+3. **Account Resources**：Include → 选择本账号（Shixiaohe996@gmail.com's Account）。
+   **Zone Resources**：Include → Specific zone → `riverhub.top`。
+4. **Continue to summary → Create Token**，复制生成的 Token（只显示一次）。
+5. 打开 GitHub 仓库 **Settings → Secrets and variables → Actions**（https://github.com/shixiaohe996-droid/riverhub-site/settings/secrets/actions），点 **New repository secret**，Name 填 `CLOUDFLARE_API_TOKEN`，Secret 粘贴 Token，**Add secret**。
+6. 到 **Actions → Deploy to Cloudflare Workers**，重新运行失败的那次（Re-run jobs），或点 **Run workflow**。
 
-`riverhub.top` 与 `www.riverhub.top` 是该 Worker 的 Custom Domains（证书由 Cloudflare 自动签发）。
-区域内其他子域（ai、bid、invest、novel、payhub、study 及通配 `*`）不经过此 Worker。
+## 本地手动部署（可选）
+
+```bash
+npx wrangler@4 deploy   # 需要 Node.js 22+，并已 wrangler login 或设置 CLOUDFLARE_API_TOKEN
+```

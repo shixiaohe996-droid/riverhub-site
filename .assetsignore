@@ -1,0 +1,13 @@
+# 不对外发布的仓库文件
+.git
+.github
+.gitignore
+.assetsignore
+.wrangler
+node_modules
+wrangler.toml
+wrangler.json
+wrangler.jsonc
+README.md
+DEPLOY.md
+*.md

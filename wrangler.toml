@@ -1,0 +1,15 @@
+# Cloudflare Worker：riverhub.top 静态站点（Workers Static Assets，无构建步骤）
+name = "riverhub"
+compatibility_date = "2026-10-28"
+workers_dev = false
+
+# 已绑定的自定义域名；写在配置里，部署时不会被解绑
+routes = [
+  { pattern = "riverhub.top", custom_domain = true },
+  { pattern = "www.riverhub.top", custom_domain = true },
+]
+
+[assets]
+directory = "."
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
