@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>用 AI 编程（Claude Code / SDD / TDD）做交付的实践 · 史晓河的技术笔记</title>
-  <meta name="description" content="让 AI 写代码不难，难的是让它写出能上线、能维护的代码。规格先行、决策成文、测试先红后绿、验证门禁兜底：我用 Claude Code 等 AI 编程代理做真实项目交付的方法。">
+  <title>用 AI 编码代理交付支付系统：契约、门禁、验证与评审 · 史晓河的技术笔记</title>
+  <meta name="description" content="信付通大部分代码由 Codex 与 Claude Code 编写。一份仓库内的 AGENTS.md 契约、写给 AI 的业务不变量、Markdown 票据、轻量门禁、预先确定的验证集合和两轴评审。">
   <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
   <link rel="canonical" href="https://riverhub.top/notes/ai-coding-delivery/">
@@ -13,20 +13,20 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="史晓河">
   <meta property="og:locale" content="zh_CN">
-  <meta property="og:title" content="用 AI 编程（Claude Code / SDD / TDD）做交付的实践">
-  <meta property="og:description" content="让 AI 写代码不难，难的是让它写出能上线、能维护的代码。规格先行、决策成文、测试先红后绿、验证门禁兜底：我用 Claude Code 等 AI 编程代理做真实项目交付的方法。">
+  <meta property="og:title" content="用 AI 编码代理交付支付系统：契约、门禁、验证与评审">
+  <meta property="og:description" content="信付通大部分代码由 Codex 与 Claude Code 编写。一份仓库内的 AGENTS.md 契约、写给 AI 的业务不变量、Markdown 票据、轻量门禁、预先确定的验证集合和两轴评审。">
   <meta property="og:url" content="https://riverhub.top/notes/ai-coding-delivery/">
   <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="用 AI 编程（Claude Code / SDD / TDD）做交付的实践">
-  <meta name="twitter:description" content="让 AI 写代码不难，难的是让它写出能上线、能维护的代码。规格先行、决策成文、测试先红后绿、验证门禁兜底：我用 Claude Code 等 AI 编程代理做真实项目交付的方法。">
+  <meta name="twitter:title" content="用 AI 编码代理交付支付系统：契约、门禁、验证与评审">
+  <meta name="twitter:description" content="信付通大部分代码由 Codex 与 Claude Code 编写。一份仓库内的 AGENTS.md 契约、写给 AI 的业务不变量、Markdown 票据、轻量门禁、预先确定的验证集合和两轴评审。">
   <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
   <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "用 AI 编程（Claude Code / SDD / TDD）做交付的实践", "description": "让 AI 写代码不难，难的是让它写出能上线、能维护的代码。规格先行、决策成文、测试先红后绿、验证门禁兜底：我用 Claude Code 等 AI 编程代理做真实项目交付的方法。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/ai-coding-delivery/", "image": "https://riverhub.top/assets/og.jpg", "mainEntityOfPage": "https://riverhub.top/notes/ai-coding-delivery/", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  {"@context": "https://schema.org", "@type": "Article", "headline": "用 AI 编码代理交付支付系统：契约、门禁、验证与评审", "description": "信付通大部分代码由 Codex 与 Claude Code 编写。一份仓库内的 AGENTS.md 契约、写给 AI 的业务不变量、Markdown 票据、轻量门禁、预先确定的验证集合和两轴评审。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/ai-coding-delivery/", "image": "https://riverhub.top/assets/og.jpg", "mainEntityOfPage": "https://riverhub.top/notes/ai-coding-delivery/", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}, "publisher": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
   </script>
   <script>
     (function () {
@@ -39,7 +39,7 @@
   </script>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/site.css?v=202610290107">
+  <link rel="stylesheet" href="/site.css?v=202610290300">
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -84,86 +84,113 @@
       <div class="container">
         <div class="article">
           <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">笔记</a><span class="sep">/</span><span aria-current="page">AI 工程化</span></nav>
-          <h1 class="page-title">用 AI 编程（Claude Code / SDD / TDD）做交付的实践</h1>
-          <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 10 分钟</span><span class="dot"></span><span class="note-tag">AI 工程化</span></div>
-          <nav class="article-toc" aria-label="文章目录"><b>CONTENTS</b><ol><li><a href="#s1">我怎么分工：人定义问题，AI 写代码</a></li><li><a href="#s2">规格先行（SDD）</a></li><li><a href="#s3">把决策写成规则</a></li><li><a href="#s4">测试先红后绿（TDD）</a></li><li><a href="#s5">验证门禁：不靠自觉</a></li><li><a href="#s6">并行：一个任务一个工作区</a></li><li><a href="#s7">AI 常犯的错，和我的应对</a></li><li><a href="#s8">几点建议</a></li></ol></nav>
+          <h1 class="page-title">用 AI 编码代理交付支付系统：契约、门禁、验证与评审</h1>
+          <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 9 分钟</span><span class="dot"></span><span class="note-tag">AI 工程化</span></div>
+          <nav class="article-toc" aria-label="文章目录"><b>CONTENTS</b><ol><li><a href="#s1">前提：AI 写的代码，最后都是我负责</a></li><li><a href="#s2">一份契约，两个代理</a></li><li><a href="#s3">把业务不变量写给 AI 看</a></li><li><a href="#s4">需求、决策和票据都在仓库里</a></li><li><a href="#s5">门禁：只做轻量、确定性的检查</a></li><li><a href="#s6">验证：先定要证明什么</a></li><li><a href="#s7">回归矩阵：不许写占位步骤</a></li><li><a href="#s8">评审：Standards 与 Spec 两轴</a></li><li><a href="#s9">踩过的坑</a></li><li><a href="#s10">取舍与如果重来</a></li><li><a href="#s11">小结</a></li></ol></nav>
         </div>
       </div>
     </section>
     <div class="container article-wrap">
       <article class="article">
         <div class="prose">
-          <p>这两年我在真实项目里大量使用 Claude Code 这类 AI 编程代理，包括支付平台这种对正确性要求很高的系统。体会是：<strong>让 AI 写出代码很容易，让它写出能上线、能长期维护的代码，需要一整套工程方法托底。</strong>这篇记录我目前的做法。</p>
+          <p>信付通（CiftoPay）这个聚合支付平台，绝大部分代码是 AI 编码代理写的，主力是 Codex，Claude Code 也在用。我不觉得这值得炫耀——<strong>让 AI 写出代码很容易，让它写出我敢签字上线的支付代码，需要一整套放在仓库里的约束托底</strong>。这篇不谈提示词技巧，只讲这套约束本身：契约怎么写、需求和决策放在哪、门禁和验证怎么设计、评审看什么，以及几个真实踩过的坑。</p>
 
-          <h2 id="s1">我怎么分工：人定义问题，AI 写代码</h2>
-          <p>我给自己的定位是“定义问题、制定规则、验收结果”，大部分具体编码交给 AI 代理：</p>
+          <div class="keypoints"><b>TL;DR</b><ul>
+            <li>一份放在仓库里的 <code>AGENTS.md</code> 契约，两个代理共用；每条约定只有一个准源，目录规则补充根规则。</li>
+            <li>最有价值的不是编码风格，而是<strong>业务不变量</strong>和<strong>工作边界</strong>：哪些事 AI 不能自己决定。</li>
+            <li>需求、决策、票据、验收全是仓库里的 Markdown；提交门禁只做轻量、确定性的检查。</li>
+            <li>动手之前先定“要证明什么”；交接时把本地测试、Sandbox、机构验收、生产验证分开说。</li>
+          </ul></div>
+
+          <h2 id="s1">前提：AI 写的代码，最后都是我负责</h2>
+          <p>支付系统的错误代价不对称：一个幂等漏洞可能在半年后的某个凌晨重复扣款。AI 代理的典型失败恰好集中在这里——它会写出能编译、能过测试、看起来很合理的代码，但在<strong>边界条件、并发和“不该做的事”</strong>上没有判断力。它不知道“通道超时不等于失败”，不知道“这张表不能直接改”，也不知道“共享的数据库不能随手清”。</p>
+          <p>所以我的分工很简单：<strong>我定义问题、不变量和验收标准，AI 在这个框里实现，然后由门禁、测试和评审证明它没越界</strong>。下面的所有东西，都是在把“框”写成机器和代理都能读的形式。</p>
+          <figure class="fig"><div class="fig-scroll"><svg viewBox="0 0 760 340" role="img" aria-labelledby="ai-t" xmlns="http://www.w3.org/2000/svg"><title id="ai-t">AI 编码交付闭环</title><defs><marker id="ai-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow" d="M0,0 L10,5 L0,10 z"/></marker><marker id="ai-ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow-acc" d="M0,0 L10,5 L0,10 z"/></marker></defs><rect class="d-box" x="14" y="40" width="124" height="64" rx="10"/><text class="d-t" x="76.0" y="68.0" text-anchor="middle">需求 / 决策</text><text class="d-s" x="76.0" y="84.0" text-anchor="middle">request · grill-notes</text><rect class="d-box" x="166" y="40" width="124" height="64" rx="10"/><text class="d-t" x="228.0" y="68.0" text-anchor="middle">规格与票据</text><text class="d-s" x="228.0" y="84.0" text-anchor="middle">spec · issues · 验收</text><rect class="d-acc" x="318" y="40" width="124" height="64" rx="10"/><text class="d-t" x="380.0" y="68.0" text-anchor="middle">实施</text><text class="d-s" x="380.0" y="84.0" text-anchor="middle">最近目录规则</text><rect class="d-box" x="470" y="40" width="124" height="64" rx="10"/><text class="d-t" x="532.0" y="68.0" text-anchor="middle">验证</text><text class="d-s" x="532.0" y="84.0" text-anchor="middle">Testing Decisions</text><rect class="d-box" x="622" y="40" width="124" height="64" rx="10"/><text class="d-t" x="684.0" y="68.0" text-anchor="middle">评审与交付</text><text class="d-s" x="684.0" y="84.0" text-anchor="middle">Standards / Spec</text><path class="d-line" d="M138,72 L164,72" marker-end="url(#ai-m)"/><path class="d-line" d="M290,72 L316,72" marker-end="url(#ai-m)"/><path class="d-line" d="M442,72 L468,72" marker-end="url(#ai-m)"/><path class="d-line" d="M594,72 L620,72" marker-end="url(#ai-m)"/><rect class="d-zone" x="14" y="140" width="732" height="186" rx="14"/><text class="d-m" x="26" y="158">托底：仓库里的契约与门禁</text><rect class="d-acc" x="30" y="172" width="168" height="62" rx="10"/><text class="d-t" x="114.0" y="191.0" text-anchor="middle">AGENTS.md</text><text class="d-s" x="114.0" y="207.0" text-anchor="middle">根：跨域契约</text><text class="d-s" x="114.0" y="223.0" text-anchor="middle">目录：单域细则</text><rect class="d-box" x="214" y="172" width="168" height="62" rx="10"/><text class="d-t" x="298.0" y="191.0" text-anchor="middle">领域语言与决策</text><text class="d-s" x="298.0" y="207.0" text-anchor="middle">CONTEXT.md</text><text class="d-s" x="298.0" y="223.0" text-anchor="middle">架构决策记录</text><rect class="d-box" x="398" y="172" width="168" height="62" rx="10"/><text class="d-t" x="482.0" y="191.0" text-anchor="middle">pre-commit</text><text class="d-s" x="482.0" y="207.0" text-anchor="middle">规则文档同步</text><text class="d-s" x="482.0" y="223.0" text-anchor="middle">票据状态与验收</text><rect class="d-box" x="582" y="172" width="148" height="62" rx="10"/><text class="d-t" x="656.0" y="191.0" text-anchor="middle">CI</text><text class="d-s" x="656.0" y="207.0" text-anchor="middle">按改动范围选检查</text><text class="d-s" x="656.0" y="223.0" text-anchor="middle">读 HEAD 范围</text><rect class="d-box" x="30" y="250" width="352" height="56" rx="10"/><text class="d-t" x="206.0" y="282.0" text-anchor="middle">测试：单元 / 契约测试 / 业务旅程 / 双拓扑冒烟</text><rect class="d-box" x="398" y="250" width="332" height="56" rx="10"/><text class="d-t" x="564.0" y="282.0" text-anchor="middle">交接：改动 · 命令与结果 · 未完成项 · 残余风险</text><path class="d-line-acc" d="M380,104 L380,138" marker-end="url(#ai-ma)"/></svg></div><figcaption><b>FIG 1</b>上面一行是一个特性的交付流程；下面是托底的仓库内约束：根和目录级 AGENTS.md、领域语言与架构决策、提交前门禁、CI，以及分层测试和规范化交接。</figcaption></figure>
+
+
+          <h2 id="s2">一份契约，两个代理</h2>
+          <p>项目根目录的 <code>AGENTS.md</code> 是 Codex 和 Claude Code 共用的工作契约，进入子目录时要求代理主动读取最近的目录规则（后端、Web、移动端、SQL、脚本、文档各有一份），而不是依赖工具自动注入。几条核心原则：</p>
           <ul>
-            <li><strong>我负责</strong>：拆解需求、划定范围、写清验收标准；做架构决策；审查关键路径的改动；最终决定能不能合并。</li>
-            <li><strong>AI 负责</strong>：按规格实现功能、补测试、修复验证中发现的问题、更新相关文档。</li>
+            <li><strong>一条约定只有一个准源。</strong>跨域契约在根文件，单域细则在最近的目录规则，交付状态在票据里。变更时改指针，不复制整段规则——复制出来的规则一定会漂移。</li>
+            <li><strong>用户确认过的约定必须写进仓库</strong>，不能只留在某个工具的私有记忆里。换一个工具、换一台机器，它就没了。</li>
+            <li><strong>个人风格不进项目文件。</strong>项目文件只记录项目约束和入口，避免把一个人的偏好变成所有人的规则。</li>
+            <li><strong>通用方法和项目事实分开。</strong>研究、规格、拆票、TDD、评审这些通用方法用上游原版的技能包；项目只写一份“本地接口”文档，说明这些方法在本仓库里对应哪个目录、哪个字段。我曾经尝试按项目定制一份通用技能，后来整体撤销了——定制版和上游一旦分叉，就再也说不清哪个版本是对的。</li>
           </ul>
-          <p>这个分工的前提是：AI 拿到的上下文必须足够清楚。所以下面几节其实都在回答同一个问题——<strong>怎么把“清楚”变成仓库里的东西</strong>，而不是停留在聊天记录里。</p>
+          <p>契约里同样重要的是<strong>工作边界</strong>，这部分几乎全是“不许做”：</p>
+          <figure class="code"><figcaption><span>AGENTS.md（节选，改写）</span><span>示意 · 已脱敏改写</span></figcaption><pre><code>## 工作边界
+- 先看 git 状态；接续工作核对已暂存和未暂存的差异，保留已有改动，只推进当前授权任务。
+- worktree 只隔离代码；数据库、缓存、端口、执行器仍是共享的，写共享环境的验证串行执行。
+- 不自动清库、清缓存、改凭据，不按 worktree 重建基础设施。
+- 只读分析不生成实施产物、不改规则。
+- 扩大业务范围、真实机构副作用、破坏性操作、未授权的发布：另行确认。
+- 先搜索现有实现和平台能力，再决定新增；只改任务必要的文件。</code></pre></figure>
 
-          <h2 id="s2">规格先行（SDD）</h2>
-          <p>SDD（Spec-Driven Development，规格驱动开发）的核心是：<strong>先写规格，再写代码</strong>。每个功能开工前，我会在仓库里写一份 Markdown 规格，至少包含：</p>
+          <p>这些规则每一条背后都是一个具体的风险：多个代理并行时共享数据库被同时写，一个代理“为了让测试通过”清掉了另一个任务的数据，只读调研顺手改了规则文件。写下来之后，这些事就从“希望它别做”变成了“做了就是违约”，评审时可以直接指出。</p>
+
+          <h2 id="s3">把业务不变量写给 AI 看</h2>
+          <p>契约里我最看重的一节是“业务不变量”。这些都是代码里很难自然表达、但违反一次就是事故的规则，例如：</p>
           <ul>
-            <li>背景和目标：为什么做，解决谁的什么问题；</li>
-            <li>范围，以及<strong>明确不做什么</strong>——这一条对 AI 尤其重要，否则它很容易“顺手”改一堆不相关的东西；</li>
-            <li>业务规则和边界情况：比如金额精度、并发、重复请求怎么处理；</li>
-            <li>验收标准：可以直接翻译成测试用例的描述。</li>
+            <li>业务边界：哪些业务<strong>不在</strong>这个系统里（比如聚合支付不包含转账），相关域不得为它们加产品、接口或记账场景。</li>
+            <li>敏感字段统一使用明文 / 密文 / 掩码 / 哈希四种后缀，前端和外部 API 不提交、不展示、也不感知哈希字段。</li>
+            <li>平台业务编号一律走共享的编号入口（见<a href="/notes/payment-reconciliation-idempotency/">对账与幂等</a>）。</li>
+            <li>跨域写和外部副作用只用本地事务，并在设计和验证里写明这次适用哪种一致性契约（见<a href="/notes/rocketmq-outbox-payment/">RocketMQ 与 Outbox</a>）。</li>
+            <li>设计开发阶段直接演进，<strong>不交付旧设计的兼容、降级或迁移层</strong>；分步重构可以短暂共存，但合入前必须切完调用方、删掉旧实现。</li>
+            <li><strong>金额、权限、状态流转、幂等和恢复路径的验证，不因为改动文件少而省略。</strong></li>
           </ul>
-          <p>规格和工单都以文件的形式放在仓库里，跟代码一起评审、一起版本化。AI 开工时先读规格，交付时对照验收标准自查。半年后有人问“这里为什么这么做”，答案也在仓库里。</p>
+          <p>倒数第二条是专门针对 AI 的。代理天然倾向于保守：保留旧路径、加个开关、写个降级分支，看起来很稳妥，实际上会让系统里同时存在两套行为，而且旧的那套没人测。最后一条也是：AI（和人一样）会按改动大小估计风险，“只改了一行”就想跳过回归。在支付系统里，一行改的可能恰好是金额的取整方向。</p>
+          <p>领域语言单独放在一份一千多行的 <code>CONTEXT.md</code> 里：订单、支付尝试、通道回执、过账、有效底价……每个词的精确含义和不该混用的近义词。代理读了它，生成的类名、字段名和日志才会和业务讨论用的是同一套词。</p>
 
-          <h2 id="s3">把决策写成规则</h2>
-          <p>规格解决“这个功能做什么”，但还有一类知识是跨功能的：分层怎么划、跨域怎么保证一致、幂等怎么做、哪些写法禁止使用。这类知识我用两种方式沉淀：</p>
+          <h2 id="s4">需求、决策和票据都在仓库里</h2>
+          <p>项目不用外部的需求管理工具，也不以 PR 作为需求入口，所有东西都是 <code>docs/features/&lt;特性&gt;/</code> 下的 Markdown：</p>
+          <div class="table-wrap"><table><thead><tr><th>产物</th><th>文件</th><th>作用</th></tr></thead><tbody><tr><td>原始需求或缺陷</td><td>request.md</td><td>尚未形成方案时可以单独存在，不为过门禁伪造规格</td></tr><tr><td>实施规格</td><td>spec.md</td><td>范围、设计、Testing Decisions</td></tr><tr><td>实施票</td><td>issues/NN-slug.md</td><td>一票一文件；Status、Blocked by、Branch、Owner 是独立的纯文本行</td></tr><tr><td>讨论与决策</td><td>grill-notes.md、decisions/</td><td>把“为什么这么选”和否决的方案写下来</td></tr><tr><td>验收</td><td>票内“验收”一节</td><td>门禁会检查；完成后在 Comments 记录验证命令、结果和限制</td></tr></tbody></table></div>
+
+          <p>目前仓库里有 103 个特性目录、522 张实施票、96 篇架构决策记录、27 份决策讨论记录。数量本身不重要，重要的是两个性质：<strong>代理可以直接读到“为什么”</strong>，所以它不会推翻一个已经被否决过的方案；<strong>状态是可检查的纯文本</strong>，所以门禁能判断“这次提交声称完成的票，验收清单是不是真的写了”。</p>
+          <p>Grill-notes 是我最喜欢的形式：每条决策写成“问题 → 选择 → 理由 → 不做什么”。<a href="/notes/rocketmq-outbox-payment/">RocketMQ 那篇</a>里“不用事务消息”“不用顺序消息”“不建通用重放服务”，都来自同一份记录。代理在后续实现时会遇到同样的诱惑，这份记录让它（和以后的我）不必重新讨论一遍。</p>
+
+          <h2 id="s5">门禁：只做轻量、确定性的检查</h2>
+          <figure class="code"><figcaption><span>lefthook.yml（改写）</span><span>示意 · 已脱敏改写</span></figcaption><pre><code># 提交前只执行轻量、确定性的规则和工作记录检查
+pre-commit:
+  jobs:
+    - name: project-rules        # 规则文档的入口、指针、相对链接是否有效
+      run: bash script/check-doc-sync.sh --staged
+    - name: feature-status       # 本次涉及的票：状态、分支绑定、验收清单
+      run: bash script/check-feature-status.sh</code></pre></figure>
+
+          <p>提交前门禁只有两项，都是秒级、确定性的：规则文档的指针和链接有没有断，本次实施的票据状态和验收清单格式对不对。编译、测试、业务旅程不放在提交钩子里，而是由 CI 按改动范围选择（后端、Web、移动端、官网、SQL 各自有范围判断，选择逻辑本身也有测试）。</p>
+          <p>原因很现实：慢的、偶尔失败的钩子一定会被绕过，无论是人还是代理。门禁的价值在于它<strong>永远会被执行</strong>。另一个细节是门禁只读暂存快照（本地）或 HEAD 范围（CI），不看工作区里没暂存的东西，避免“我本地是好的”这类结论。</p>
+          <p>门禁也有自己的测试。规则文档同步、票据状态、CI 范围选择各有一个自测脚本，覆盖坏指针、删除文件、暂存与工作区不一致、独立票、取消的依赖等场景。门禁错判比没有门禁更糟，因为大家会学会无视它。</p>
+
+          <h2 id="s6">验证：先定要证明什么</h2>
+          <p>契约要求：<strong>动手之前先确定本次需要证明的行为和完整的验证集合</strong>，用规格时记在 Testing Decisions 里。开发循环里可以跑更小的检查，收口时必须完成定好的整套验证；只有新改动、失败或未解决的问题才扩大或重复检查。</p>
+          <p>这条规则解决的是 AI 代理的两个极端：要么改一点跑一遍全量，浪费几十分钟；要么只跑了刚写的那个测试就宣布完成。预先写下的验证集合是一个可以被检查的承诺。</p>
+          <p>测试分了几层：后端约 600 个测试类，其中 34 个是跨模块的契约测试（例如 Outbox 字典与代码枚举的双向一致性）；按业务旅程组织的端到端验证；以及单体和微服务两种部署拓扑各一份冒烟脚本，因为同一份代码在两种拓扑下的事务边界和调用路径不同。</p>
+          <p>修 bug 有一条硬规定：<strong>先复现失败，再修复，再用回归测试证明</strong>。AI 很擅长“修好”一个它没有真正复现的问题——改了某处，测试变绿了，但变绿的原因可能和 bug 无关。</p>
+          <p>交接的格式也是固定的：改动、执行过的命令和结果、未完成项、残余风险。并且<strong>本地测试、Sandbox、机构验收和生产验证必须分开表述</strong>。“测试通过”不等于“能收款”，这句话我在评审里说过很多遍，后来干脆写进了契约。</p>
+
+          <h2 id="s7">回归矩阵：不许写占位步骤</h2>
+          <p>业务旅程有一张回归矩阵，每条旅程标注状态：<strong>可执行</strong>（有真实页面或公共 API，有依赖和自动检查证明业务闭环）、<strong>部分可执行</strong>（必须写明缺哪一环）、<strong>未具备条件</strong>（只有表或底层代码，不许写占位步骤）。</p>
+          <p>“不许写占位步骤”是这张表最重要的一句话。AI 非常乐意为一个还不存在的功能写出一份完整、漂亮的测试计划，读起来就像已经验证过一样。矩阵的备注列也遵循同样的诚实原则：大量条目写着“不代表真实机构”“不含生产验收”“只到某个环节为止”。一张诚实的“未完成”清单，比一份虚高的完成度报告有用得多。</p>
+
+          <h2 id="s8">评审：Standards 与 Spec 两轴</h2>
+          <p>代码评审分两个轴独立看：<strong>Standards</strong>——是否符合项目规则和工程标准；<strong>Spec</strong>——是否实现了规格和票据要求的行为，有没有多做或少做。分开看是因为两类问题的发现方式不同：前者看代码，后者要对照需求逐条核对，混在一起很容易只做了前者。</p>
+          <p>评审的输入也有规定：固定点取当前分支相对主干的分叉点；先确认差异非空、方向正确；已提交的差异之外，还要提供暂存、未暂存和本次新增文件的全文。“空 diff 不代表工作区已审阅”——这是一个真实踩过的坑：代理对着一个空的已提交差异评审，得出“没有问题”。</p>
+
+          <h2 id="s9">踩过的坑</h2>
           <ul>
-            <li><strong>架构决策记录（ADR）</strong>：每个重要决策一份短文档，写清背景、可选方案、最终选择和代价。在支付平台项目里，这样的记录积累到了近百份。</li>
-            <li><strong>仓库级的代理规则文件</strong>：把最重要的约束、目录约定、常用命令和验证方式写成一份给 AI 读的说明。我同时使用多个 AI 编程工具，它们共用同一份规则，不用为每个工具各维护一套。</li>
+            <li><strong>辅助工具的存储失控。</strong>代码关系图谱是一个可选的导航工具（当前图里约 9.8 万个节点、32 万条边），它默认每次刷新都留一份日期备份，目录一度涨到约 11.8 GiB，清理后是 277 MiB。现在禁用了日期备份，图谱也明确<strong>不作为提交门禁</strong>，刷新放在后台、不适用时自动跳过。辅助工具不能变成交付的依赖。</li>
+            <li><strong>先实现、再合并、再删除。</strong>记账和分润最初各有一个 MQ 订阅方，后来合并成由 Outbox 投递器有序直调（见<a href="/notes/rocketmq-outbox-payment/">RocketMQ 那篇</a>），旧订阅方因为没有任何引用被删除，并补了字典和枚举的双向契约测试。代理很少主动删除东西，“不交付兼容层”和“合入前删掉旧实现”这两条规则，正是让删除真的发生的原因。</li>
+            <li><strong>方法之间的冲突。</strong>不同来源的方法技能并非处处一致，例如“原型阶段不写测试”和“非平凡逻辑必须有可运行检查”会冲突。我的选择是不改上游、不加全局覆盖层，在具体任务里按当次请求和项目约束判断，并把这个已知冲突写在评审记录里。</li>
+            <li><strong>验证的“证明范围”被夸大。</strong>一次规则体系整理的验证记录里，我们特意写明：独立推演“验证的是规则路由，不是实际业务开发、共享数据库并发或模型长期稳定性的运行证明”。不写这句，读者（包括以后的代理）就会把它当成更强的证据。</li>
           </ul>
-          <p>效果很直接：以前要在每次对话里反复强调的事，现在 AI 开工前自己就读到了；新加入的同事也是读同一套文档上手的。</p>
 
-          <h2 id="s4">测试先红后绿（TDD）</h2>
-          <p>AI 写代码很快，但“看起来对”和“真的对”之间的差距，只能靠测试来量。我的要求是：</p>
-          <ol>
-            <li>先根据验收标准写测试，跑一遍，确认它<strong>因为正确的原因失败</strong>（红）；</li>
-            <li>再写最少的实现让测试通过（绿）；</li>
-            <li>最后在测试保护下重构。</li>
-          </ol>
-          <p>“先看到红”这一步不能省。AI 有时会写出永远通过的测试，或者为了让测试通过去改测试本身。先红后绿能把这类问题挡在外面。</p>
-          <p>对资金相关的代码，我会特别要求覆盖这几类场景：重复请求、并发冲突、外部调用超时、金额边界和精度、状态不能倒退。这些恰恰是 AI 最容易忽略、出了问题代价最大的地方。</p>
+          <h2 id="s10">取舍与如果重来</h2>
+          <div class="table-wrap"><table><thead><tr><th>选择</th><th>得到</th><th>付出</th></tr></thead><tbody><tr><td>仓库内 Markdown 管理需求和票据</td><td>代理可直接读写，状态可被门禁检查</td><td>没有看板视图；跨特性的全局进度要自己汇总</td></tr><tr><td>提交门禁只做轻量检查</td><td>永远会被执行，不被绕过</td><td>重检查都推给 CI，本地发现问题更晚</td></tr><tr><td>通用方法用上游原版</td><td>不分叉、可升级</td><td>和项目约束偶有冲突，需要按任务判断</td></tr><tr><td>不交付兼容层</td><td>系统里只有一套行为</td><td>每次重构都必须一次切完调用方</td></tr></tbody></table></div>
 
-          <h2 id="s5">验证门禁：不靠自觉</h2>
-          <p>规则写得再好，如果没有自动检查，迟早会被绕过——不管是人还是 AI。所以我会把验证做成门禁：</p>
-          <ul>
-            <li>用 Git 钩子在提交前跑格式化、静态检查和相关测试，不通过就提交不了；</li>
-            <li>给每类改动定义“完成”的标准：编译、测试、构建都通过，才算这个任务结束；</li>
-            <li>准备演示数据和端到端的业务旅程验证，从用户视角确认主要流程能走通，而不只是单元测试是绿的。</li>
-          </ul>
-          <p>门禁的意义在于：AI 交付的东西，不需要我逐行信任，而是由机器先过一遍硬标准，我把注意力集中在设计和业务逻辑上。</p>
+          <p>如果重来，我会更早做两件事。第一，<strong>从第一天就写业务不变量</strong>，而不是在评审里发现第三次同类问题之后才补。不变量越早写下，代理生成的代码越早“长”在正确的形状上。第二，<strong>更早引入业务旅程矩阵</strong>。单元测试证明的是零件，只有旅程能回答“商户能不能真的完成一次收款到入账”。</p>
 
-          <h2 id="s6">并行：一个任务一个工作区</h2>
-          <p>AI 代理的一个优势是可以并行。我会用 Git worktree 给每个任务开一个独立的工作目录和分支，几个代理同时推进互不相关的任务，彼此不会踩到对方的改动。每个任务完成、通过门禁后，再单独评审合并。</p>
-          <p>并行的前提是任务拆得足够独立、边界清楚，这又回到了规格先行。</p>
-
-          <h2 id="s7">AI 常犯的错，和我的应对</h2>
-          <div class="table-wrap"><table>
-            <thead><tr><th>常见问题</th><th>表现</th><th>应对</th></tr></thead>
-            <tbody>
-              <tr><td>范围蔓延</td><td>顺手重构、改了不相关的文件</td><td>规格写明“不做什么”；评审时先看改动范围</td></tr>
-              <tr><td>绕过约束</td><td>为了跑通，跳过校验或吞掉异常</td><td>规则文件明确禁止；门禁检查；关键路径人工审查</td></tr>
-              <tr><td>虚构接口</td><td>调用不存在的方法或配置项</td><td>编译和测试门禁；要求先读现有代码再动手</td></tr>
-              <tr><td>测试放水</td><td>断言太弱，或改测试迁就实现</td><td>先红后绿；测试和实现分开评审</td></tr>
-              <tr><td>上下文遗忘</td><td>长任务后期忘了前面的约定</td><td>任务拆小；约定写进规格和规则文件，而不是只在对话里说</td></tr>
-            </tbody>
-          </table></div>
-
-          <h2 id="s8">几点建议</h2>
-          <ul>
-            <li><strong>先把工程基础打好再上 AI</strong>：没有测试和规范的项目，AI 只会更快地制造混乱。</li>
-            <li><strong>让知识进仓库</strong>：规格、决策、规则都写成文件，人和 AI 读同一份。</li>
-            <li><strong>验证自动化</strong>：能让机器检查的，就不要靠人盯。</li>
-            <li><strong>关键路径人来把关</strong>：资金、权限、数据一致性相关的改动，我一定自己看。</li>
-          </ul>
-          <p>如果你的团队想把 AI 编程引入正式交付流程，或者想找一位能用这套方法交付项目的人，<a href="/#contact">欢迎联系我</a>。</p>
+          <h2 id="s11">小结</h2>
+          <p>用 AI 写支付系统，真正的工作量不在提示词，而在仓库里那些代理和人都必须遵守的东西：<strong>单一准源的契约、写清楚的业务不变量和工作边界、可被检查的需求与验收、轻量但永远执行的门禁、预先确定的验证集合、诚实的交接</strong>。它们不只约束 AI，也约束我自己——让“我觉得没问题”变成“这里是证据，这里是还没证明的部分”。</p>
+          <p class="note-src">本文基于我在信付通（CiftoPay）项目中的工程实践整理；文中数量统计来自仓库当前状态，代码与配置为改写示意。</p>
 
         </div>
         <aside class="author-box">
@@ -175,9 +202,20 @@
         </aside>
 
         <nav class="pager" aria-label="更多笔记">
-          <a class="" href="/notes/payment-reconciliation-idempotency/"><small>← 上一篇</small><b>聚合支付清结算的对账与幂等设计</b></a>
+          <a class="" href="/notes/ecommica-nextjs-seo-tracking/"><small>← 上一篇</small><b>Ecommica：Next.js 多语言 SEO 与点击归因的工程细节</b></a>
           <a class="is-next" href="/notes/"><small>全部笔记 →</small><b>技术笔记</b></a>
         </nav>
+      <section class="cta-band reveal" aria-label="联系我">
+        <div>
+          <h2 class="cta-title">想聊聊文中的问题，或者有类似的系统要做？</h2>
+          <p class="cta-text">先约 30 分钟免费聊聊：你的背景、目标和时间线。我会如实告诉你我能不能做、怎么做、大概要多久。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+        </div>
+      </section>
       </article>
     </div>
   </main>
@@ -202,7 +240,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="/main.js?v=202610290107" defer></script>
+  <script src="/main.js?v=202610290300" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>

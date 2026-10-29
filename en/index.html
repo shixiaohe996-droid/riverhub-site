@@ -42,7 +42,7 @@
   </script>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/site.css?v=202610290107">
+  <link rel="stylesheet" href="/site.css?v=202610290300">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -278,16 +278,22 @@
           <p class="section-desc">Technical notes, currently in Chinese</p>
         </header>
         <div class="notes-grid">
-          <a class="card note-card reveal" href="/notes/payment-reconciliation-idempotency/" hreflang="zh-CN">
+          <a class="card note-card reveal" href="/notes/payment-order-state-machine/" hreflang="zh-CN">
             <span class="note-meta"><span class="note-tag">Payments</span><span>中文</span></span>
-            <h3 class="note-title">Reconciliation &amp; idempotency in aggregated payment settlement</h3>
-            <p class="note-excerpt">A timeout is not a failure, and a duplicate callback is not a duplicate posting: persist-before-call, stable request IDs, ledger idempotency, double-entry rules and daily reconciliation cut-offs.</p>
+            <h3 class="note-title">Payment order state machine &amp; channel callbacks</h3>
+            <p class="note-excerpt">Two-layer order/attempt states, persist-before-call execution, leased channel receipts, and how callbacks, queries and timeouts converge on one result under a row lock.</p>
             <span class="note-more">Read (Chinese) <span class="arrow" aria-hidden="true">→</span></span>
           </a>
-          <a class="card note-card reveal" href="/notes/ai-coding-delivery/" hreflang="zh-CN">
-            <span class="note-meta"><span class="note-tag">AI engineering</span><span>中文</span></span>
-            <h3 class="note-title">Shipping real software with AI coding agents (Claude Code / SDD / TDD)</h3>
-            <p class="note-excerpt">Specs first, decisions written down, tests red before green, and automated gates — how I make AI-written code production-ready.</p>
+          <a class="card note-card reveal" href="/notes/ledger-agent-profit-model/" hreflang="zh-CN">
+            <span class="note-meta"><span class="note-tag">Ledger</span><span>中文</span></span>
+            <h3 class="note-title">Ledger &amp; agent profit-sharing model</h3>
+            <p class="note-excerpt">Append-only double-entry postings, per-level margin over effective floor prices, and cumulative proportional reversal on refunds to avoid rounding drift.</p>
+            <span class="note-more">Read (Chinese) <span class="arrow" aria-hidden="true">→</span></span>
+          </a>
+          <a class="card note-card reveal" href="/notes/ecommica-nextjs-seo-tracking/" hreflang="zh-CN">
+            <span class="note-meta"><span class="note-tag">SEO · Attribution</span><span>中文</span></span>
+            <h3 class="note-title">Next.js multilingual SEO &amp; click attribution</h3>
+            <p class="note-excerpt">next-intl routing, canonical and hreflang, sitemap and ISR pitfalls, and how a click flows through redirect and postback into an attributed conversion.</p>
             <span class="note-more">Read (Chinese) <span class="arrow" aria-hidden="true">→</span></span>
           </a>
         </div>
@@ -345,7 +351,7 @@
   </footer>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="/main.js?v=202610290107" defer></script>
+  <script src="/main.js?v=202610290300" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>

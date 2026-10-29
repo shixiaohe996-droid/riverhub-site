@@ -44,7 +44,7 @@
   </script>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./site.css?v=202610290107">
+  <link rel="stylesheet" href="./site.css?v=202610290300">
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -613,16 +613,22 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
           <p class="section-desc">把做项目时想清楚的事写下来，也方便你判断我怎么思考问题</p>
         </header>
         <div class="notes-grid">
-          <a class="card note-card reveal" href="/notes/payment-reconciliation-idempotency/">
+          <a class="card note-card reveal" href="/notes/payment-order-state-machine/">
             <span class="note-meta"><span class="note-tag">支付 · 架构</span><time datetime="2026-10-29">2026-10-29</time></span>
-            <h3 class="note-title">聚合支付清结算的对账与幂等设计</h3>
-            <p class="note-excerpt">超时不等于失败，重复回调不等于重复入账。从“先落库再调用”、通道请求号、账务幂等，到复式记账和日终对账，讲讲我是怎么让钱和账对得上的。</p>
+            <h3 class="note-title">支付订单状态机与渠道回调：两层状态、三段执行与结果收敛</h3>
+            <p class="note-excerpt">超时不是失败，回调可能比同步响应先到。订单与支付尝试两层状态、三段执行、带租约的通道回执，以及多条结果来源如何在行锁下收敛成一个结果。</p>
             <span class="note-more">阅读全文 <span class="arrow" aria-hidden="true">→</span></span>
           </a>
-          <a class="card note-card reveal" href="/notes/ai-coding-delivery/">
-            <span class="note-meta"><span class="note-tag">AI 工程化</span><time datetime="2026-10-29">2026-10-29</time></span>
-            <h3 class="note-title">用 AI 编程（Claude Code / SDD / TDD）做交付的实践</h3>
-            <p class="note-excerpt">让 AI 写代码不难，难的是让它写出能上线、能维护的代码。我的做法：规格先行、决策成文、测试先红后绿、验证门禁兜底。</p>
+          <a class="card note-card reveal" href="/notes/ledger-agent-profit-model/">
+            <span class="note-meta"><span class="note-tag">支付 · 账务</span><time datetime="2026-10-29">2026-10-29</time></span>
+            <h3 class="note-title">分润与记账模型：复式分录、逐级价差与按比例冲回</h3>
+            <p class="note-excerpt">账本只追加、分录必平衡、事实有摘要。多级代理按有效底价逐级算价差，退款按累计比例冲回，避免每笔舍入把分润冲没或冲多。</p>
+            <span class="note-more">阅读全文 <span class="arrow" aria-hidden="true">→</span></span>
+          </a>
+          <a class="card note-card reveal" href="/notes/ecommica-nextjs-seo-tracking/">
+            <span class="note-meta"><span class="note-tag">前端 · SEO · 归因</span><time datetime="2026-10-29">2026-10-29</time></span>
+            <h3 class="note-title">Ecommica：Next.js 多语言 SEO 与点击归因的工程细节</h3>
+            <p class="note-excerpt">canonical 被布局继承、站点地图悄悄截断、地区识别“安全但无声”地失效，以及一次点击如何经过跳转和回传，最终归因到一笔转化。</p>
             <span class="note-more">阅读全文 <span class="arrow" aria-hidden="true">→</span></span>
           </a>
         </div>
@@ -704,7 +710,7 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="./main.js?v=202610290107" defer></script>
+  <script src="./main.js?v=202610290300" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>

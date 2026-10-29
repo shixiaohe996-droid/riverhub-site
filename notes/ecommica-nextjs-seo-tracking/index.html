@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ecommica：Next.js 多语言 SEO 与点击归因的工程细节 · 史晓河的技术笔记</title>
+  <meta name="description" content="next-intl 双语路由、canonical 与 hreflang、站点地图与 ISR；以及优惠导购站的点击跳转、clickId、回传归因链路里那些容易出错的细节和取舍。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/notes/ecommica-nextjs-seo-tracking/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="Ecommica：Next.js 多语言 SEO 与点击归因的工程细节">
+  <meta property="og:description" content="next-intl 双语路由、canonical 与 hreflang、站点地图与 ISR；以及优惠导购站的点击跳转、clickId、回传归因链路里那些容易出错的细节和取舍。">
+  <meta property="og:url" content="https://riverhub.top/notes/ecommica-nextjs-seo-tracking/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ecommica：Next.js 多语言 SEO 与点击归因的工程细节">
+  <meta name="twitter:description" content="next-intl 双语路由、canonical 与 hreflang、站点地图与 ISR；以及优惠导购站的点击跳转、clickId、回传归因链路里那些容易出错的细节和取舍。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "Article", "headline": "Ecommica：Next.js 多语言 SEO 与点击归因的工程细节", "description": "next-intl 双语路由、canonical 与 hreflang、站点地图与 ISR；以及优惠导购站的点击跳转、clickId、回传归因链路里那些容易出错的细节和取舍。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/ecommica-nextjs-seo-tracking/", "image": "https://riverhub.top/assets/og.jpg", "mainEntityOfPage": "https://riverhub.top/notes/ecommica-nextjs-seo-tracking/", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}, "publisher": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css?v=202610290300">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#cases" class="nav-link">其他项目</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link" aria-current="page">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top" class="anchor-top" aria-hidden="true"></span>
+    <section class="page-hero">
+      <div class="container">
+        <div class="article">
+          <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">笔记</a><span class="sep">/</span><span aria-current="page">前端 · SEO · 归因</span></nav>
+          <h1 class="page-title">Ecommica：Next.js 多语言 SEO 与点击归因的工程细节</h1>
+          <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 8 分钟</span><span class="dot"></span><span class="note-tag">前端 · SEO · 归因</span></div>
+          <nav class="article-toc" aria-label="文章目录"><b>CONTENTS</b><ol><li><a href="#s1">背景：一个靠“被搜到”和“记得住点击”活着的站</a></li><li><a href="#s2">路由：哪些路径不该进 Next</a></li><li><a href="#s3">canonical 与 hreflang：别放在根 layout</a></li><li><a href="#s4">Sitemap：静默截断与假的 lastModified</a></li><li><a href="#s5">渲染策略：ISR 的时间窗</a></li><li><a href="#s6">地区识别：可信代理与“安全但无声”</a></li><li><a href="#s7">点击：服务端生成 clickId</a></li><li><a href="#s8">JS 200 跳转页</a></li><li><a href="#s9">Postback：去重、未归因队列与“永远 200”</a></li><li><a href="#s10">取舍</a></li><li><a href="#s11">如果重来</a></li><li><a href="#s12">小结</a></li></ol></nav>
+        </div>
+      </div>
+    </section>
+    <div class="container article-wrap">
+      <article class="article">
+        <div class="prose">
+          <p>Ecommica 是我从零做的一个优惠信息聚合站：前台是 Next.js（App Router + next-intl，英文和中文两种语言），后台和管理端是 Java。这类站点的收入来自联盟佣金，所以它的生死只取决于两件事：<strong>页面能不能被正确地搜到</strong>，以及<strong>用户点出去之后，那次点击能不能和最终的转化对上</strong>。这篇写这两条链路的实际实现、我在回看代码时发现的坑，以及要怎么改。站点域名、合作的联盟和商家都不在本文范围内。</p>
+
+          <div class="keypoints"><b>TL;DR</b><ul>
+            <li>跳转路径 <code>/go</code> 由 Nginx 直接转给后端，不经过 Next：少一跳，也不受中间件和缓存影响。</li>
+            <li>canonical 和 hreflang 必须每页自己声明；写在根 layout 里，没覆盖的子页面会把 canonical 继承成首页。</li>
+            <li>Sitemap 要警惕静默截断（分页上限）和“全部是现在”的 lastModified。</li>
+            <li>clickId 在服务端生成并随跳转带给联盟；Postback 按 clickId 直接归因，找不到的进未归因队列。</li>
+            <li>“永远返回 200”能防止联盟重试风暴，但处理异常时会丢转化——应该先落原始回调，再处理。</li>
+          </ul></div>
+
+          <h2 id="s1">背景：一个靠“被搜到”和“记得住点击”活着的站</h2>
+          <p>站点内容是商家、优惠活动、优惠码、分类和博客。流量绝大部分来自搜索引擎和投放；用户点“去购买”，经过我们的跳转链接到达商家或联盟的落地页；成交后，联盟通过服务器回调（Postback）告诉我们“某次点击产生了一笔佣金”。</p>
+          <figure class="fig"><div class="fig-scroll"><svg viewBox="0 0 760 360" role="img" aria-labelledby="ec-t" xmlns="http://www.w3.org/2000/svg"><title id="ec-t">Ecommica 页面与点击归因的请求路径</title><defs><marker id="ec-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow" d="M0,0 L10,5 L0,10 z"/></marker><marker id="ec-ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow-acc" d="M0,0 L10,5 L0,10 z"/></marker></defs><rect class="d-box" x="14" y="150" width="96" height="56" rx="10"/><text class="d-t" x="62.0" y="182.0" text-anchor="middle">用户浏览器</text><rect class="d-box" x="140" y="150" width="96" height="56" rx="10"/><text class="d-t" x="188.0" y="174.0" text-anchor="middle">CDN</text><text class="d-s" x="188.0" y="190.0" text-anchor="middle">边缘</text><rect class="d-box" x="266" y="150" width="96" height="56" rx="10"/><text class="d-t" x="314.0" y="174.0" text-anchor="middle">Nginx</text><text class="d-s" x="314.0" y="190.0" text-anchor="middle">按路径分流</text><path class="d-line" d="M110,178 L138,178" marker-end="url(#ec-m)"/><path class="d-line" d="M236,178 L264,178" marker-end="url(#ec-m)"/><rect class="d-zone" x="392" y="12" width="354" height="110" rx="14"/><text class="d-m" x="404" y="30">页面：Next.js（next-intl · ISR）</text><rect class="d-box" x="408" y="44" width="150" height="62" rx="10"/><text class="d-t" x="483.0" y="63.0" text-anchor="middle">/{locale}/…</text><text class="d-s" x="483.0" y="79.0" text-anchor="middle">canonical + hreflang</text><text class="d-s" x="483.0" y="95.0" text-anchor="middle">按页 revalidate</text><rect class="d-box" x="578" y="44" width="154" height="62" rx="10"/><text class="d-t" x="655.0" y="63.0" text-anchor="middle">sitemap / robots</text><text class="d-s" x="655.0" y="79.0" text-anchor="middle">ISR 10 分钟</text><text class="d-s" x="655.0" y="95.0" text-anchor="middle">en/zh alternates</text><path class="d-line" d="M362,166 L380,166 L380,75 L406,75" marker-end="url(#ec-m)"/><text class="d-m" x="376" y="120" text-anchor="end">页面路径</text><rect class="d-zone" x="392" y="134" width="354" height="214" rx="14"/><text class="d-m" x="404" y="152">归因：Java 后端（绕过 Next）</text><rect class="d-acc" x="408" y="166" width="150" height="62" rx="10"/><text class="d-t" x="483.0" y="185.0" text-anchor="middle">/go/{type}/{id}</text><text class="d-s" x="483.0" y="201.0" text-anchor="middle">记录点击</text><text class="d-s" x="483.0" y="217.0" text-anchor="middle">服务端生成 clickId</text><rect class="d-box" x="578" y="166" width="154" height="62" rx="10"/><text class="d-t" x="655.0" y="185.0" text-anchor="middle">目标链接</text><text class="d-s" x="655.0" y="201.0" text-anchor="middle">占位符替换或追加</text><text class="d-s" x="655.0" y="217.0" text-anchor="middle">302 / JS 200</text><path class="d-line-acc" d="M362,192 L406,192" marker-end="url(#ec-ma)"/><text class="d-a" x="384" y="186" text-anchor="middle">/go</text><path class="d-line-acc" d="M558,197 L576,197" marker-end="url(#ec-ma)"/><rect class="d-acc" x="408" y="262" width="150" height="66" rx="10"/><text class="d-t" x="483.0" y="283.0" text-anchor="middle">Postback 接收</text><text class="d-s" x="483.0" y="299.0" text-anchor="middle">签名 · 去重</text><text class="d-s" x="483.0" y="315.0" text-anchor="middle">按 clickId 直接归因</text><rect class="d-box" x="578" y="262" width="154" height="66" rx="10"/><text class="d-t" x="655.0" y="283.0" text-anchor="middle">转化 / 未归因队列</text><text class="d-s" x="655.0" y="299.0" text-anchor="middle">待审核</text><text class="d-s" x="655.0" y="315.0" text-anchor="middle">缺失原因 + 原始请求</text><path class="d-line-dash" d="M655,228 L655,244 L483,244 L483,260" marker-end="url(#ec-m)"/><text class="d-m" x="569" y="240" text-anchor="middle">联盟回调</text><path class="d-line" d="M558,295 L576,295" marker-end="url(#ec-m)"/></svg></div><figcaption><b>FIG 1</b>页面路径进 Next.js，按页声明 canonical 和 hreflang 并用 ISR 缓存；/go 和投放跳转由 Nginx 直接转给 Java 后端记录点击，再带着 clickId 跳到目标链接；联盟的 Postback 回到后端，按 clickId 归因，找不到点击的进入未归因队列。</figcaption></figure>
+
+
+          <h2 id="s2">路由：哪些路径不该进 Next</h2>
+          <p>多语言用 next-intl 的中间件实现，默认语言是英文。中间件的匹配规则排除了 <code>api</code>、<code>go</code>、Next 的内部路径和所有带扩展名的静态文件。这里有两个刻意的决定：</p>
+          <ul>
+            <li><strong>无语言前缀的路径重定向到默认语言</strong>，而不是返回 404。代码注释写得很清楚：否则像 <code>/categories</code> 这样的 URL 会落到带 noindex 的 404 页，而 hreflang 的 x-default 恰好指向无前缀 URL——等于告诉搜索引擎“默认版本”是一个不可索引的页面。</li>
+            <li><strong>跳转路径不进 Next。</strong><code>/go/…</code> 在 Nginx 层直接转给后端。跳转是纯粹的“记录 + 302”，没有任何渲染需求；绕过 Next 意味着少一跳延迟，不会被中间件加上语言前缀，不受 ISR 缓存影响，Next 进程重启时跳转也照常工作。对一个按点击计费的站来说，跳转的可用性比页面更重要。</li>
+          </ul>
+
+          <h2 id="s3">canonical 与 hreflang：别放在根 layout</h2>
+          <p>每个有内容的页面都在 <code>generateMetadata</code> 里声明自己的 canonical（带语言前缀的自身 URL）和 en/zh 两个语言版本。问题出在根 layout：它也声明了一份 alternates，canonical 指向站点根。</p>
+          <p>Next.js 的 metadata 是逐字段合并的：子页面没写 <code>alternates</code>，就会<strong>继承 layout 的那份</strong>。回看代码时我发现，关于、FAQ、联系、隐私政策这些页面只写了标题、描述和 OG，没写 alternates——于是它们的 canonical 全都指向首页。对搜索引擎来说，这等于说“这些页面是首页的重复”，它们可能永远不会被单独收录。这些页面本身流量不大，但同样的错误一旦出现在内容页上，就是灾难。</p>
+          <p>另一个不一致：layout 里英文版本指向无前缀的根 URL，而各页面里英文版本指向 <code>/en/…</code>。两个都“能用”，但同一个站里必须只有一种说法。修法是把它收敛成一个函数，所有页面只调用它，根 layout 不再声明 canonical：</p>
+          <figure class="code"><figcaption><span>seo/alternates.ts</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-k">const</span> <span class="tk-t">LOCALES</span> = [<span class="tk-s">'en'</span>, <span class="tk-s">'zh'</span>] as <span class="tk-k">const</span>;
+
+<span class="tk-k">export</span> <span class="tk-k">function</span> alternatesFor(locale: string, path: string) {
+  <span class="tk-k">const</span> url = (l: string) =&gt; <span class="tk-s">`${BASE_URL}/${l}${path}`</span>;
+  <span class="tk-k">return</span> {
+    canonical: url(locale),                                   <span class="tk-c">// 永远指向自身语言版本</span>
+    languages: {
+      ...<span class="tk-t">Object</span>.fromEntries(<span class="tk-t">LOCALES</span>.map(l =&gt; [l, url(l)])),
+      <span class="tk-s">'x-default'</span>: <span class="tk-s">`${BASE_URL}${path || '/'}`</span>,               <span class="tk-c">// 无前缀 → 中间件重定向到默认语言</span>
+    },
+  };
+}
+
+<span class="tk-c">// 页面里：return { title, description, alternates: alternatesFor(locale, `/stores/${slug}`) }</span></code></pre></figure>
+
+          <p>再加一个构建后的检查：遍历 sitemap 里的每个 URL，抓取页面，断言 canonical 等于自身、hreflang 成对出现。这种错误靠人眼 review 很难发现，靠一个几十行的脚本就能永久杜绝。</p>
+
+          <h2 id="s4">Sitemap：静默截断与假的 lastModified</h2>
+          <p>Sitemap 用 ISR，每 10 分钟重新生成一次：静态页面列表，加上从后端拉取的商家、优惠、博客和分类。每个条目都带 en/zh 的 alternates。这里有三个坑，都是“不报错、但结果是错的”：</p>
+          <ul>
+            <li><strong>静默截断。</strong>商家、优惠、文章各拉一页，每页 200 条。内容超过 200 条之后，多出来的部分就不在 sitemap 里了，而且没有任何报错。正确做法是分页拉全，或者超过阈值时拆成 sitemap index。</li>
+            <li><strong>降级会被缓存。</strong>拉取失败时只返回静态页面，这在构建时是合理的兜底（构建环境可能连不上后端）。但运行时如果后端短暂不可用，这份“只有静态页”的 sitemap 会被缓存 10 分钟，正好被爬虫抓到。至少要在降级时打告警，并考虑在运行时失败时返回 5xx，让爬虫下次再来，而不是给它一份残缺的答案。</li>
+            <li><strong>lastModified 全是“现在”。</strong>除了博客使用发布时间，其他条目的修改时间都是生成时刻。搜索引擎很快会学会忽略一个永远在变的信号。应该用实体真实的更新时间。</li>
+          </ul>
+
+          <h2 id="s5">渲染策略：ISR 的时间窗</h2>
+          <p>商家详情和优惠详情页用 ISR，5 分钟重新验证；博客详情改成动态渲染，缓存放在 API 请求层。选择 5 分钟的理由很直接：优惠信息需要比较新，但不需要实时；每次请求都打后端，在爬虫高峰时代价太高。</p>
+          <p>ISR 带来一个业务层面的取舍：一个优惠码在后台下架后，最多还会在前台展示 5 分钟。对优惠站来说这是可以接受的，但前提是跳转链路本身是实时的——用户点下去时，后端看到的是最新的目标，而不是页面缓存里的旧链接。这也是跳转必须走后端的另一个原因。</p>
+
+          <h2 id="s6">地区识别：可信代理与“安全但无声”</h2>
+          <p>同一个页面在不同国家展示不同的优惠。地区的优先级是：<strong>URL 参数 &gt; Cookie（30 天）&gt; IP 定位 &gt; 全球</strong>。IP 定位用本地的国家级 GeoIP 库，不依赖外部服务。</p>
+          <p>难点在“哪个 IP 才是用户的”。请求经过 CDN 和 Nginx，用户 IP 在请求头里，而请求头是任何人都能伪造的。前端的实现是保守的：</p>
+          <figure class="code"><figcaption><span>geo/client-ip.ts</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-k">export</span> <span class="tk-k">function</span> clientIp(h: <span class="tk-t">Headers</span>, peer?: string): string {
+  <span class="tk-k">const</span> fromTrusted = !!peer &amp;&amp; isTrustedProxy(peer);        <span class="tk-c">// 连接对端是不是我们的代理</span>
+  <span class="tk-k">const</span> edge = h.get(<span class="tk-s">'cf-connecting-ip'</span>);
+  <span class="tk-k">if</span> (edge) <span class="tk-k">return</span> fromTrusted ? edge.trim() : <span class="tk-s">''</span>;            <span class="tk-c">// 只有来自可信代理才认</span>
+
+  <span class="tk-k">const</span> xff = h.get(<span class="tk-s">'x-forwarded-for'</span>);
+  <span class="tk-k">if</span> (xff) {
+    <span class="tk-k">const</span> hops = xff.split(<span class="tk-s">','</span>).map(s =&gt; s.trim());
+    <span class="tk-k">for</span> (<span class="tk-k">let</span> i = hops.length - <span class="tk-n">1</span>; i &gt;= <span class="tk-n">0</span>; i--) {              <span class="tk-c">// 从右往左，跳过可信代理</span>
+      <span class="tk-k">if</span> (!isTrustedProxy(hops[i])) <span class="tk-k">return</span> hops[i];
+    }
+  }
+  <span class="tk-k">return</span> <span class="tk-s">''</span>;                                                  <span class="tk-c">// 识别不了就当未知，回退到全球</span>
+}</code></pre></figure>
+
+          <p>两个要点：<strong>X-Forwarded-For 要从右往左解析</strong>，因为最左边的值是客户端自己写的，最右边才是离你最近、你最能信任的那一跳；<strong>只有连接对端确实是可信代理时，才相信代理头</strong>。</p>
+          <p>这种保守实现有一个容易被忽略的失效模式：如果调用方拿不到或者忘了传连接对端地址，它会把所有代理头都拒绝，IP 定位<strong>静默地</strong>全部回退到“全球”。不会出错，不会有安全问题，页面照常渲染——只是地区化悄悄失效了。所以“识别失败”必须有计数指标，回退比例异常时告警。安全的默认值不等于不需要监控。</p>
+          <p>点击记录里的 IP 和国家用于反作弊和报表，所以后端取 IP 时也应遵循同样的规则。前后端最好共用同一份可信代理列表和解析规则，而不是各写一套。</p>
+
+          <h2 id="s7">点击：服务端生成 clickId</h2>
+          <p>用户点“去购买”时访问的是 <code>/go/{类型}/{ID}</code>，类型是商家、Offer、优惠或优惠码之一，可以带最多五个 sub 参数。后端的处理：</p>
+          <ol>
+            <li>按类型和 ID 找到目标实体，拿到目标链接和所属租户；目标不存在就报错，类型非法就回首页。</li>
+            <li>在目标所属的租户上下文里，<strong>由服务端生成 clickId</strong>（26 位随机串），连同目标、商家、国家、UA、Referer 和 sub 参数写入点击记录。</li>
+            <li>构造最终链接：目标链接里有占位符就替换，没有就把 clickId 作为 subid 参数追加；然后 302。</li>
+          </ol>
+          <figure class="code"><figcaption><span>ClickRedirect.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-t">String</span> finalUrl(<span class="tk-t">String</span> target, <span class="tk-t">String</span> clickId, <span class="tk-t">Map</span>&lt;<span class="tk-t">String</span>, <span class="tk-t">String</span>&gt; subs) {
+    <span class="tk-k">if</span> (target == <span class="tk-k">null</span>) <span class="tk-k">return</span> <span class="tk-t">FALLBACK</span>;
+    <span class="tk-k">if</span> (hasPlaceholder(target)) {
+        <span class="tk-t">String</span> url = target.replace(<span class="tk-s">"{click_id}"</span>, enc(clickId));
+        <span class="tk-k">for</span> (<span class="tk-k">var</span> e : subs.entrySet()) url = url.replace(<span class="tk-s">"{"</span> + e.getKey() + <span class="tk-s">"}"</span>, enc(e.getValue()));
+        <span class="tk-k">return</span> url;
+    }
+    <span class="tk-t">StringBuilder</span> q = <span class="tk-k">new</span> <span class="tk-t">StringBuilder</span>(<span class="tk-s">"subid="</span>).append(enc(clickId));
+    subs.forEach((k, v) -&gt; { <span class="tk-k">if</span> (!isBlank(v)) q.append(<span class="tk-s">'&amp;'</span>).append(k).append(<span class="tk-s">'='</span>).append(enc(v)); });
+    <span class="tk-k">return</span> target + (target.contains(<span class="tk-s">"?"</span>) ? <span class="tk-s">"&amp;"</span> : <span class="tk-s">"?"</span>) + q;
+}
+
+<span class="tk-k">static</span> <span class="tk-t">String</span> enc(<span class="tk-t">String</span> v) { <span class="tk-k">return</span> <span class="tk-t">URLEncoder</span>.encode(v == <span class="tk-k">null</span> ? <span class="tk-s">""</span> : v, UTF_8); }</code></pre></figure>
+
+          <p>为什么 clickId 一定要服务端生成：客户端生成的 ID 可以被伪造、被重放；广告拦截插件会屏蔽前端埋点；而服务端跳转不依赖 JavaScript，任何能跟随 302 的客户端都会被记录。clickId 由我们生成、由联盟原样带回，归因就不需要任何 Cookie 匹配或设备指纹。</p>
+          <p>无论走占位符还是追加参数，<strong>sub 参数都来自用户可控的 URL，拼进跳转链接前必须做 URL 编码</strong>（示意里的 <code>enc()</code>）。否则一个带 <code>&amp;</code> 或 <code>#</code> 的值就能篡改目标链接的参数结构，轻则归因错乱，重则把用户带到不该去的地方。</p>
+
+          <h2 id="s8">JS 200 跳转页</h2>
+          <p>投放场景还有一条路径：部分投放平台要求落地链接返回 200，而不是 302。为此后端有一个 JS 跳转页：记录一条投放点击（媒体侧点击 ID + sub 参数），返回一个极简 HTML，用 <code>location.replace</code> 跳到目标，并带一个 <code>&lt;noscript&gt;</code> 的 meta refresh 兜底。</p>
+          <p>这类页面是 XSS 的高发区，因为它把一个部分由用户控制的 URL 同时放进了 HTML 属性和 JavaScript 字符串里。原则只有一条：<strong>按上下文转义</strong>——放进属性要做 HTML 属性转义，放进脚本要做 JS 字符串转义，而且要额外转义 <code>&lt;</code>，因为 JSON 序列化本身并不能阻止值里出现 <code>&lt;/script&gt;</code>。最稳妥的做法是把 URL 放进 <code>data-</code> 属性，由一段固定的脚本读取，脚本本身永远不拼接任何变量。任何把数据序列化进 <code>&lt;script&gt;</code> 标签的地方都适用同一条规则。</p>
+
+          <h2 id="s9">Postback：去重、未归因队列与“永远 200”</h2>
+          <p>联盟在转化发生后调用我们的 Postback 接口，带上 clickId、联盟侧的转化 ID、类型、佣金和币种。处理流程：</p>
+          <ol>
+            <li>按联盟编码查找配置。未知联盟：写入未归因队列，原因“联盟不存在”。</li>
+            <li>校验签名。<strong>签名应该是硬门槛</strong>：校验不通过就不该继续处理，至多记一条可审计的拒绝记录。</li>
+            <li>按“联盟 + 联盟转化 ID”去重，重复回调直接忽略；数据库上的唯一索引是最终兜底，防住并发的两次回调。</li>
+            <li>按 clickId 查点击。clickId 缺失或查不到：写入未归因队列，原因分别是“缺少 clickId”和“点击不存在”，并保存原始请求，留给人工处理。</li>
+            <li>找到点击，创建一条“待审核”的转化，佣金和币种按回调原样保存。</li>
+          </ol>
+          <p>归因模型就是“clickId 直接归因”：一笔转化属于且只属于回调里那个 clickId，天然是最后点击归因。没有 Cookie 窗口、没有模糊匹配。代价是联盟没把 clickId 带回来时，我们就归不了因——所以未归因队列不是边角功能，而是这个模型的必要组成部分。</p>
+          <p>接口无论处理结果如何都返回 200，注释写明是为了防止联盟重试。这能避免一个 bug 引发的重试风暴，但也有代价：处理过程在一个数据库事务里，<strong>如果中途抛出异常，事务回滚，转化记录和未归因记录都不会留下</strong>，而联盟收到了 200，也不会再重试。这笔转化就只剩一行错误日志了。</p>
+          <figure class="code"><figcaption><span>PostbackIntake.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-c">// 改进方向：先落原始回调（独立事务），再异步处理；落库失败才返回非 200</span>
+<span class="tk-k">public</span> <span class="tk-t">ResponseEntity</span>&lt;<span class="tk-t">String</span>&gt; receive(<span class="tk-t">String</span> network, <span class="tk-t">HttpServletRequest</span> req) {
+    <span class="tk-k">try</span> {
+        inbox.saveRaw(network, req.getQueryString(), clientIp(req), now());  <span class="tk-c">// 唯一键：联盟 + 转化 ID</span>
+    } <span class="tk-k">catch</span> (<span class="tk-t">DuplicateKeyException</span> dup) {
+        <span class="tk-k">return</span> ok();                                                      <span class="tk-c">// 重复回调，幂等</span>
+    } <span class="tk-k">catch</span> (<span class="tk-t">RuntimeException</span> e) {
+        <span class="tk-k">return</span> <span class="tk-t">ResponseEntity</span>.status(<span class="tk-n">503</span>).body(<span class="tk-s">"retry"</span>);                  <span class="tk-c">// 让联盟重试，去重兜底</span>
+    }
+    worker.signal();                                                      <span class="tk-c">// 签名、归因在后台按状态推进</span>
+    <span class="tk-k">return</span> ok();
+}</code></pre></figure>
+
+          <p>这和支付回调是同一个模式：<strong>先把外部事实安全落地，再处理</strong>。返回 200 的含义应该是“我已经收到并保存了”，而不是“我试过了”。</p>
+
+          <h2 id="s10">取舍</h2>
+          <div class="table-wrap"><table><thead><tr><th>选择</th><th>得到</th><th>付出</th></tr></thead><tbody><tr><td>/go 绕过 Next，Nginx 直达后端</td><td>跳转延迟低、可用性独立于前台</td><td>路由规则分散在 Nginx 和中间件两处，需要一起维护</td></tr><tr><td>ISR 5 分钟</td><td>爬虫高峰下后端压力可控</td><td>下架内容最多滞后 5 分钟展示</td></tr><tr><td>服务端 clickId + 直接归因</td><td>不依赖 Cookie 和前端埋点，归因确定</td><td>联盟不回传 clickId 时无法归因，需人工处理未归因队列</td></tr><tr><td>保守的可信代理判断</td><td>不会被伪造的请求头欺骗</td><td>配置不全时静默失效，必须有监控</td></tr><tr><td>Postback 永远 200</td><td>避免重试风暴</td><td>异常时丢转化（应改为先落原始回调）</td></tr></tbody></table></div>
+
+
+          <h2 id="s11">如果重来</h2>
+          <ul>
+            <li><strong>SEO 元数据从第一天就只有一个出口。</strong>一个 <code>alternatesFor()</code>，加一个构建后的 canonical/hreflang 校验脚本。这比任何 SEO 插件都有用。</li>
+            <li><strong>Postback 先做收件箱。</strong>原始回调先落库，签名、去重、归因在后台按状态推进；失败可以重放，而不是只剩日志。</li>
+            <li><strong>前后端共用一套客户端 IP 规则</strong>，并为“识别失败率”和“未归因率”建指标。这两个数字是这个站最重要的健康信号，比 PV 重要得多。</li>
+            <li><strong>所有跳转相关的拼接都写成带测试的工具函数</strong>：URL 编码、HTML 属性转义、脚本内转义各一个，每个都有包含 <code>&amp;</code>、<code>#</code>、<code>"</code>、<code>&lt;/script&gt;</code> 的测试用例。</li>
+          </ul>
+
+          <h2 id="s12">小结</h2>
+          <p>做一个联盟优惠站，技术难度不在页面，而在两条“看不见的链路”：<strong>搜索引擎看到的元数据</strong>和<strong>点击到转化的身份传递</strong>。前者要求每页的 canonical 和 hreflang 一致、sitemap 完整而诚实；后者要求跳转独立可用、clickId 服务端生成、拼接处处编码、外部回调先落地再处理。这两条链路出错时都不会报错，所以它们最需要的不是更多功能，而是校验脚本和监控指标。</p>
+          <p class="note-src">本文基于我在 Ecommica 项目中的实际代码整理，代码为脱敏后的示意改写；站点域名、合作联盟和商家信息均未公开。</p>
+
+        </div>
+        <aside class="author-box">
+          <img src="/assets/avatar.jpg" width="56" height="56" alt="史晓河头像" loading="lazy">
+          <div>
+            <b>史晓河</b>
+            <p>技术架构师，13 年一线研发与架构经验，长期做支付收单与清结算。开放远程工作与项目合作，<a href="/#contact">欢迎联系</a>。</p>
+          </div>
+        </aside>
+
+        <nav class="pager" aria-label="更多笔记">
+          <a class="" href="/notes/rocketmq-outbox-payment/"><small>← 上一篇</small><b>RocketMQ 与 Outbox：支付事实扇出、重试、死信，以及为什么后来改成有序直调</b></a>
+          <a class="is-next" href="/notes/ai-coding-delivery/"><small>下一篇 →</small><b>用 AI 编码代理交付支付系统：契约、门禁、验证与评审</b></a>
+        </nav>
+      <section class="cta-band reveal" aria-label="联系我">
+        <div>
+          <h2 class="cta-title">想聊聊文中的问题，或者有类似的系统要做？</h2>
+          <p class="cta-text">先约 30 分钟免费聊聊：你的背景、目标和时间线。我会如实告诉你我能不能做、怎么做、大概要多久。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+        </div>
+      </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=202610290300" defer></script>
+  <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
+</body>
+</html>

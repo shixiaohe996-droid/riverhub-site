@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>分润与记账模型：复式分录、逐级价差与按比例冲回 · 史晓河的技术笔记</title>
+  <meta name="description" content="只追加的复式账本怎么防重复、防篡改；多级代理按有效底价逐级算价差；退款时按累计比例冲回分润以避免舍入误差累积。信付通账务与分润模块的设计取舍。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/notes/ledger-agent-profit-model/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="分润与记账模型：复式分录、逐级价差与按比例冲回">
+  <meta property="og:description" content="只追加的复式账本怎么防重复、防篡改；多级代理按有效底价逐级算价差；退款时按累计比例冲回分润以避免舍入误差累积。信付通账务与分润模块的设计取舍。">
+  <meta property="og:url" content="https://riverhub.top/notes/ledger-agent-profit-model/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="分润与记账模型：复式分录、逐级价差与按比例冲回">
+  <meta name="twitter:description" content="只追加的复式账本怎么防重复、防篡改；多级代理按有效底价逐级算价差；退款时按累计比例冲回分润以避免舍入误差累积。信付通账务与分润模块的设计取舍。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "Article", "headline": "分润与记账模型：复式分录、逐级价差与按比例冲回", "description": "只追加的复式账本怎么防重复、防篡改；多级代理按有效底价逐级算价差；退款时按累计比例冲回分润以避免舍入误差累积。信付通账务与分润模块的设计取舍。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/ledger-agent-profit-model/", "image": "https://riverhub.top/assets/og.jpg", "mainEntityOfPage": "https://riverhub.top/notes/ledger-agent-profit-model/", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}, "publisher": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css?v=202610290300">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#cases" class="nav-link">其他项目</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link" aria-current="page">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top" class="anchor-top" aria-hidden="true"></span>
+    <section class="page-hero">
+      <div class="container">
+        <div class="article">
+          <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">笔记</a><span class="sep">/</span><span aria-current="page">支付 · 账务</span></nav>
+          <h1 class="page-title">分润与记账模型：复式分录、逐级价差与按比例冲回</h1>
+          <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 8 分钟</span><span class="dot"></span><span class="note-tag">支付 · 账务</span></div>
+          <nav class="article-toc" aria-label="文章目录"><b>CONTENTS</b><ol><li><a href="#s1">一笔支付成功之后，账上发生了什么</a></li><li><a href="#s2">账户模型：用途、方向、三种余额</a></li><li><a href="#s3">两张分录：支付入账与分润确认</a></li><li><a href="#s4">写入器的硬规则</a></li><li><a href="#s5">并发：排序加锁、复核与“读赢家”</a></li><li><a href="#s6">事实摘要：怎么判断“同一笔”</a></li><li><a href="#s7">逐级价差分润与底价倒挂</a></li><li><a href="#s8">计价快照：让消费方能独立复核</a></li><li><a href="#s9">退款冲回：按累计比例，而不是逐笔取整</a></li><li><a href="#s10">退款记账的依赖顺序与责任账户</a></li><li><a href="#s11">取舍与如果重来</a></li><li><a href="#s12">小结</a></li></ol></nav>
+        </div>
+      </div>
+    </section>
+    <div class="container article-wrap">
+      <article class="article">
+        <div class="prose">
+          <p>聚合支付平台的账务，难点从来不是“会不会复式记账”，而是：<strong>一笔钱在支付、分润、退款之间来回流动时，任何一次重试、并发、取整都不能让账多一分或少一分</strong>。这篇写信付通（CiftoPay）账务域和代理分润域的实际模型：账户怎么分、分录怎么写、分润怎么算、退款怎么冲回，以及每个设计背后防的是哪种错。代码是按真实模式改写的示意，金额一律是以“分”为单位的整数。</p>
+
+          <div class="keypoints"><b>TL;DR</b><ul>
+            <li>账户按“用途”建模，每种用途有正常方向；余额分可用、冻结、待结算三态，分录逐条记录变动前后余额。</li>
+            <li>所有过账走同一个写入器：至少两条、借贷相等且为正、币种一致、余额不得为负；账户按 ID 排序加锁。</li>
+            <li>代理分润是自根向下的逐级价差，底价倒挂时按上级有效底价结算；平台预计利润不能为负。</li>
+            <li>退款冲回按<strong>累计</strong>退费比例向下取整再减去已冲回部分，保证多次部分退款加起来恰好等于原分润。</li>
+          </ul></div>
+
+          <h2 id="s1">一笔支付成功之后，账上发生了什么</h2>
+          <p>支付域在订单成功的同一个事务里写下“支付成功事实”（见<a href="/notes/payment-order-state-machine/">状态机那篇</a>），之后由 Outbox 按顺序驱动两件事：账务入账，然后代理分润确认。退款反过来：先让分润域算出要冲回多少，再拿着分润的回执去做退款记账。</p>
+          <p>这条链路上有三类会让账出错的风险：<strong>重复</strong>（同一事实被投递两次）、<strong>并发</strong>（同一个平台账户被几十笔交易同时加减）、<strong>取整</strong>（按比例分摊时那 1 分钱去了哪里）。下面每一节基本对应其中一类。</p>
+
+          <h2 id="s2">账户模型：用途、方向、三种余额</h2>
+          <p>账户不是按“谁”建的，而是按“谁 × 用途 × 币种”建的。用途包括通道清算应收、商户结算应付、平台手续费收入、代理分润应付、通道成本费用、退款手续费费用、追偿应收等。每种用途有一个<strong>正常方向</strong>：资产类借增贷减，负债和收入类贷增借减。记账代码不需要知道“这是资产还是负债”，只需要“这条分录的方向是否等于该用途的正常方向”。</p>
+          <p>每个账户的余额拆成三态：<strong>可用</strong>、<strong>冻结</strong>、<strong>待结算</strong>。支付刚成功、还没结算的钱记在待结算；提现申请会先把金额冻结，成功后再扣减，失败则解冻退回。分录上除了方向和金额，还标明它动的是哪一态。这让“商户能提多少钱”不需要临时计算，而是余额上直接可读的事实。</p>
+
+          <h2 id="s3">两张分录：支付入账与分润确认</h2>
+          <figure class="fig"><div class="fig-scroll"><svg viewBox="0 0 760 330" role="img" aria-labelledby="lg-t" xmlns="http://www.w3.org/2000/svg"><title id="lg-t">支付入账与代理分润确认的分录</title><defs><marker id="lg-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow" d="M0,0 L10,5 L0,10 z"/></marker><marker id="lg-ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow-acc" d="M0,0 L10,5 L0,10 z"/></marker></defs><rect class="d-zone" x="12" y="12" width="360" height="306" rx="14"/><text class="d-m" x="24" y="30">① 支付成功入账</text><rect class="d-acc" x="30" y="50" width="150" height="74" rx="10"/><text class="d-t" x="105.0" y="75.0" text-anchor="middle">通道清算应收</text><text class="d-s" x="105.0" y="91.0" text-anchor="middle">借 · 待结算</text><text class="d-s" x="105.0" y="107.0" text-anchor="middle">支付金额</text><rect class="d-box" x="210" y="40" width="146" height="66" rx="10"/><text class="d-t" x="283.0" y="61.0" text-anchor="middle">商户结算应付</text><text class="d-s" x="283.0" y="77.0" text-anchor="middle">贷 · 待结算</text><text class="d-s" x="283.0" y="93.0" text-anchor="middle">结算金额（&gt;0 才写）</text><rect class="d-box" x="210" y="124" width="146" height="66" rx="10"/><text class="d-t" x="283.0" y="145.0" text-anchor="middle">平台手续费收入</text><text class="d-s" x="283.0" y="161.0" text-anchor="middle">贷 · 可用</text><text class="d-s" x="283.0" y="177.0" text-anchor="middle">商户手续费（&gt;0 才写）</text><path class="d-line" d="M180,80 L208,73" marker-end="url(#lg-m)"/><path class="d-line" d="M180,96 L208,157" marker-end="url(#lg-m)"/><text class="d-m" x="30" y="228" text-anchor="start">借方合计 = 贷方合计 = 支付金额</text><text class="d-m" x="30" y="248" text-anchor="start">每条分录记录变动前/后余额</text><text class="d-m" x="30" y="268" text-anchor="start">余额行记下最后一次过账 ID</text><rect class="d-zone" x="388" y="12" width="360" height="306" rx="14"/><text class="d-m" x="400" y="30">② 代理分润确认（仅 POSITIVE）</text><rect class="d-acc" x="404" y="50" width="150" height="74" rx="10"/><text class="d-t" x="479.0" y="75.0" text-anchor="middle">平台手续费收入</text><text class="d-s" x="479.0" y="91.0" text-anchor="middle">借 · 可用</text><text class="d-s" x="479.0" y="107.0" text-anchor="middle">分润合计</text><rect class="d-box" x="584" y="40" width="150" height="56" rx="10"/><text class="d-t" x="659.0" y="64.0" text-anchor="middle">一级代理分润应付</text><text class="d-s" x="659.0" y="80.0" text-anchor="middle">贷 · 待结算</text><rect class="d-box" x="584" y="106" width="150" height="56" rx="10"/><text class="d-t" x="659.0" y="130.0" text-anchor="middle">二级代理分润应付</text><text class="d-s" x="659.0" y="146.0" text-anchor="middle">贷 · 待结算</text><rect class="d-box" x="584" y="172" width="150" height="56" rx="10"/><text class="d-t" x="659.0" y="196.0" text-anchor="middle">…… 逐级</text><text class="d-s" x="659.0" y="212.0" text-anchor="middle">贷 · 待结算</text><path class="d-line" d="M554,87 L582,68" marker-end="url(#lg-m)"/><path class="d-line" d="M554,87 L582,134" marker-end="url(#lg-m)"/><path class="d-line" d="M554,87 L582,200" marker-end="url(#lg-m)"/><text class="d-m" x="404" y="248" text-anchor="start">依赖：平台可用余额 ≥ 分润合计，</text><text class="d-m" x="404" y="268" text-anchor="start">否则返回“依赖未就绪”，稍后重试</text><text class="d-m" x="404" y="288" text-anchor="start">分录关联原支付过账，便于冲回追溯</text><path class="d-line-acc" d="M372,160 L402,160" marker-end="url(#lg-ma)"/></svg></div><figcaption><b>FIG 1</b>左：支付成功时，通道清算应收（待结算）借记支付金额，商户结算应付和平台手续费收入分别贷记；金额为 0 的分录不写。右：分润确认从平台手续费收入的可用余额借出，逐级贷记到各级代理的分润应付（待结算）。</figcaption></figure>
+
+          <p>两个刻意的设计：</p>
+          <ul>
+            <li><strong>不写零金额分录。</strong>没有手续费的交易就没有手续费那一条；没有代理的商户，分润结果是“无代理”，根本不产生分润过账。零金额分录不改变任何余额，却会污染对账和报表，还会让“这笔有没有分润”变得含糊。</li>
+            <li><strong>分润确认依赖平台可用余额。</strong>如果平台手续费收入的可用余额还不够覆盖本次分润合计，账务返回“依赖未就绪”，而不是记出一个负余额。这正是 Outbox 要求“先入账，再确认分润”的原因之一。</li>
+          </ul>
+
+          <h2 id="s4">写入器的硬规则</h2>
+          <p>支付入账、分润确认、退款、提现、人工冻结解冻、人工冲销，所有场景最终都调用同一个账本写入器。场景只负责生成“过账计划”，写入器负责把关：</p>
+          <figure class="code"><figcaption><span>LedgerWriter.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-t">Posting</span> write(<span class="tk-t">PostingSpec</span> spec, <span class="tk-t">LockedLedger</span> ledger, <span class="tk-t">List</span>&lt;<span class="tk-t">EntrySpec</span>&gt; plan) {
+    <span class="tk-k">long</span> debit = sum(plan, <span class="tk-t">DEBIT</span>), credit = sum(plan, <span class="tk-t">CREDIT</span>);
+    <span class="tk-k">if</span> (plan.size() &lt; <span class="tk-n">2</span> || debit &lt;= <span class="tk-n">0</span> || debit != credit) {
+        <span class="tk-k">throw</span> <span class="tk-k">new</span> <span class="tk-t">IllegalStateException</span>(<span class="tk-s">"posting plan must be balanced and positive"</span>);
+    }
+    <span class="tk-k">if</span> (anyAccount(plan, a -&gt; a == <span class="tk-k">null</span> || !a.currency().equals(spec.currency()))) {
+        <span class="tk-k">throw</span> <span class="tk-k">new</span> <span class="tk-t">IllegalStateException</span>(<span class="tk-s">"accounts must exist and match posting currency"</span>);
+    }
+    <span class="tk-k">for</span> (<span class="tk-t">EntrySpec</span> e : plan) {
+        <span class="tk-k">long</span> before = ledger.balance(e.accountId(), e.state());
+        <span class="tk-k">long</span> delta  = e.direction() == ledger.normalDirection(e.accountId()) ? e.amount() : -e.amount();
+        <span class="tk-k">long</span> after  = <span class="tk-t">Math</span>.addExact(before, delta);          <span class="tk-c">// 溢出直接失败，不静默回绕</span>
+        <span class="tk-k">if</span> (e.amount() &lt;= <span class="tk-n">0</span> || after &lt; <span class="tk-n">0</span>) <span class="tk-k">throw</span> balanceNotEnough();
+        entries.add(<span class="tk-t">Entry</span>.of(e, before, after));             <span class="tk-c">// 每条分录自带前后余额</span>
+    }
+    <span class="tk-t">Posting</span> p = postings.insert(spec, debit, credit);        <span class="tk-c">// 过账头：场景、业务单号、事实摘要</span>
+    ledger.touchedBalances().forEach(b -&gt; b.setLastPostingId(p.id()));
+    entries.insertBatch(spec.bizMonth(), p.id());            <span class="tk-c">// 分录按业务月落表</span>
+    <span class="tk-k">return</span> p;
+}</code></pre></figure>
+
+          <p>“每条分录自带前后余额”是对账时最有用的东西：任意一条分录都能和前一条首尾相接地校验，出现断点立刻就能定位到是哪一次过账。余额行上的“最后一次过账 ID”则是日终对账的截取水位（详见<a href="/notes/payment-reconciliation-idempotency/">对账那篇</a>）。</p>
+
+          <h2 id="s5">并发：排序加锁、复核与“读赢家”</h2>
+          <p>平台手续费收入账户是天然热点：几乎每笔交易都要动它。并发策略有四点：</p>
+          <ol>
+            <li><strong>按账户 ID 排序后加行锁</strong>，余额和账户两组都按同一顺序锁。所有过账遵守同一个加锁顺序，就不会互相死锁。</li>
+            <li><strong>锁内复核。</strong>锁之前做过的检查（过账是否已存在、账户是否就绪）在拿到锁后再做一次，锁外的判断只用来快速失败。</li>
+            <li><strong>唯一键冲突时读赢家。</strong>两个实例同时为同一事实过账，后到的那个会撞上业务唯一键；这时不报错，而是读出先写成功的那条过账，按事实摘要判断是“幂等成功”还是“事实冲突”。</li>
+            <li><strong>有限重试与跨日重算。</strong>技术性失败最多重试 3 次；如果重试期间记账日期变了（跨过零点），按新日期重新生成计划，因为分录要落到正确的业务月。</li>
+          </ol>
+          <p>结果被归为六类：已过账、幂等成功、事实冲突、业务拒绝、依赖未就绪、技术可重试。上游 Outbox 只看这个分类决定下一步：前两类算完成，中间两类是终态失败要人看，最后两类按退避重试。<strong>分类比异常更好用</strong>，因为“重试会不会有用”这件事，只有账务自己知道。</p>
+
+          <h2 id="s6">事实摘要：怎么判断“同一笔”</h2>
+          <p>幂等不能只看业务单号。同一个支付单号，如果第二次送来的金额、手续费或分润明细不一样，那不是重复，是矛盾。所以每次过账都会对规范化后的事实计算一个摘要，连同事实版本号一起存在过账头上。</p>
+          <figure class="code"><figcaption><span>FactDigest.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-c">// 规范化：固定字段顺序；每个字段写成“长度:值”，再整体做 SHA-256</span>
+<span class="tk-k">static</span> <span class="tk-t">String</span> digest(<span class="tk-k">int</span> factVersion, <span class="tk-t">Object</span>... fields) {
+    <span class="tk-t">StringBuilder</span> sb = <span class="tk-k">new</span> <span class="tk-t">StringBuilder</span>().append(<span class="tk-s">"v"</span>).append(factVersion);
+    <span class="tk-k">for</span> (<span class="tk-t">Object</span> f : fields) {
+        <span class="tk-t">String</span> v = f == <span class="tk-k">null</span> ? <span class="tk-s">""</span> : canonical(f);   <span class="tk-c">// 金额用整数分，时间统一时区和精度</span>
+        sb.append(<span class="tk-s">'|'</span>).append(v.length()).append(<span class="tk-s">':'</span>).append(v);
+    }
+    <span class="tk-k">return</span> sha256Hex(sb.toString());
+}</code></pre></figure>
+
+          <p>长度前缀看起来多余，其实是在防一个经典歧义：如果只用分隔符拼接，<code>"ab" + "c"</code> 和 <code>"a" + "bc"</code> 可能得到同一串；字段值里本身出现分隔符时更糟。带上长度，拼接结果就和字段序列一一对应。版本号则保证事实结构升级后，新旧摘要不会被错误地拿来比较。</p>
+
+          <h2 id="s7">逐级价差分润与底价倒挂</h2>
+          <p>代理体系是一棵树：每一级代理有自己的结算底价（按费率区间配置），商户付给平台的手续费减去直属代理的底价，就是直属代理的分润；上一级代理赚的是“下级底价 − 本级底价”。自根向下逐级算，这就是逐级价差。</p>
+          <p>现实中配置会出错：下级的底价可能被配得比上级还低（倒挂），或者比商户手续费还高。我的处理是计算<strong>有效底价</strong>：</p>
+          <figure class="code"><figcaption><span>ProfitLevels.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-c">// floors: 自根向下各级的底价费用；merchantFee: 商户实付手续费</span>
+<span class="tk-k">static</span> <span class="tk-t">List</span>&lt;<span class="tk-t">Long</span>&gt; effectiveFloors(<span class="tk-t">List</span>&lt;<span class="tk-t">Long</span>&gt; floors, <span class="tk-k">long</span> merchantFee) {
+    <span class="tk-t">List</span>&lt;<span class="tk-t">Long</span>&gt; effective = <span class="tk-k">new</span> <span class="tk-t">ArrayList</span>&lt;&gt;();
+    <span class="tk-k">long</span> upstream = <span class="tk-n">0</span>;
+    <span class="tk-k">for</span> (<span class="tk-k">long</span> fee : floors) {
+        <span class="tk-k">if</span> (fee &lt; <span class="tk-n">0</span>) <span class="tk-k">throw</span> <span class="tk-k">new</span> <span class="tk-t">IllegalArgumentException</span>(<span class="tk-s">"invalid floor"</span>);
+        upstream = <span class="tk-t">Math</span>.min(<span class="tk-t">Math</span>.max(fee, upstream), merchantFee);   <span class="tk-c">// 不低于上级，不高于商户费</span>
+        effective.add(upstream);
+    }
+    <span class="tk-k">return</span> effective;   <span class="tk-c">// 本级分润 = 下游有效价格 − 本级有效底价，恒 ≥ 0</span>
+}</code></pre></figure>
+
+          <p>没倒挂时，有效底价就是配置底价，结果等于相邻底价之差；倒挂时，下级至少按上级的有效底价结算，受影响的层级同时记录<strong>配置底价</strong>和<strong>有效底价</strong>，并打一条告警日志。这样分润永远不会出现负数，而配置错误也不会被悄悄“修正”掉——运营能看到哪一级、差多少。</p>
+          <p>算完各级之后还有一道总闸：<strong>平台预计利润 = 商户手续费 − 分润合计 − 预计通道成本，必须 ≥ 0</strong>，否则直接拒绝确认。分润结果分三种：无代理、零分润、正分润，只有正分润才会写分润确认的 Outbox、驱动账务记“分润确认”那张分录。</p>
+
+          <h2 id="s8">计价快照：让消费方能独立复核</h2>
+          <p>手续费和底价都是按阶梯规则算出来的。支付成功事实里不只带结果，还带一份<strong>完整的计价快照</strong>：命中的规则区间、费率、固定费、最低最高费、命中下标、原始费用、套用最低后、封顶后、取整方式和精度、公式版本。</p>
+          <p>分润域和账务域拿到事实后，会只凭快照里的冻结参数<strong>重算一遍</strong>，任何输入、中间值、公式版本或结果不一致都拒绝。规则本身也有校验：区间必须从 0 开始且首尾相接，所有参数非负，封顶不得低于最低。</p>
+          <p>这是一种“不信任上游”的设计，代价是事实体积大了不少。我认为值得：手续费算错是最难事后发现的问题之一，而有了快照，任何一笔交易的手续费都可以在三年后被逐步复现，不依赖当时的规则配置还在不在。</p>
+
+          <h2 id="s9">退款冲回：按累计比例，而不是逐笔取整</h2>
+          <p>部分退款时，代理分润要按退还的手续费比例冲回。最直觉的写法是每次退款算一次 <code>分润 × 本次退费 / 手续费</code> 再取整——这会系统性地丢钱。看一个例子：原分润 3 分，商户手续费 10 分，分三次退还手续费 3、3、4 分。</p>
+          <div class="table-wrap"><table><thead><tr><th>第几次</th><th>本次退费</th><th>逐笔向下取整</th><th>累计退费</th><th>累计应冲回 ⌊3×累计/10⌋</th><th>本次冲回 = 累计 − 已冲回</th></tr></thead><tbody><tr><td>1</td><td>3</td><td>⌊0.9⌋ = 0</td><td>3</td><td>0</td><td>0</td></tr><tr><td>2</td><td>3</td><td>⌊0.9⌋ = 0</td><td>6</td><td>⌊1.8⌋ = 1</td><td>1</td></tr><tr><td>3</td><td>4</td><td>⌊1.2⌋ = 1</td><td>10</td><td>3</td><td>2</td></tr><tr><td>合计</td><td>10</td><td><strong>1（少冲 2 分）</strong></td><td></td><td></td><td><strong>3（恰好全额）</strong></td></tr></tbody></table></div>
+
+          <p>所以实际实现是：<strong>先按累计退费算出累计应冲回（向下取整），再减去之前已经冲回的部分</strong>。并且要求累计值单调不减——如果算出来比已冲回的还少，说明输入有问题，直接拒绝。全额退款时累计退费等于手续费，累计应冲回就精确等于原分润，一分不差。</p>
+          <figure class="code"><figcaption><span>ProfitReversal.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-k">static</span> <span class="tk-k">long</span> reverseNow(<span class="tk-k">long</span> originalProfit, <span class="tk-k">long</span> merchantFee, <span class="tk-k">long</span> cumulativeFeeRefund, <span class="tk-k">long</span> priorReversed) {
+    <span class="tk-k">if</span> (merchantFee &lt;= <span class="tk-n">0</span> || cumulativeFeeRefund &lt; <span class="tk-n">0</span> || cumulativeFeeRefund &gt; merchantFee
+            || originalProfit &lt; <span class="tk-n">0</span> || originalProfit &gt; merchantFee || priorReversed &lt; <span class="tk-n">0</span>) {
+        <span class="tk-k">throw</span> <span class="tk-k">new</span> <span class="tk-t">IllegalArgumentException</span>(<span class="tk-s">"invalid reversal input"</span>);
+    }
+    <span class="tk-k">long</span> cumulative = floorDiv(multiplyExact(originalProfit, cumulativeFeeRefund), merchantFee);
+    <span class="tk-k">long</span> now = subtractExact(cumulative, priorReversed);
+    <span class="tk-k">if</span> (now &lt; <span class="tk-n">0</span>) <span class="tk-k">throw</span> <span class="tk-k">new</span> <span class="tk-t">IllegalArgumentException</span>(<span class="tk-s">"cumulative reversal must not decrease"</span>);
+    <span class="tk-k">return</span> now;
+}</code></pre></figure>
+
+
+          <h2 id="s10">退款记账的依赖顺序与责任账户</h2>
+          <p>退款时顺序是固定的：<strong>先让分润域冲回</strong>，拿到冲回回执（每级冲回多少），<strong>再做退款记账</strong>。分润域没接受，账务就返回“依赖未就绪”或“事实冲突”，不会出现“钱退了、分润没冲”的中间态。</p>
+          <p>退款分录比支付复杂得多，因为退款发生时，原来那笔钱可能已经从待结算转成可用、甚至被提走了。做法是：</p>
+          <ul>
+            <li>对每个要扣减的原始分量，<strong>按余额态的优先顺序逐级扣减</strong>（例如先可用、再待结算），并扣除本计划里已经计划扣掉的部分，避免同一余额被重复计入；</li>
+            <li>扣不够的<strong>缺口记到责任账户</strong>：代理分润的缺口记代理追偿应收，平台的缺口记平台费用，通道侧的缺口记通道应付；</li>
+            <li>平台净退费 = 商户手续费退还 − 分润冲回合计；为负时说明分润冲回多于平台退出的手续费，差额贷记回平台。</li>
+          </ul>
+          <p>每条退款分录还记着它冲回的是原过账里的哪一条分录序号，任何一分钱都能追溯到它最初是怎么进来的。</p>
+
+          <h2 id="s11">取舍与如果重来</h2>
+          <div class="table-wrap"><table><thead><tr><th>选择</th><th>得到</th><th>付出</th></tr></thead><tbody><tr><td>单一写入器 + 计划/执行分离</td><td>所有场景共享同一套守卫，新增场景只写计划</td><td>写入器成为高敏感代码，任何改动都要走全量账务回归</td></tr><tr><td>热点账户行锁</td><td>实现简单，强一致</td><td>平台收入账户是串行点；量大时要考虑汇总入账或子账户拆分</td></tr><tr><td>计价快照全量随事实传递</td><td>任何一笔都能独立复核、多年后可复现</td><td>事实体积大，版本演进要更谨慎</td></tr><tr><td>累计比例冲回</td><td>多次部分退款不丢不多</td><td>需要可靠记录“已冲回”的累计值，依赖分润确认记录加锁读取</td></tr></tbody></table></div>
+
+          <p>如果重来，我会改两件事。第一，<strong>热点账户从一开始就预留拆分能力</strong>：现在平台手续费收入是单账户行锁，正确但串行；我会在模型上提前允许“同一用途多个子账户 + 日终汇总”，等量起来再改就要动历史数据。第二，<strong>把“过账计划”做成可以单独序列化和回放的对象</strong>：现在计划只在内存里存在，出问题时只能看结果分录反推；能把计划本身留档，排查和演练都会容易很多。</p>
+
+          <h2 id="s12">小结</h2>
+          <p>账务模型的可靠性来自几条朴素的纪律：<strong>按用途建账户、按正常方向记分录</strong>；<strong>所有过账过同一道闸</strong>（平衡、为正、同币种、不为负）；<strong>固定加锁顺序、锁内复核、冲突读赢家</strong>；<strong>用规范化摘要定义“同一笔”</strong>；<strong>分润有效底价兜住配置错误，平台利润不为负</strong>；<strong>冲回按累计算</strong>。它们单独看都不复杂，但缺任何一条，都会在某个凌晨变成一张对不平的表。</p>
+          <p class="note-src">本文基于我在信付通（CiftoPay）项目中的实际设计整理，代码为脱敏后的示意改写，示例金额为说明用的虚构数字。</p>
+
+        </div>
+        <aside class="author-box">
+          <img src="/assets/avatar.jpg" width="56" height="56" alt="史晓河头像" loading="lazy">
+          <div>
+            <b>史晓河</b>
+            <p>技术架构师，13 年一线研发与架构经验，长期做支付收单与清结算。开放远程工作与项目合作，<a href="/#contact">欢迎联系</a>。</p>
+          </div>
+        </aside>
+
+        <nav class="pager" aria-label="更多笔记">
+          <a class="" href="/notes/payment-reconciliation-idempotency/"><small>← 上一篇</small><b>聚合支付的幂等与对账：九层身份、编号、冲突判定与日终余额核对</b></a>
+          <a class="is-next" href="/notes/rocketmq-outbox-payment/"><small>下一篇 →</small><b>RocketMQ 与 Outbox：支付事实扇出、重试、死信，以及为什么后来改成有序直调</b></a>
+        </nav>
+      <section class="cta-band reveal" aria-label="联系我">
+        <div>
+          <h2 class="cta-title">想聊聊文中的问题，或者有类似的系统要做？</h2>
+          <p class="cta-text">先约 30 分钟免费聊聊：你的背景、目标和时间线。我会如实告诉你我能不能做、怎么做、大概要多久。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+        </div>
+      </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=202610290300" defer></script>
+  <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
+</body>
+</html>

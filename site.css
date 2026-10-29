@@ -1082,6 +1082,7 @@ button { font: inherit; color: inherit; }
 /* ---------- 笔记（首页预览 + 索引） ---------- */
 .notes-grid { display: grid; gap: 12px; }
 @media (min-width: 800px) { .notes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } }
+@media (min-width: 1000px) { .notes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .note-card { padding: 26px; gap: 0; color: inherit; }
 .note-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-family: var(--font-mono); font-size: 12px; color: var(--text-3); }
 .note-tag { padding: 2px 9px; border-radius: var(--radius-pill); font-family: var(--font-sans); font-size: 12px; font-weight: 650; color: var(--accent); background: var(--accent-soft); border: 1px solid var(--border); }
@@ -1296,3 +1297,49 @@ button { font: inherit; color: inherit; }
 }
 :root[data-theme="light"] .nf-term { background: #0b0d12; }
 .page-title .accent-text { display: block; }
+
+/* ---------- 文章：代码块 / 架构图 / 要点（纯 CSS，双主题） ---------- */
+:root {
+  --code-bg: #0c0f15; --code-border: rgba(255, 255, 255, .09); --code-text: #d5dbe5; --code-dim: #7d8799;
+  --tk-k: #c3b1ff; --tk-s: #9be7b4; --tk-c: #7a8496; --tk-n: #ffcf8a; --tk-t: #74dcff;
+}
+:root[data-theme="light"] {
+  --code-bg: #f4f6f9; --code-border: rgba(10, 14, 30, .1); --code-text: #1d2330; --code-dim: #5f6879;
+  --tk-k: #6a3fd6; --tk-s: #18794e; --tk-c: #6b7385; --tk-n: #a4520a; --tk-t: #0a6f8f;
+}
+.prose .code { margin: 1.4em 0; border: 1px solid var(--code-border); border-radius: 14px; background: var(--code-bg); overflow: hidden; }
+.prose .code figcaption { display: flex; justify-content: space-between; gap: 12px; padding: 8px 14px; border-bottom: 1px solid var(--code-border); font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; color: var(--code-dim); }
+.prose .code pre { margin: 0; padding: 14px 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; font-family: var(--font-mono); font-size: 13px; line-height: 1.7; color: var(--code-text); tab-size: 4; }
+.prose .code pre code { padding: 0; border: 0; background: none; font-size: inherit; color: inherit; word-break: normal; white-space: pre; }
+.prose .code .tk-k { color: var(--tk-k); font-weight: 600; }
+.prose .code .tk-s { color: var(--tk-s); }
+.prose .code .tk-c { color: var(--tk-c); font-style: italic; }
+.prose .code .tk-n { color: var(--tk-n); }
+.prose .code .tk-t { color: var(--tk-t); }
+.prose .fig { margin: 1.6em 0; padding: 0; border: 1px solid var(--border); border-radius: 16px; background: var(--bg-alt); overflow: hidden; }
+.prose .fig-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 18px 16px 10px; }
+.prose .fig svg { display: block; width: 100%; min-width: 600px; height: auto; font-family: var(--font-sans); }
+.prose .fig figcaption { padding: 10px 16px 14px; font-size: 13px; line-height: 1.7; color: var(--text-3); }
+.prose .fig figcaption b { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; color: var(--accent); margin-right: 8px; }
+.fig .d-box { fill: var(--surface-solid); stroke: var(--border-strong); stroke-width: 1.2; }
+.fig .d-acc { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.4; }
+.fig .d-warn { fill: rgba(245, 158, 11, .08); stroke: #d48806; stroke-width: 1.3; stroke-dasharray: 4 3; }
+.fig .d-zone { fill: none; stroke: var(--border-strong); stroke-width: 1; stroke-dasharray: 5 4; }
+.fig .d-line { fill: none; stroke: var(--text-3); stroke-width: 1.3; }
+.fig .d-line-acc { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+.fig .d-line-dash { fill: none; stroke: var(--text-3); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.fig .d-arrow { fill: var(--text-3); }
+.fig .d-arrow-acc { fill: var(--accent); }
+.fig .d-t { fill: var(--text); font-size: 13px; font-weight: 700; }
+.fig .d-s { fill: var(--text-2); font-size: 11.5px; }
+.fig .d-m { fill: var(--text-3); font-size: 10.5px; font-family: var(--font-mono); letter-spacing: .04em; }
+.fig .d-a { fill: var(--accent); font-size: 11px; font-weight: 700; font-family: var(--font-mono); }
+.prose .keypoints { padding: 16px 20px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg-alt); }
+.prose .keypoints > b { display: block; margin-bottom: 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; color: var(--accent); }
+.prose .keypoints ul { margin-top: 4px; }
+.prose .note-src { font-size: 13.5px; color: var(--text-3); }
+.article-cta { margin-top: 40px; }
+@media (max-width: 719px) {
+  .prose .code pre { font-size: 12.3px; padding: 12px 13px; }
+  .prose .fig-scroll { padding: 14px 10px 6px; }
+}

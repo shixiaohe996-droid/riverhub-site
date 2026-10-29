@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>聚合支付清结算的对账与幂等设计 · 史晓河的技术笔记</title>
-  <meta name="description" content="超时不等于失败，重复回调不等于重复入账。从先落库再调用、通道请求号、账务幂等，到复式记账和日终对账，讲讲聚合支付平台怎么让钱和账对得上。">
+  <title>聚合支付的幂等与对账：九层身份、编号、冲突判定与日终余额核对 · 史晓河的技术笔记</title>
+  <meta name="description" content="从商户订单号、平台编号、通道请求号到记账事实摘要，聚合支付里每一层都要有自己的幂等身份；再讲内部日终余额核对怎么在不停服的情况下做准，以及还没做的通道对账。">
   <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
   <link rel="canonical" href="https://riverhub.top/notes/payment-reconciliation-idempotency/">
@@ -13,20 +13,20 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="史晓河">
   <meta property="og:locale" content="zh_CN">
-  <meta property="og:title" content="聚合支付清结算的对账与幂等设计">
-  <meta property="og:description" content="超时不等于失败，重复回调不等于重复入账。从先落库再调用、通道请求号、账务幂等，到复式记账和日终对账，讲讲聚合支付平台怎么让钱和账对得上。">
+  <meta property="og:title" content="聚合支付的幂等与对账：九层身份、编号、冲突判定与日终余额核对">
+  <meta property="og:description" content="从商户订单号、平台编号、通道请求号到记账事实摘要，聚合支付里每一层都要有自己的幂等身份；再讲内部日终余额核对怎么在不停服的情况下做准，以及还没做的通道对账。">
   <meta property="og:url" content="https://riverhub.top/notes/payment-reconciliation-idempotency/">
   <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="聚合支付清结算的对账与幂等设计">
-  <meta name="twitter:description" content="超时不等于失败，重复回调不等于重复入账。从先落库再调用、通道请求号、账务幂等，到复式记账和日终对账，讲讲聚合支付平台怎么让钱和账对得上。">
+  <meta name="twitter:title" content="聚合支付的幂等与对账：九层身份、编号、冲突判定与日终余额核对">
+  <meta name="twitter:description" content="从商户订单号、平台编号、通道请求号到记账事实摘要，聚合支付里每一层都要有自己的幂等身份；再讲内部日终余额核对怎么在不停服的情况下做准，以及还没做的通道对账。">
   <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
   <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "聚合支付清结算的对账与幂等设计", "description": "超时不等于失败，重复回调不等于重复入账。从先落库再调用、通道请求号、账务幂等，到复式记账和日终对账，讲讲聚合支付平台怎么让钱和账对得上。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/payment-reconciliation-idempotency/", "image": "https://riverhub.top/assets/og.jpg", "mainEntityOfPage": "https://riverhub.top/notes/payment-reconciliation-idempotency/", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  {"@context": "https://schema.org", "@type": "Article", "headline": "聚合支付的幂等与对账：九层身份、编号、冲突判定与日终余额核对", "description": "从商户订单号、平台编号、通道请求号到记账事实摘要，聚合支付里每一层都要有自己的幂等身份；再讲内部日终余额核对怎么在不停服的情况下做准，以及还没做的通道对账。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/payment-reconciliation-idempotency/", "image": "https://riverhub.top/assets/og.jpg", "mainEntityOfPage": "https://riverhub.top/notes/payment-reconciliation-idempotency/", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}, "publisher": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
   </script>
   <script>
     (function () {
@@ -39,7 +39,7 @@
   </script>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/site.css?v=202610290107">
+  <link rel="stylesheet" href="/site.css?v=202610290300">
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -83,124 +83,135 @@
     <section class="page-hero">
       <div class="container">
         <div class="article">
-          <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">笔记</a><span class="sep">/</span><span aria-current="page">支付 · 架构</span></nav>
-          <h1 class="page-title">聚合支付清结算的对账与幂等设计</h1>
-          <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 12 分钟</span><span class="dot"></span><span class="note-tag">支付 · 架构</span></div>
-          <nav class="article-toc" aria-label="文章目录"><b>CONTENTS</b><ol><li><a href="#s1">问题从三种“不确定”开始</a></li><li><a href="#s2">支付侧：先落库，再调用</a></li><li><a href="#s3">一次尝试，一个请求号</a></li><li><a href="#s4">回调与状态收敛</a></li><li><a href="#s5">从支付到账务：Outbox + 消息</a></li><li><a href="#s6">账务幂等：身份 + 摘要</a></li><li><a href="#s7">复式记账的几条硬规则</a></li><li><a href="#s8">日终对账：截点与水位</a></li><li><a href="#s9">出错之后：冲销，而不是改库</a></li><li><a href="#s10">一份检查清单</a></li></ol></nav>
+          <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">笔记</a><span class="sep">/</span><span aria-current="page">支付 · 对账</span></nav>
+          <h1 class="page-title">聚合支付的幂等与对账：九层身份、编号、冲突判定与日终余额核对</h1>
+          <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 8 分钟</span><span class="dot"></span><span class="note-tag">支付 · 对账</span></div>
+          <nav class="article-toc" aria-label="文章目录"><b>CONTENTS</b><ol><li><a href="#s1">幂等不是一个开关，是一串身份</a></li><li><a href="#s2">九层身份，各防一种重复</a></li><li><a href="#s3">平台单号：可解析、可恢复、最后靠唯一键</a></li><li><a href="#s4">同号不同体：幂等的另一半是冲突检测</a></li><li><a href="#s5">对账到底在对什么</a></li><li><a href="#s6">日终余额核对：截点、水位与回退</a></li><li><a href="#s7">结果不可变，差异只登记结论</a></li><li><a href="#s8">错了怎么办：冲销，而不是改库</a></li><li><a href="#s9">还没做的：通道对账单</a></li><li><a href="#s10">取舍与如果重来</a></li><li><a href="#s11">一份检查清单</a></li></ol></nav>
         </div>
       </div>
     </section>
     <div class="container article-wrap">
       <article class="article">
         <div class="prose">
-          <p>做了这么多年支付，我越来越确定一件事：支付系统里最难的不是“把钱收进来”，而是<strong>在各种异常下，钱和账始终对得上</strong>。这篇是我在设计聚合支付平台清结算链路时的一些思路，写的是通用的设计原则，不涉及任何具体机构和内部实现。</p>
+          <p>“对账”和“幂等”在支付系统里几乎总被一起提起，但很多讨论停在口号：“接口要幂等”“每天对一次账”。这篇用信付通（CiftoPay）的实际实现讲得具体一点：<strong>幂等在每一层用的是什么身份、同号不同体怎么处理、日终余额核对的算法细节是什么、对出差异后怎么办</strong>，以及一个我必须如实说明的空白——通道对账单核对目前还没有做。状态机本身见<a href="/notes/payment-order-state-machine/">上一篇</a>，记账规则见<a href="/notes/ledger-agent-profit-model/">记账与分润</a>，这里不重复。</p>
 
-          <h2 id="s1">问题从三种“不确定”开始</h2>
-          <p>聚合支付平台夹在商户和多家持牌支付机构之间，链路上至少有三种不确定：</p>
+          <div class="keypoints"><b>TL;DR</b><ul>
+            <li>幂等是一串分层的身份：从商户请求键、平台单号、通道请求号，到 Outbox 和过账的业务唯一键，每层防一种重复。</li>
+            <li>每一层都同时做冲突检测：同一身份、内容不同，是矛盾而不是重复，必须拒绝并留痕。</li>
+            <li>日终核对比较“锁内截取的余额倒推到截点”和“逐日累加的分录”，用过账 ID 做水位，三种余额态逐一比较。</li>
+            <li>对账结果不可变，差异只能登记处理结论；修正一律走冲销过账，不改库。</li>
+          </ul></div>
+
+          <h2 id="s1">幂等不是一个开关，是一串身份</h2>
+          <p>一笔支付从商户请求进来，到最后变成账上的几条分录，中间会经过：商户重试、网关重放、通道超时后的查询或重放、回调重复推送、Outbox 重复投递、消费端重复消费、对账任务重复执行。任何一处只要多执行一次，就可能多扣一次款、多记一笔账、多发一次通知。</p>
+          <p>指望在入口加一个“幂等拦截器”解决所有问题是不现实的。每一层的重复来源不同，能用来识别“同一件事”的字段也不同。所以我的做法是：<strong>每一层显式定义自己的身份，并由数据库唯一约束做最终兜底</strong>。缓存和锁只是让常见情况更快，正确性永远落在唯一键上。</p>
+
+          <h2 id="s2">九层身份，各防一种重复</h2>
+          <div class="table-wrap"><table><thead><tr><th>层</th><th>身份</th><th>防的是什么</th><th>重复时</th><th>冲突时</th></tr></thead><tbody><tr><td>商户请求</td><td>幂等键（24 小时）+ 请求摘要</td><td>商户超时重试</td><td>需凭查询令牌，常量时间比对后返回原结果</td><td>摘要不同 → 幂等冲突</td></tr><tr><td>商户订单</td><td>租户 + 商户应用 + 商户订单号</td><td>换了幂等键的重复下单</td><td>唯一键拒绝第二笔</td><td>拒绝</td></tr><tr><td>平台单号</td><td>前缀 + 业务日期 + 当日序列</td><td>内部主键冲突</td><td>唯一键兜底</td><td>—</td></tr><tr><td>通道请求</td><td>每次尝试固定的通道请求号</td><td>超时后重放被当作新交易</td><td>重放沿用同一号</td><td>关单另起关单号</td></tr><tr><td>通道回执</td><td>通道账户 + 操作 + 请求号</td><td>同一请求被多个实例同时发出</td><td>租约内只有一个实例发送</td><td>同号不同体 → 冲突</td></tr><tr><td>回调</td><td>原文摘要</td><td>通道重复推送</td><td>直接确认</td><td>进入事实收敛判断</td></tr><tr><td>Outbox</td><td>租户 + 类型 + 订阅方 + 单号</td><td>状态推进重复写义务</td><td>唯一键冲突即已存在</td><td>—</td></tr><tr><td>过账</td><td>场景 + 业务单号 + 事实摘要</td><td>重复投递、重复消费</td><td>读出已有过账 → 幂等成功</td><td>摘要不同 → 事实冲突</td></tr><tr><td>对账结果</td><td>账户 + 对账日</td><td>对账任务并发或重跑</td><td>保留先完成的结果</td><td>—</td></tr></tbody></table></div>
+
+          <p>表里最容易被忽略的是“重复时”那一列：<strong>幂等成功要返回和第一次一样的结果</strong>，而不是一个笼统的“已处理”。商户请求层要求重放必须携带第一次返回的查询令牌，服务端对令牌摘要和请求摘要都做常量时间比对，避免“猜到幂等键就能读别人的订单结果”。</p>
+
+          <h2 id="s3">平台单号：可解析、可恢复、最后靠唯一键</h2>
+          <p>平台单号的格式是“业务前缀 + 业务日期 + 8 位当日序列”，序列来自 Redis 的原子自增，按“前缀 + 日期”分键。这个看似普通的格式承担了三件事：</p>
           <ul>
-            <li><strong>外部调用结果不确定</strong>：调用支付机构超时或断连，不代表对方没受理。你以为失败了，其实钱已经扣了。</li>
-            <li><strong>回调会重复、会乱序</strong>：同一笔交易的成功通知可能来好几次，也可能比主动查单的结果更晚到。</li>
-            <li><strong>内部投递会重复</strong>：消息队列至少投递一次，消费方一定会遇到重复消息。</li>
+            <li><strong>可解析</strong>：从单号就能解出业务日期，进而定位到按月分表的那张表，查询不需要额外的路由索引。</li>
+            <li><strong>有上限</strong>：单日序列达到 8 位上限时直接抛错，而不是悄悄溢出成 9 位，破坏下游的解析规则。</li>
+            <li><strong>可恢复</strong>：Redis 数据丢失时，序列会从头开始，可能和当天已发出的单号撞车。仓库里配了恢复脚本，从数据库里当天已发出的最大单号重新设定序列起点；而在恢复之前，数据库唯一键会让撞号的写入失败，不会产生两笔同号订单。</li>
           </ul>
-          <p>所以“幂等”不是某个接口加个唯一索引就完事了，而是要在每一个可能重放的环节都回答清楚：<strong>同一件事发生第二次，系统应该做什么？</strong></p>
+          <figure class="code"><figcaption><span>DailyNumberGenerator.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-t">String</span> next(<span class="tk-t">String</span> prefix, <span class="tk-t">LocalDate</span> bizDate) {
+    <span class="tk-k">long</span> seq = sequence.incrementAndGet(prefix, bizDate);   <span class="tk-c">// 按“前缀 + 日期”分键的原子自增</span>
+    <span class="tk-k">if</span> (seq &gt; <span class="tk-n">99_999_999L</span>) {
+        <span class="tk-k">throw</span> <span class="tk-k">new</span> <span class="tk-t">IllegalStateException</span>(<span class="tk-s">"daily sequence exhausted: "</span> + prefix + bizDate);
+    }
+    <span class="tk-k">return</span> prefix + bizDate.format(BASIC_ISO_DATE) + <span class="tk-t">String</span>.format(<span class="tk-s">"%08d"</span>, seq);
+}
 
-          <h2 id="s2">支付侧：先落库，再调用</h2>
-          <p>我坚持的第一条规则是：<strong>调用外部机构之前，先把“我要做这件事”持久化。</strong></p>
-          <p>具体来说，在一个本地事务里同时写入：幂等键、支付订单、路由决策（这笔走哪个通道）、本次执行尝试，以及一条“状态恢复任务”。事务提交之后，只有真正创建了这些记录的那个请求，才去发起外部调用。外部调用本身绝不放进数据库事务里——否则一次网络抖动就能把连接池拖垮。</p>
-          <p>这样做的好处是，无论进程在哪一步崩溃，数据库里都留着“有一笔交易处于待确认状态”的证据，恢复任务会把它推到终态，不会出现“钱扣了、系统里没记录”的情况。</p>
-          <blockquote>数据库里的恢复任务是“必须完成”的义务来源；消息队列只负责尽快唤醒处理，不作为事实来源。</blockquote>
-          <p>消息可能丢、可能延迟，但只要数据库里的义务还在，定时扫描就能兜底。</p>
+<span class="tk-k">static</span> <span class="tk-t">LocalDate</span> parseBizDate(<span class="tk-t">String</span> prefix, <span class="tk-t">String</span> no) {    <span class="tk-c">// 用于定位月表</span>
+    <span class="tk-k">if</span> (no == <span class="tk-k">null</span> || !no.startsWith(prefix) || no.length() != prefix.length() + <span class="tk-n">16</span>) {
+        <span class="tk-k">throw</span> <span class="tk-k">new</span> <span class="tk-t">IllegalArgumentException</span>(<span class="tk-s">"invalid number"</span>);
+    }
+    <span class="tk-k">return</span> <span class="tk-t">LocalDate</span>.parse(no.substring(prefix.length(), prefix.length() + <span class="tk-n">8</span>), BASIC_ISO_DATE);
+}</code></pre></figure>
 
-          <h2 id="s3">一次尝试，一个请求号</h2>
-          <p>第二条规则：<strong>请求一旦可能已经发出，结果未知时只能查，不能重发。</strong></p>
-          <ul>
-            <li>同一次执行尝试，始终复用同一个发给机构的请求号。这个请求号在首次外呼前就生成并落库，后续重试、查单、回调定位和对账都用它。</li>
-            <li>超时、断连都按“待确认”处理：用原请求号查单或关单，<strong>不换号、不改路由、不新建替代交易</strong>。</li>
-            <li>只有确认原交易已经关闭或明确失败，才允许以新的尝试重新发起。</li>
-          </ul>
-          <p>很多重复扣款事故，根源都是“超时了就换个号再试一次”。换号意味着机构那边是两笔独立的交易，两笔都可能成功。</p>
-          <p>另外，每家机构对请求号的格式、长度要求都不一样。我的做法是把这部分放进按机构版本化的适配层里：由适配器负责生成和解析机构侧的请求身份，业务层只认平台自己的订单号。机构协议升级时新增一个适配版本，不动业务代码。</p>
+          <p>单号对外可见，按日递增的序列会泄露当天大致的交易量。对这个平台的场景，我接受这个代价，换来可读、可排查、可按月路由；对量级敏感的业务，可以在序列上做一层不可预测的映射。</p>
 
-          <h2 id="s4">回调与状态收敛</h2>
-          <p>回调、主动查单、恢复任务，三条路径都可能带来同一笔交易的结果。如果每条路径各自改状态，迟早会出现“成功被失败覆盖”这类问题。</p>
-          <p>所以我把状态变更收口到<strong>一个统一的收敛入口</strong>：</p>
+          <h2 id="s4">同号不同体：幂等的另一半是冲突检测</h2>
+          <p>只做去重的幂等是危险的。设想：账务消费端收到一条支付成功事实，业务单号已经有过账了，于是直接返回成功——但这次事实里的手续费和第一次不一样。如果它只认单号，就会把一个上游的严重错误静默吞掉。</p>
+          <p>所以每一层都是<strong>身份 + 内容摘要</strong>两段判断：身份相同、摘要相同，是重复，返回第一次的结果；身份相同、摘要不同，是矛盾，拒绝并告警。摘要要对规范化后的字段计算（固定字段顺序、金额用整数分、时间统一精度、字段带长度前缀），否则同一事实换个序列化方式就会被误判成冲突。过账层的具体做法在<a href="/notes/ledger-agent-profit-model/">记账那篇</a>里有代码。</p>
+          <p>还有一个细节：比较时<strong>空值不等于不同</strong>。比如早到的查单结果里没有通道流水号，晚到的回调里有，这不是冲突；但两边都有且不相等，就是冲突。把“缺失”和“不同”混为一谈，要么误报冲突，要么放过真正的矛盾。</p>
+
+          <h2 id="s5">对账到底在对什么</h2>
+          <p>“对账”这个词至少包含两件很不一样的事：</p>
           <ol>
-            <li>回调先验签，再把机构的字段和状态码归一成平台语义；</li>
-            <li>所有来源的结果都进入同一个入口；</li>
-            <li>入口里用行锁加条件更新，只允许状态按合法方向前进（比如“处理中 → 成功”），重复或倒退的结果直接返回当前状态；</li>
-            <li>如果两个来源给出互相矛盾的终态，不自动覆盖，而是标记异常、告警，转人工处理。</li>
+            <li><strong>内部一致性核对</strong>：账户余额是否等于它所有分录的累加。它能发现记账程序 bug、绕过写入器直接改余额、分录丢失这类问题。</li>
+            <li><strong>外部核对</strong>：平台记录的交易和通道对账单是否一致。它能发现“通道成功了、我们没收到回调也没查到”的长款，或者“我们记了成功、通道没有”的短款。</li>
           </ol>
-          <p>状态机本身不复杂，关键是<strong>入口唯一</strong>。入口唯一了，加锁、校验、审计都只需要做一次。</p>
+          <p>信付通目前实现的是第一种，按日、按账户自动执行。第二种是下一阶段的工作，第 9 节单独说。</p>
 
-          <h2 id="s5">从支付到账务：Outbox + 消息</h2>
-          <p>支付成功之后，要通知账务域记账：商户应收、手续费、代理商分润……这里又是一个经典的分布式一致性问题。</p>
-          <p>我没有用分布式事务，而是用 <strong>Outbox 模式</strong>：在提交“支付成功”状态的同一个本地事务里，写一条待投递事件；事务提交后，由投递器把事件发到 RocketMQ，账务域消费后记账。</p>
-          <ul>
-            <li>业务状态和待投递事件同生共死，不会出现“状态改了、事件没发”的情况；</li>
-            <li>投递失败就重试，重试有退避、有上限，超过上限进入告警和人工处置；</li>
-            <li>消费方必须幂等，因为同一事件一定可能被投递多次。</li>
-          </ul>
-          <p>更一般地说，我会给跨业务域的协作分级：必须先批准或锁定的，用同步的前置命令；来源事实已经成立、目标域随后必须处理的，用持久化投递加目标域幂等，保证最终收敛；允许偶尔丢失的非关键通知（比如语音播报），才用尽力而为的调用。分级说清楚了，团队就不会在每个接口上反复争论“这里要不要保证一致”。</p>
+          <h2 id="s6">日终余额核对：截点、水位与回退</h2>
+          <p>难点在于：对账任务跑的时候，交易还在继续。你不能为了对账停掉记账，但“现在的余额”已经包含了截点之后的交易。做法如下：</p>
+          <figure class="fig"><div class="fig-scroll"><svg viewBox="0 0 760 330" role="img" aria-labelledby="rc-t" xmlns="http://www.w3.org/2000/svg"><title id="rc-t">日终余额核对的时间轴</title><defs><marker id="rc-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow" d="M0,0 L10,5 L0,10 z"/></marker><marker id="rc-ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow-acc" d="M0,0 L10,5 L0,10 z"/></marker></defs><line class="d-line" x1="40" y1="150" x2="730" y2="150"/><line class="d-line-acc" x1="60" y1="134" x2="60" y2="166"/><text class="d-s" x="60" y="124" text-anchor="middle">对账日 D 00:00</text><line class="d-line-acc" x1="380" y1="134" x2="380" y2="166"/><text class="d-s" x="380" y="124" text-anchor="middle">截点 = D+1 00:00</text><line class="d-line-acc" x1="600" y1="134" x2="600" y2="166"/><text class="d-s" x="600" y="124" text-anchor="middle">截取时刻 T</text><rect class="d-box" x="70" y="176" width="300" height="60" rx="10"/><text class="d-t" x="220.0" y="194.0" text-anchor="middle">流水侧：前一日流水侧结果</text><text class="d-s" x="220.0" y="210.0" text-anchor="middle">+ D 当天分录（过账 ID ≤ 水位）</text><text class="d-s" x="220.0" y="226.0" text-anchor="middle">首次对账则从账户创建起累加</text><rect class="d-acc" x="390" y="176" width="330" height="60" rx="10"/><text class="d-t" x="555.0" y="194.0" text-anchor="middle">账面侧：T 时刻锁内读取余额</text><text class="d-s" x="555.0" y="210.0" text-anchor="middle">记下“最后过账 ID”作为水位</text><text class="d-s" x="555.0" y="226.0" text-anchor="middle">减去 (截点, T] 内且 ID ≤ 水位的分录</text><path class="d-line-acc" d="M600,236 L600,262 L380,262 L380,240" marker-end="url(#rc-ma)"/><text class="d-a" x="490" y="280" text-anchor="middle">倒推回截点</text><rect class="d-acc" x="220" y="40" width="320" height="50" rx="10"/><text class="d-t" x="380.0" y="61.0" text-anchor="middle">三态逐一比较：可用 / 冻结 / 待结算</text><text class="d-s" x="380.0" y="77.0" text-anchor="middle">相等 → 平；不等 → 差异 + 告警</text><path class="d-line" d="M220,176 L300,92" marker-end="url(#rc-m)"/><path class="d-line" d="M555,176 L470,92" marker-end="url(#rc-m)"/><text class="d-m" x="40" y="316" text-anchor="start">同一账户的过账都在该账户行锁内写入，所以“过账 ID ≤ 水位”恰好等于“截取时已提交并计入余额”。</text></svg></div><figcaption><b>FIG 1</b>账面侧在锁内截取当前余额和水位，再把截点之后、水位以内的分录反向应用，得到截点时刻的余额；流水侧从前一日的流水侧结果出发，累加对账日当天水位以内的分录。两边按三种余额态逐一比较。</figcaption></figure>
 
-          <h2 id="s6">账务幂等：身份 + 摘要</h2>
-          <p>账务入口的幂等，我用的是“<strong>业务身份 + 规范化请求摘要</strong>”的组合：</p>
-          <ul>
-            <li>业务身份回答“这是哪件事”，比如某笔支付的成功入账；</li>
-            <li>请求摘要是对规范化后的请求内容做哈希（并带上摘要算法的版本），回答“这件事的内容是什么”。</li>
-          </ul>
-          <p>于是同一个业务身份再次到达时，可以区分两种完全不同的情况：</p>
-          <div class="table-wrap"><table>
-            <thead><tr><th>情况</th><th>含义</th><th>处理</th></tr></thead>
-            <tbody>
-              <tr><td>身份相同、摘要相同</td><td>正常的重复投递</td><td>直接返回第一次的处理结果</td></tr>
-              <tr><td>身份相同、摘要不同</td><td>同一件事，内容却变了</td><td>判为事实冲突，拒绝并告警，绝不覆盖</td></tr>
-              <tr><td>身份不存在</td><td>新的事实</td><td>正常记账</td></tr>
-            </tbody>
-          </table></div>
-          <p>第二种情况特别重要。只按业务号去重的系统，会把“金额被改过的重放”当成普通重复悄悄吞掉，问题被掩盖，直到对账时才发现差额。</p>
-          <p>账务入口的返回结果我也会明确分类：已记账、幂等返回、业务拒绝、依赖未就绪、事实冲突、可重试错误。调用方根据分类决定是结束、稍后重试还是转人工，而不是把所有异常都当成“失败重试”。</p>
+          <figure class="code"><figcaption><span>DailyBalanceCheck.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-t">Result</span> check(<span class="tk-t">Account</span> acc, <span class="tk-t">LocalDate</span> day) {
+    <span class="tk-t">LocalDateTime</span> cutoff = day.plusDays(<span class="tk-n">1</span>).atStartOfDay();
+    <span class="tk-t">Capture</span> c = inTx(() -&gt; ledger.lockBalance(acc.id()).capture());   <span class="tk-c">// 余额 + 最后过账 ID + 时刻</span>
+    <span class="tk-t">Amounts</span> book = c.balance();
+    <span class="tk-k">if</span> (!c.time().isBefore(cutoff)) {                                  <span class="tk-c">// 截取晚于截点：倒推</span>
+        book = book.unapply(entries(acc, cutoff, c.time(), c.lastPostingId()));
+    }
+    <span class="tk-t">Result</span> prev = results.find(acc.id(), day.minusDays(<span class="tk-n">1</span>));
+    <span class="tk-t">Amounts</span> entry = prev == <span class="tk-k">null</span> ? <span class="tk-t">Amounts</span>.<span class="tk-t">ZERO</span> : prev.entrySide();
+    <span class="tk-t">LocalDateTime</span> from = prev == <span class="tk-k">null</span> ? acc.createdAt() : day.atStartOfDay();
+    entry = entry.apply(entries(acc, from, cutoff, c.lastPostingId()));
+    <span class="tk-k">return</span> <span class="tk-t">Result</span>.of(acc, day, c.lastPostingId(), book, entry, book.equals(entry) ? <span class="tk-t">BALANCED</span> : <span class="tk-t">DIFFERENT</span>);
+}</code></pre></figure>
 
-          <h2 id="s7">复式记账的几条硬规则</h2>
+          <p>几个关键点：</p>
           <ul>
-            <li><strong>有借必有贷，借贷必相等</strong>：每笔资金事实拆成平衡的分录，任何一笔不平衡都直接拒绝。</li>
-            <li><strong>分录只追加，不修改、不删除</strong>：历史是不可变的，余额是分录累积的结果。</li>
-            <li><strong>余额不允许透支</strong>：扣减前在同一事务里校验，校验和扣减不能分开。</li>
-            <li><strong>固定顺序加锁</strong>：一次记账可能涉及多个账户，按固定顺序（比如账户 ID 升序）加行锁，避免并发记账时互相死锁。</li>
-            <li><strong>锁内不做重活</strong>：持锁期间不扫描大量历史分录，统计类工作放到锁外或异步去做。</li>
-          </ul>
-          <p>容量规划上还有一个容易被忽略的点：一笔交易会拆成多条分录、触及多个账户，所以账务的压力要按“记账放大系数”估算，而不是直接拿交易笔数。</p>
-
-          <h2 id="s8">日终对账：截点与水位</h2>
-          <p>对账分两层：平台和支付机构之间的外部对账，以及平台内部各账户、各业务域之间的内部对账。这里说说内部对账的一个细节：<strong>截点怎么定</strong>。</p>
-          <p>如果日终任务“跑的时候查到哪算哪”，那任务晚跑五分钟，结果就不一样，对账结果不可复现。我的做法是：</p>
-          <ul>
-            <li>以自然日的逻辑零点作为截点，而不是任务实际运行的时间；</li>
-            <li>每个账户维护一个记账水位，记录已经处理到哪里；对账只统计截点之前、水位之内的分录；</li>
-            <li>截点之后才到达、但属于前一天的事实，按规则计入下一个周期或进入差异处理，不回头改已经出过的结果。</li>
-          </ul>
-          <p>这样无论任务几点跑、跑几次，同一天的对账结果都一样。</p>
-
-          <h2 id="s9">出错之后：冲销，而不是改库</h2>
-          <p>系统再严谨，也会遇到需要纠正的情况：渠道差错、人工操作失误、规则配置错误。我的原则是：</p>
-          <ul>
-            <li><strong>不直接改数据库</strong>。改库会破坏审计链，也很容易改错第二次。</li>
-            <li>纠错走受控流程：经过复核后，对原过账做一笔<strong>精确冲销</strong>，必要时再按正确的内容重新过账。冲销本身也是新的、可审计的记录。</li>
-            <li>自动重试有边界：超过次数或时间仍未收敛的，升级为告警和人工处置任务，处置动作同样留痕。</li>
+            <li><strong>用过账 ID 做水位，而不是时间。</strong>同一账户的所有过账都在该账户行锁内写入并更新“最后过账 ID”，所以对单个账户来说，ID ≤ 水位精确等于“截取时已经提交、已经计入余额”。只用时间做边界，会在毫秒级并发和时钟精度上出错。</li>
+            <li><strong>流水侧逐日累加。</strong>每天只扫当天分录，成本和日交易量成正比，而不是和账户历史成正比。代价是流水侧会继承前一天的结果，但账面侧每天独立取数，一旦有差异会持续可见，不会被掩盖。</li>
+            <li><strong>三种余额态分别比较。</strong>总额对得上而态不对（比如该在待结算的钱跑到了可用），同样是要拦住的问题——它直接影响商户能提现多少。</li>
+            <li><strong>只对过去的日子。</strong>对账日必须早于今天；截点之后才创建的账户不参与。</li>
+            <li><strong>算术溢出直接失败</strong>，未知的余额态直接失败，不做“尽力而为”的跳过。</li>
           </ul>
 
-          <h2 id="s10">一份检查清单</h2>
-          <p>最后把上面的内容压缩成一份清单，我在评审支付类系统时会逐条过：</p>
-          <ol>
-            <li>调用外部机构前，交易意图是否已经持久化？外部调用是否在事务之外？</li>
-            <li>超时后是查单还是重发？重发时是否换了请求号？</li>
-            <li>交易状态是否只有一个变更入口？状态能不能倒退？</li>
-            <li>跨域通知是否和业务状态在同一个本地事务里落库？</li>
-            <li>账务幂等能否区分“正常重复”和“内容被改过的重放”？</li>
-            <li>分录是否只追加？余额是否可能透支？多账户加锁顺序是否固定？</li>
-            <li>对账结果是否和任务运行时间无关？</li>
-            <li>纠错是否通过冲销完成，而不是直接改库？</li>
-          </ol>
-          <p>如果你的系统在这几条上有拿不准的地方，<a href="/#contact">欢迎找我聊聊</a>，也可以看看<a href="/work/ciftopay/">信付通的案例</a>里这些规则是怎么落到架构上的。</p>
+          <h2 id="s7">结果不可变，差异只登记结论</h2>
+          <p>每个账户每天一条对账结果，同时记录截取时的水位、账面三态和流水三态。它有几条约束：</p>
+          <ul>
+            <li><strong>已有结果就跳过</strong>，任务可以随便重跑；并发跑时由唯一键保留先完成的那条，后来者直接放弃。</li>
+            <li><strong>结果不可修改。</strong>出现差异时，运营只能对“未处理”的差异登记处理人和处理结论，登记动作写操作日志；已经处理过的不能再改。</li>
+            <li><strong>查询限制在连续三个自然月内</strong>，因为分录按月分表，跨太多月的查询会变成全表扫描。</li>
+          </ul>
+          <p>“为什么不允许重新对账覆盖结果”是我被问得最多的问题。答案是：对账结果本身就是审计证据。如果差异修好后可以重跑覆盖成“平”，那么“曾经出现过差异”这件事就消失了。正确的流程是：差异保留，登记结论，修正走冲销，第二天的结果自然恢复为平。</p>
+
+          <h2 id="s8">错了怎么办：冲销，而不是改库</h2>
+          <p>账务里没有“改一下数据”。任何修正都是一笔新的过账：人工冲销必须关联原过账，生成与原分录方向相反、金额完全一致的分录，同样经过写入器的全部守卫（平衡、为正、不为负、加锁顺序）。冻结、解冻也是过账场景。这样，任何时刻的余额都可以由分录完整重放出来，日终核对也才有意义——如果允许直接改余额，核对能发现差异，却永远说不清差异从哪来。</p>
+
+          <h2 id="s9">还没做的：通道对账单</h2>
+          <p>必须坦白：通道对账单核对在当前代码里还没有实现。我把它当作下一阶段最重要的事，设计上已经为它留好了位置：</p>
+          <ul>
+            <li><strong>匹配键现成。</strong>每次尝试固定的通道请求号和回执里冻结的通道流水号，就是逐笔匹配的键；状态机已经保证了它们不会被覆盖。</li>
+            <li><strong>差异分三类</strong>：通道有、平台无（长款），平台有、通道无（短款），双方都有但金额或状态不符。长款要走“查询 → 收敛”的同一条路径补齐，而不是绕过状态机直接改成功。</li>
+            <li><strong>修正复用冲销。</strong>对账单发现的问题，最终落到账上依然是关联原过账的冲销分录，以及差错处理记录。</li>
+          </ul>
+          <p>在它上线之前，外部一致性靠的是：每次尝试都有恢复任务，不会有处理中的订单被遗忘；以及冲突事实会告警并停用对应的通道产品。这能挡住大部分问题，但挡不住“通道成功、我们永远没收到任何信号”的情况——这正是对账单核对存在的意义。</p>
+
+          <h2 id="s10">取舍与如果重来</h2>
+          <div class="table-wrap"><table><thead><tr><th>选择</th><th>得到</th><th>付出</th></tr></thead><tbody><tr><td>每层独立身份 + 唯一键兜底</td><td>每种重复都有明确防线，易于测试</td><td>身份多，新人要先理解整张表</td></tr><tr><td>幂等同时做冲突检测</td><td>上游错误不会被静默吞掉</td><td>需要稳定的规范化摘要，字段演进要带版本</td></tr><tr><td>日终逐日累加流水侧</td><td>成本与日量成正比</td><td>依赖前一天结果，首次或断档时要从头累加</td></tr><tr><td>结果不可变</td><td>对账结果可作为审计证据</td><td>差异修好后历史上仍保留差异记录，需要运营理解</td></tr></tbody></table></div>
+
+          <p>如果重来，我会把通道对账单核对排在日终余额核对之前，或者至少同时做：内部一致性是程序正确性的问题，外部一致性是资金安全的问题，后者的优先级应该更高。另外，我会让流水侧每月做一次“从账户创建起全量累加”的校验，用来发现逐日链条里早期就存在的问题。</p>
+
+          <h2 id="s11">一份检查清单</h2>
+          <ul>
+            <li>每一层的幂等身份是否写清楚了，并且有数据库唯一约束兜底？</li>
+            <li>幂等命中时，是否返回与第一次相同的结果？重放是否需要凭证？</li>
+            <li>同一身份、内容不同时，是否拒绝并告警？“缺失”和“不同”是否区分？</li>
+            <li>单号序列丢失后，有没有恢复手段？恢复前是否不会出现重复单号？</li>
+            <li>对账是否用水位而不是时间截取？是否按余额态分别比较？</li>
+            <li>对账结果是否不可修改？修正是否只能通过冲销过账？</li>
+            <li>是否有外部对账单核对？没有的话，哪些异常目前是兜不住的？</li>
+          </ul>
+          <p class="note-src">本文基于我在信付通（CiftoPay）项目中的实际设计整理，代码为脱敏后的示意改写。</p>
 
         </div>
         <aside class="author-box">
@@ -212,9 +223,20 @@
         </aside>
 
         <nav class="pager" aria-label="更多笔记">
-          <a class="" href="/notes/"><small>← 全部笔记</small><b>技术笔记</b></a>
-          <a class="is-next" href="/notes/ai-coding-delivery/"><small>下一篇 →</small><b>用 AI 编程（Claude Code / SDD / TDD）做交付的实践</b></a>
+          <a class="" href="/notes/payment-order-state-machine/"><small>← 上一篇</small><b>支付订单状态机与渠道回调：两层状态、三段执行与结果收敛</b></a>
+          <a class="is-next" href="/notes/ledger-agent-profit-model/"><small>下一篇 →</small><b>分润与记账模型：复式分录、逐级价差与按比例冲回</b></a>
         </nav>
+      <section class="cta-band reveal" aria-label="联系我">
+        <div>
+          <h2 class="cta-title">想聊聊文中的问题，或者有类似的系统要做？</h2>
+          <p class="cta-text">先约 30 分钟免费聊聊：你的背景、目标和时间线。我会如实告诉你我能不能做、怎么做、大概要多久。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+        </div>
+      </section>
       </article>
     </div>
   </main>
@@ -239,7 +261,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="/main.js?v=202610290107" defer></script>
+  <script src="/main.js?v=202610290300" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>

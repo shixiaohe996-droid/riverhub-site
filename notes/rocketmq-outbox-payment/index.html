@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RocketMQ 与 Outbox：支付事实扇出、重试、死信，以及为什么后来改成有序直调 · 史晓河的技术笔记</title>
+  <meta name="description" content="为什么用普通消息加 Outbox 而不用 RocketMQ 事务消息；Topic、Tag、消费组怎么划分；提交后 ACK、退避重试和死信重投；以及资金义务为何最终改为有序直调。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/notes/rocketmq-outbox-payment/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="RocketMQ 与 Outbox：支付事实扇出、重试、死信，以及为什么后来改成有序直调">
+  <meta property="og:description" content="为什么用普通消息加 Outbox 而不用 RocketMQ 事务消息；Topic、Tag、消费组怎么划分；提交后 ACK、退避重试和死信重投；以及资金义务为何最终改为有序直调。">
+  <meta property="og:url" content="https://riverhub.top/notes/rocketmq-outbox-payment/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RocketMQ 与 Outbox：支付事实扇出、重试、死信，以及为什么后来改成有序直调">
+  <meta name="twitter:description" content="为什么用普通消息加 Outbox 而不用 RocketMQ 事务消息；Topic、Tag、消费组怎么划分；提交后 ACK、退避重试和死信重投；以及资金义务为何最终改为有序直调。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "Article", "headline": "RocketMQ 与 Outbox：支付事实扇出、重试、死信，以及为什么后来改成有序直调", "description": "为什么用普通消息加 Outbox 而不用 RocketMQ 事务消息；Topic、Tag、消费组怎么划分；提交后 ACK、退避重试和死信重投；以及资金义务为何最终改为有序直调。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/rocketmq-outbox-payment/", "image": "https://riverhub.top/assets/og.jpg", "mainEntityOfPage": "https://riverhub.top/notes/rocketmq-outbox-payment/", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}, "publisher": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css?v=202610290300">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#cases" class="nav-link">其他项目</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link" aria-current="page">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top" class="anchor-top" aria-hidden="true"></span>
+    <section class="page-hero">
+      <div class="container">
+        <div class="article">
+          <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">笔记</a><span class="sep">/</span><span aria-current="page">消息 · 一致性</span></nav>
+          <h1 class="page-title">RocketMQ 与 Outbox：支付事实扇出、重试、死信，以及为什么后来改成有序直调</h1>
+          <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 8 分钟</span><span class="dot"></span><span class="note-tag">消息 · 一致性</span></div>
+          <nav class="article-toc" aria-label="文章目录"><b>CONTENTS</b><ol><li><a href="#s1">先问一句：这条链路为什么需要 MQ</a></li><li><a href="#s2">普通消息 + Outbox，而不是事务消息</a></li><li><a href="#s3">消息长什么样：版本化的最小完整事实</a></li><li><a href="#s4">Topic、Tag 与消费组怎么划</a></li><li><a href="#s5">发送端：只在 Broker 确认后标记已发</a></li><li><a href="#s6">消费端：先提交，后 ACK</a></li><li><a href="#s7">重试、死信与 runbook</a></li><li><a href="#s8">不要顺序消息：用幂等和“依赖未就绪”换</a></li><li><a href="#s9">版本演进：先部署消费者</a></li><li><a href="#s10">后来的收敛：资金义务改回有序直调</a></li><li><a href="#s11">如果重来</a></li><li><a href="#s12">小结</a></li></ol></nav>
+        </div>
+      </div>
+    </section>
+    <div class="container article-wrap">
+      <article class="article">
+        <div class="prose">
+          <p>很多支付系统一上来就是“下单发消息、消费方各自处理”，好像 MQ 是支付架构的标配。信付通（CiftoPay）里 RocketMQ 的位置要克制得多：它<strong>只负责运输、缓冲和扇出，从来不是事实来源</strong>。这篇讲我们在“支付成功事实扇出”这个特性上做的一组决策——为什么不用 RocketMQ 事务消息、消息体怎么设计、重试和死信归谁、为什么不要顺序消息——以及后来为什么又把最关键的两条资金义务收回成了 Outbox 有序直调。最后这段演进我会如实讲，它比“一开始就设计对了”更有参考价值。</p>
+
+          <div class="keypoints"><b>TL;DR</b><ul>
+            <li>事实先和业务状态在同一个本地事务里写进 Outbox，再由投递器发<strong>普通消息</strong>；不叠加事务消息这第二套可靠机制。</li>
+            <li>消息是版本化的“最小完整事实”：固定信封 + 类型化载荷，不是只有 ID 的通知，也不是整张订单。</li>
+            <li>每个领域事实一个 Topic、用 Tag 区分类型；每项义务一个消费组，各自负责 ACK、重试、死信和告警。</li>
+            <li>不用顺序消息：重复和乱序靠业务幂等 + “依赖未就绪就重试”吸收。</li>
+            <li>后来，记账和分润这两条有严格先后依赖的资金义务，改由 Outbox 按顺序直调；MQ 留给真正多订阅方的事实。</li>
+          </ul></div>
+
+          <h2 id="s1">先问一句：这条链路为什么需要 MQ</h2>
+          <p>引入 MQ 的理由只有一个：<strong>一个支付成功事实，要触发多个彼此独立的后续义务</strong>——账务入账、代理分润、收款语音播报，以及以后还会出现的报表、风控等。如果支付域逐个调用它们，支付域就得知道所有下游、跟踪每个下游的成败；下游越多，支付域越重。</p>
+          <p>但 MQ 带来的东西也很明确：至少一次投递、可能重复、可能乱序、Broker 本身可能不可用。所以第一条原则是：<strong>支付成功这件事是否成立，绝不取决于消息有没有发出去</strong>。事实在数据库里，MQ 只是把它搬给别人。</p>
+
+          <h2 id="s2">普通消息 + Outbox，而不是事务消息</h2>
+          <p>RocketMQ 有事务消息：先发半消息，执行本地事务，再提交或回滚，Broker 收不到结论还会回查。看上去正好解决“业务和消息一致”的问题。我们最后选的是<strong>普通消息 + Outbox</strong>，理由有三：</p>
+          <ol>
+            <li><strong>Broker 不可用时，支付成功也必须能落库。</strong>事务消息要求先把半消息发到 Broker，Broker 挂了，本地事务要么不做、要么脱离事务消息的保护。而 Outbox 是同一个本地事务里的一行数据，Broker 挂多久，它就安静地等多久，恢复后补发。</li>
+            <li><strong>不为同一事实叠两套可靠机制。</strong>事务回查本质上就是“去查一下数据库里这件事成没成”——这正是 Outbox 投递器在做的事。两套机制同时存在，出问题时你得先判断是哪一套没兜住。</li>
+            <li><strong>两种部署形态都成立。</strong>项目同时支持单体和微服务两种拓扑，Outbox 只依赖本地事务，两边行为一致；仓库里也有分别针对两种拓扑的冒烟脚本。</li>
+          </ol>
+          <figure class="fig"><div class="fig-scroll"><svg viewBox="0 0 760 380" role="img" aria-labelledby="mq-t" xmlns="http://www.w3.org/2000/svg"><title id="mq-t">支付成功事实的两种投递路径</title><defs><marker id="mq-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow" d="M0,0 L10,5 L0,10 z"/></marker><marker id="mq-ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow-acc" d="M0,0 L10,5 L0,10 z"/></marker></defs><rect class="d-zone" x="12" y="12" width="230" height="356" rx="14"/><text class="d-m" x="24" y="30">支付域 · 同一个本地事务</text><rect class="d-box" x="30" y="48" width="194" height="52" rx="10"/><text class="d-t" x="127.0" y="70.0" text-anchor="middle">订单状态 → 成功</text><text class="d-s" x="127.0" y="86.0" text-anchor="middle">条件更新</text><rect class="d-acc" x="30" y="116" width="194" height="52" rx="10"/><text class="d-t" x="127.0" y="138.0" text-anchor="middle">Outbox：支付成功事实</text><text class="d-s" x="127.0" y="154.0" text-anchor="middle">唯一键：租户+类型+订阅方+单号</text><rect class="d-box" x="30" y="184" width="194" height="52" rx="10"/><text class="d-t" x="127.0" y="206.0" text-anchor="middle">Outbox：收款播报</text><text class="d-s" x="127.0" y="222.0" text-anchor="middle">独立订阅方</text><rect class="d-box" x="30" y="252" width="194" height="52" rx="10"/><text class="d-t" x="127.0" y="274.0" text-anchor="middle">商户通知任务</text><text class="d-s" x="127.0" y="290.0" text-anchor="middle">与状态同生共死</text><rect class="d-acc" x="282" y="116" width="150" height="52" rx="10"/><text class="d-t" x="357.0" y="138.0" text-anchor="middle">Relay / 投递器</text><text class="d-s" x="357.0" y="154.0" text-anchor="middle">租约 · 代次 · 退避</text><path class="d-line-acc" d="M224,142 L280,142" marker-end="url(#mq-ma)"/><rect class="d-zone" x="462" y="12" width="286" height="170" rx="14"/><text class="d-m" x="474" y="30">路径 A · 多订阅方扇出（RocketMQ）</text><rect class="d-box" x="476" y="40" width="120" height="46" rx="10"/><text class="d-t" x="536.0" y="59.0" text-anchor="middle">Topic（按领域）</text><text class="d-s" x="536.0" y="75.0" text-anchor="middle">Tag = 事实类型</text><rect class="d-box" x="614" y="34" width="122" height="36" rx="10"/><text class="d-t" x="675.0" y="56.0" text-anchor="middle">消费组：记账</text><rect class="d-box" x="614" y="78" width="122" height="36" rx="10"/><text class="d-t" x="675.0" y="100.0" text-anchor="middle">消费组：分润</text><rect class="d-box" x="614" y="122" width="122" height="36" rx="10"/><text class="d-t" x="675.0" y="144.0" text-anchor="middle">消费组：……</text><path class="d-line" d="M432,132 L474,64" marker-end="url(#mq-m)"/><text class="d-m" x="430" y="96" text-anchor="end">Broker ack 后标记</text><path class="d-line" d="M596,63 L612,52" marker-end="url(#mq-m)"/><path class="d-line" d="M596,63 L612,96" marker-end="url(#mq-m)"/><path class="d-line" d="M596,63 L612,140" marker-end="url(#mq-m)"/><text class="d-m" x="476" y="116" text-anchor="start">各组自管 ACK/重试/死信</text><text class="d-m" x="476" y="134" text-anchor="start">不顺序、可重复、靠幂等</text><rect class="d-zone" x="462" y="196" width="286" height="172" rx="14"/><text class="d-m" x="474" y="214">路径 B · 资金义务有序直调（现状）</text><rect class="d-box" x="476" y="226" width="258" height="38" rx="10"/><text class="d-t" x="605.0" y="249.0" text-anchor="middle">① 准备平台账户（未就绪 → 等待）</text><rect class="d-acc" x="476" y="272" width="258" height="38" rx="10"/><text class="d-t" x="605.0" y="295.0" text-anchor="middle">② 支付入账 → 分类结果</text><rect class="d-acc" x="476" y="318" width="258" height="38" rx="10"/><text class="d-t" x="605.0" y="341.0" text-anchor="middle">③ 分润确认 → 分类结果</text><path class="d-line" d="M432,150 L456,150 L456,245 L474,245" marker-end="url(#mq-m)"/><text class="d-m" x="446" y="200" text-anchor="end">1/5/15/60 分钟</text><path class="d-line" d="M605,264 L605,270" marker-end="url(#mq-m)"/><path class="d-line" d="M605,310 L605,316" marker-end="url(#mq-m)"/></svg></div><figcaption><b>FIG 1</b>左侧三类义务和订单状态在同一个本地事务里提交；投递器按租约和代次领取 Outbox。路径 A 是最初的扇出设计，路径 B 是后来资金义务的现状：按依赖顺序直调，用分类结果决定完成、失败还是退避重试。</figcaption></figure>
+
+
+          <h2 id="s3">消息长什么样：版本化的最小完整事实</h2>
+          <p>消息体有三种常见做法，我们都想过：</p>
+          <ul>
+            <li><strong>只发 ID</strong>，消费方回查支付域：消息小，但每个消费者都回头调支付域，耦合和负载都回来了，支付域一抖，所有下游一起抖。</li>
+            <li><strong>发整张订单</strong>：消费方拿到一堆用不着的字段，任何订单表的改动都会变成消息契约的改动。</li>
+            <li><strong>发一个任意 Map</strong>：最灵活，也最没有契约。</li>
+          </ul>
+          <p>最终的形态是<strong>固定信封 + 类型化载荷</strong>：信封里是事件 ID、事件类型、版本、租户、业务单号、发生时间；载荷是消费方完成义务所需的最小完整事实——金额、手续费、计价快照、代理价格快照等（为什么要带计价快照，见<a href="/notes/ledger-agent-profit-model/">记账与分润那篇</a>）。事件类型和载荷定义在支付域对外的 API 模块里，消费方直接依赖来源域的契约，不复制 DTO；也刻意不抽全仓通用的事件基类或泛型领域事件。</p>
+          <p>租户 ID 作为消息属性随消息传递，消费端统一的钩子会断言它非空并在租户上下文里执行消费逻辑。多租户系统里，“消费时忘了切租户”是一种很隐蔽的数据串号风险，放在框架层统一处理比靠每个 Listener 自觉可靠得多。</p>
+
+          <h2 id="s4">Topic、Tag 与消费组怎么划</h2>
+          <ul>
+            <li><strong>每个领域事实一个 Topic，Tag 表示事实类型。</strong>既不为每个消费者建一个 Topic（那等于生产方知道消费方），也不搞一个全局事件 Topic（所有人订阅所有东西，过滤全靠自觉）。</li>
+            <li><strong>每项义务一个消费组</strong>，集群消费而不是广播；消费组名按环境区分，避免测试环境的消费者抢走别的环境的消息。</li>
+            <li><strong>消息 Key 用业务单号</strong>，排查时能按单号在 Broker 侧直接检索。</li>
+          </ul>
+
+          <h2 id="s5">发送端：只在 Broker 确认后标记已发</h2>
+          <p>投递器按“到期 + 未被占用”领取 Outbox 行，领取时带租约和代次（generation）；只有拿到 Broker 的发送确认之后才把这一行标记为已发送，完成时也按代次条件更新，防止一个超时的旧实例把新实例的结果覆盖掉。</p>
+          <figure class="code"><figcaption><span>FactRelay.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-k">void</span> relay(<span class="tk-t">OutboxRow</span> row) {
+    <span class="tk-k">int</span> gen = row.retryCount() + <span class="tk-n">1</span>;
+    <span class="tk-k">if</span> (!outbox.claim(row.id(), gen, now().plusSeconds(<span class="tk-n">60</span>))) <span class="tk-k">return</span>;   <span class="tk-c">// 别人领走了</span>
+    <span class="tk-k">try</span> {
+        <span class="tk-t">SendResult</span> r = producer.syncSend(topicOf(row), tagOf(row), row.bizNo(), row.payload());
+        <span class="tk-k">if</span> (r.isOk()) { outbox.finish(row.id(), gen, <span class="tk-t">SENT</span>); <span class="tk-k">return</span>; }
+    } <span class="tk-k">catch</span> (<span class="tk-t">RuntimeException</span> e) {
+        log.warn(<span class="tk-s">"relay failed, outboxId={}, gen={}"</span>, row.id(), gen, e);
+    }
+    <span class="tk-c">// 技术性失败：保持待发送，固定间隔再试；次数只用来告警，不会把事实判死</span>
+    outbox.finish(row.id(), gen, <span class="tk-t">PENDING</span>, now().plusSeconds(<span class="tk-n">30</span>));
+}</code></pre></figure>
+
+          <p>两条容易被忽略的约定：<strong>允许重复发送</strong>（标记失败后重发，消费方会看到两次，这是设计内的）；<strong>技术性发送失败永不因次数耗尽而放弃</strong>——达到告警阈值只告警，绝不把支付成功事实改成失败或删掉。固定间隔起初够用，只有积压真的证明它造成压力时，才改成有上限的退避。</p>
+          <p>还有一点是边界：<strong>Broker 确认之后，支付域的责任就结束了</strong>。支付域不跟踪“谁消费了没有”，不汇总下游状态，也不因为下游失败重新打开 Outbox。否则支付域又会变回那个什么都要管的中心。</p>
+
+          <h2 id="s6">消费端：先提交，后 ACK</h2>
+          <p>消费方只在<strong>本模块业务事务成功提交</strong>，或者按稳定业务身份判定为幂等成功之后才 ACK。幂等靠的是<strong>业务唯一约束</strong>（例如“同一支付单号的入账过账只能有一条”），而不是消息 ID 去重表——事件 ID 在写 Outbox 时就固定了，但真正定义“同一件事”的是业务身份和事实摘要。</p>
+          <figure class="code"><figcaption><span>PaymentFactListener.java</span><span>示意 · 已脱敏改写</span></figcaption><pre><code><span class="tk-k">public</span> <span class="tk-k">void</span> onMessage(<span class="tk-t">Message</span> msg) {
+    <span class="tk-t">TenantScope</span>.runWith(msg.property(<span class="tk-s">"tenant-id"</span>), () -&gt; {      <span class="tk-c">// 租户缺失直接失败</span>
+        <span class="tk-t">PaymentFact</span> fact = parse(msg.body());
+        fact.validateVersion(<span class="tk-t">SUPPORTED</span>);                          <span class="tk-c">// 不认识的版本：不 ACK</span>
+        <span class="tk-t">Result</span> r = ledger.postPayment(fact);                     <span class="tk-c">// 本地事务 + 业务唯一键</span>
+        <span class="tk-k">switch</span> (r.type()) {
+            <span class="tk-k">case</span> <span class="tk-t">POSTED</span>, <span class="tk-t">IDEMPOTENT</span> -&gt; { }                       <span class="tk-c">// 正常返回 = ACK</span>
+            <span class="tk-k">case</span> DEPENDENCY_NOT_READY, TECHNICAL_RETRYABLE -&gt;
+                <span class="tk-k">throw</span> <span class="tk-k">new</span> <span class="tk-t">RetryLater</span>(r);                        <span class="tk-c">// 交给 MQ 重投</span>
+            <span class="tk-k">case</span> FACT_CONFLICT, BUSINESS_REJECTED -&gt;
+                alert(<span class="tk-s">"payment fact rejected"</span>, fact, r);        <span class="tk-c">// 重试无用，见下文“如果重来”</span>
+        }
+    });
+}</code></pre></figure>
+
+          <p>不预设 Inbox：只有某个模块确实需要把“接收”和“处理”拆开时，才为它单独加收件表或任务，不要求所有消费者套同一个流程。</p>
+
+          <h2 id="s7">重试、死信与 runbook</h2>
+          <p>Broker 接收之后的失败恢复，<strong>归各消费组自己</strong>：技术异常、依赖未就绪交给 MQ 重投，重试耗尽进入该组的死信队列并告警。修复之后，所属模块按 runbook 使用 RocketMQ 自带的<strong>组级死信重投</strong>，保持原消息体、原 Key 和稳定业务身份。</p>
+          <p>runbook 里有两条“不做”：<strong>不直接改库</strong>来“修正”消费结果；<strong>不建设项目级通用重放服务</strong>。通用重放服务听起来很美，实际上它会变成一个能绕过所有业务校验、往任何消费者塞任何消息的后门。真需要人工重放时，只为明确的模块和场景加受控操作，并且人工不得修改消息体。</p>
+
+          <h2 id="s8">不要顺序消息：用幂等和“依赖未就绪”换</h2>
+          <p>顺序消息在 RocketMQ 里要求同一分区键的消息进同一队列、单线程消费，一条卡住后面全堵。我们的选择是不用：重复和乱序由两样东西吸收——</p>
+          <ul>
+            <li><strong>业务幂等</strong>：重复的事实撞业务唯一键，按摘要判定为幂等成功；</li>
+            <li><strong>依赖未就绪即重试</strong>：比如分润确认先于支付入账到达，账务发现平台账户余额还不足以覆盖分润，返回“依赖未就绪”，消息稍后重投，自然就排到入账之后了。</li>
+          </ul>
+          <p>只有将来出现了真实的、无法用“依赖未就绪”表达的不变量，才考虑按支付单号做局部顺序。</p>
+
+          <h2 id="s9">版本演进：先部署消费者</h2>
+          <p>版本规则很简单：只新增可选字段不升版本；删字段、改含义、改必填性才升版本。消费方显式校验自己支持的版本，<strong>收到不支持的版本不 ACK</strong>，最终进死信并告警——宁可停下来，也不要用错误的理解处理钱。发布顺序永远是<strong>先部署能识别新版本的消费者，再部署发新版本的生产者</strong>。每个 Listener 只用简单分支处理已知版本，不建版本注册中心。</p>
+
+          <h2 id="s10">后来的收敛：资金义务改回有序直调</h2>
+          <p>上面这套是“支付成功事实扇出”特性的设计。后来在一次 Outbox 约定的统一整理中，我们把<strong>账务入账和代理分润</strong>这两条资金义务合并成一个订阅方，由 Outbox 投递器<strong>按顺序直接调用</strong>：先确认平台手续费账户已就绪，再入账，入账成功或幂等后再确认分润。原来为这两项义务准备的 MQ 订阅方因为没有引用被删除，并加了一个契约测试，双向比对 Outbox 的字典数据和代码里的枚举，防止“库里还有、代码里没了”这种漂移。收款播报和通道产品停用请求各自是独立的订阅方。</p>
+          <p>直调路径的可靠性完全来自 Outbox：领取带 60 秒租约和代次；下游返回分类结果，已过账/幂等算完成，事实冲突/业务拒绝算失败，依赖未就绪/技术可重试按 1、5、15、60 分钟退避；首次投递超过 24 小时仍未完成就转人工，人工重投必须带上期望的重试次数，防止两个人同时点；成功的 Outbox 保留 30 天后按每批 1000 条清理。</p>
+          <p>为什么改？下面是我回头看的判断，不是当时文档里的原话：</p>
+          <ul>
+            <li><strong>这两条义务之间有硬依赖。</strong>分润必须在入账之后，退款时分润冲回必须在退款记账之前。在 MQ 上它们是两个独立消费组，只能靠“依赖未就绪→重投”间接排队，正确但会制造大量无意义的重试和告警噪音。</li>
+            <li><strong>两个消费者不值得一跳异步。</strong>MQ 的解耦价值在“多个、可增长、彼此无关”的订阅方；对两个强相关、同属资金核心的义务，它只多了一跳、多了一处要监控的积压。</li>
+            <li><strong>人工介入更清楚。</strong>一行 Outbox 就是一项资金义务的完整状态：做到哪一步、下游怎么回答、下一次什么时候试。比在两个消费组的死信里拼图要直观得多。</li>
+          </ul>
+          <p>这不是否定 MQ。真正“一个事实、多个彼此无关的订阅方”的场景，前面那套 Topic/消费组/死信的约定依然是我们的标准做法。</p>
+
+          <h2 id="s11">如果重来</h2>
+          <ul>
+            <li><strong>先画依赖，再选传输。</strong>如果一开始就把“哪些义务之间有先后依赖”画清楚，记账和分润从第一天就会是有序直调，MQ 只承担播报这类彼此独立的订阅方，能省掉一轮实现和一轮删除。</li>
+            <li><strong>确定性拒绝不要只留在告警里。</strong>消费端对“事实冲突/业务拒绝”记告警后确认消费，理由是重试没有意义。但这样证据只存在于日志和告警系统里。我现在更倾向于把它们显式送进死信或落一张拒绝记录，让“需要人看的事实”有一个可查询、可重投的归宿。</li>
+            <li><strong>把 runbook 做成可执行的演练。</strong>“组级死信重投”写在文档里很清楚，但它应该在预发环境定期跑一次：制造失败、进死信、修复、重投、验证幂等。</li>
+          </ul>
+
+          <h2 id="s12">小结</h2>
+          <p>在支付链路里用好 RocketMQ，关键不在会用多少特性，而在<strong>守住边界</strong>：事实在数据库里，Outbox 和业务同事务；只在 Broker 确认后算发出，技术失败永不放弃；消息是版本化的最小完整事实；每个消费组自管 ACK、重试和死信；不用顺序消息，用幂等和依赖未就绪换；先部署消费者。再加一条后来学到的：<strong>有硬依赖的资金义务，有序直调往往比异步扇出更简单、更可靠</strong>。</p>
+          <p class="note-src">本文基于我在信付通（CiftoPay）项目中的设计记录和代码整理，Topic、消费组等名称均已改为通用描述，代码为示意改写。</p>
+
+        </div>
+        <aside class="author-box">
+          <img src="/assets/avatar.jpg" width="56" height="56" alt="史晓河头像" loading="lazy">
+          <div>
+            <b>史晓河</b>
+            <p>技术架构师，13 年一线研发与架构经验，长期做支付收单与清结算。开放远程工作与项目合作，<a href="/#contact">欢迎联系</a>。</p>
+          </div>
+        </aside>
+
+        <nav class="pager" aria-label="更多笔记">
+          <a class="" href="/notes/ledger-agent-profit-model/"><small>← 上一篇</small><b>分润与记账模型：复式分录、逐级价差与按比例冲回</b></a>
+          <a class="is-next" href="/notes/ecommica-nextjs-seo-tracking/"><small>下一篇 →</small><b>Ecommica：Next.js 多语言 SEO 与点击归因的工程细节</b></a>
+        </nav>
+      <section class="cta-band reveal" aria-label="联系我">
+        <div>
+          <h2 class="cta-title">想聊聊文中的问题，或者有类似的系统要做？</h2>
+          <p class="cta-text">先约 30 分钟免费聊聊：你的背景、目标和时间线。我会如实告诉你我能不能做、怎么做、大概要多久。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+        </div>
+      </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=202610290300" defer></script>
+  <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
+</body>
+</html>
