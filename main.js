@@ -442,7 +442,7 @@
    * ------------------------------------------------------------------ */
   function currentTheme() {
     var explicit = document.documentElement.getAttribute('data-theme');
-    return explicit || 'dark'; // 深色为默认体验
+    return explicit || 'light'; // 浅色为默认体验
   }
 
   function initTheme() {
