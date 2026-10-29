@@ -379,6 +379,9 @@ button { font: inherit; color: inherit; }
   animation: sheen 9s ease-in-out infinite alternate;
 }
 @keyframes sheen { to { background-position: 100% 0; } }
+.hero-sub { margin-top: 18px; font-size: clamp(17px, 2.2vw, 22px); font-weight: 600; line-height: 1.5; letter-spacing: -.01em; color: var(--text); }
+:lang(en) .hero-title .hl { white-space: normal; }
+.hero-sub + .hero-lead { margin-top: 16px; }
 .hero-lead { margin-top: 26px; max-width: 38em; font-size: 16px; line-height: 1.85; color: var(--text-2); }
 .hero-lead strong { color: var(--text); }
 .hero-cta { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 12px; }
