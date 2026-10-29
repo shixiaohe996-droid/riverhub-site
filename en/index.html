@@ -42,7 +42,7 @@
   </script>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/site.css?v=202610291900">
+  <link rel="stylesheet" href="/site.css?v=202610292100">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -212,18 +212,18 @@
 
           <article class="work reveal" id="work-runzhen">
             <div class="work-shot is-art">
-              <figure class="browser browser-wide">
-                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-display"></i> Smart community · dashboard</span><span class="browser-go">◇</span></span>
-                <img src="../assets/work/rz-screen.webp" srcset="../assets/work/rz-screen.webp 1920w, ../assets/work/rz-screen-lg.webp 2400w" sizes="(min-width: 1000px) 620px, 100vw" width="1920" height="1080" loading="lazy" decoding="async" alt="Runzhen Smart Brain dashboard: community overview, building twin view, IoT device status and live access records (local run, mock data)">
-                <figcaption class="shot-cap mono">Local run · mock data, not a production screenshot</figcaption>
+              <figure class="browser browser-ecp">
+                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-tower-broadcast"></i> Smart Brain · IoT event center</span><span class="browser-go">◇</span></span>
+                <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 559px)" srcset="../assets/work/rz-console-m-en.webp" width="720" height="1080"><img src="../assets/work/rz-console-en.webp" width="1920" height="1200" loading="lazy" decoding="async" alt="Illustrative design of the Smart Brain IoT event center: events from Hikvision, Dahua, Daoer and Baidu are normalised by converters into unified events and dispatched to handlers; right, the integrated systems with three-level enablement (sample data)"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 559px)" srcset="../assets/work/rz-console-m-en-dark.webp" width="720" height="1080"><img src="../assets/work/rz-console-en-dark.webp" width="1920" height="1200" loading="lazy" decoding="async" alt="Illustrative design of the Smart Brain IoT event center: events from Hikvision, Dahua, Daoer and Baidu are normalised by converters into unified events and dispatched to handlers; right, the integrated systems with three-level enablement (sample data)"></picture>
+                <figcaption class="shot-cap mono">Illustrative design · sample data, not a production screenshot</figcaption>
               </figure>
             </div>
             <div class="work-body">
               <div class="work-meta"><span class="work-badge"><i class="fa-solid fa-city" aria-hidden="true"></i>Smart community · smart campus</span><span class="work-url mono">Spring Boot 3.5 · Vue 3 · uni-app · React</span></div>
               <h3 class="work-title">Runzhen Smart Brain · Community &amp; campus IoT platform</h3>
-              <p class="card-text">One platform for residential property management and schools: buildings, rooms, parking spaces, meters, residents, teachers and students; property fees with e-invoices; repairs, complaints, visitors, votes and venue booking; campus attendance and leave. Underneath, it integrates several vendors' security, access-control, parking and face-recognition platforms and streams device events to the admin console, mobile apps and a live dashboard.</p>
+              <p class="card-text">One platform for residential property management and schools: buildings, rooms, parking spaces, meters, residents, teachers and students; property fees with e-invoices; repairs, complaints, visitors, votes and venue booking; campus attendance and leave. Underneath, it integrates Hikvision (Hik-Cloud community &amp; education, C6000), Dahua ICC, Daoer parking and Baidu face recognition and streams device events to the admin console, mobile apps and a live dashboard.</p>
               <dl class="work-facts">
-                <div class="wf-row"><dt>My role</dt><dd><strong>Tech lead · architecture and main developer</strong> at Henan Runzhen Technology. I wrote the business module, the vendor-integration layer and the fee engine; about 80% of the commits in the current repository are mine.</dd></div>
+                <div class="wf-row"><dt>My role</dt><dd><strong>Tech lead · architecture and main developer</strong> at Henan Runzhen Technology. The project has been built in phases since 2022; I led the phase-3 rebuild and wrote its architecture, business module, vendor-integration layer and fee engine (about 80% of phase-3 commits).</dd></div>
                 <div class="wf-row"><dt>Key design</dt><dd>A unified integration layer gated by system / function / organization config with local-to-vendor ID mapping; an event pipeline (converter factory → handler factory) over a message queue and WebSocket; a strategy-based fee engine (cyclic / one-time × prepaid / postpaid).</dd></div>
                 <div class="wf-row"><dt>Stack</dt><dd class="tags"><span class="tag-strong">Java 17</span><span class="tag-strong">Spring Boot 3.5</span><span>MySQL</span><span>Redis</span><span>WebSocket</span><span class="tag-strong">Vue 3</span><span>uni-app</span><span>React 19</span><span>ECharts 6</span></dd></div>
               </dl>
@@ -236,13 +236,10 @@
 
           <article class="work work-lite reveal" id="work-foodsafety">
             <div class="work-shot is-art">
-              <figure class="fs-stage">
-                <span class="browser fs-web">
-                  <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-globe"></i> Food-safety website</span><span class="browser-go">◇</span></span>
-                  <img src="../assets/work/fs-site.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Campus food-safety platform website hero (local run, anonymized)">
-                </span>
-                <span class="fs-device"><img src="../assets/work/fs-scale.webp" srcset="../assets/work/fs-scale.webp 1600w, ../assets/work/fs-scale-lg.webp 2400w" sizes="(min-width: 1000px) 400px, 62vw" width="1600" height="1000" loading="lazy" decoding="async" alt="Smart scale app weighing screen: live weight 12.46 kg, tare, acceptance photos and ingredient list (local run, sample data)"></span>
-                <figcaption class="fs-cap mono">Local run · sample data</figcaption>
+              <figure class="browser browser-ecp">
+                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-scale-balanced"></i> Smart scale · weighing</span><span class="browser-go">◇</span></span>
+                <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 559px)" srcset="../assets/work/fs-terminal-m-en.webp" width="720" height="1080"><img src="../assets/work/fs-terminal-en.webp" width="1920" height="1200" loading="lazy" decoding="async" alt="Illustrative design of the smart acceptance scale: item list, live net weight with stability check, tare modes, batches, required photos and order status (sample data)"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 559px)" srcset="../assets/work/fs-terminal-m-en-dark.webp" width="720" height="1080"><img src="../assets/work/fs-terminal-en-dark.webp" width="1920" height="1200" loading="lazy" decoding="async" alt="Illustrative design of the smart acceptance scale: item list, live net weight with stability check, tare modes, batches, required photos and order status (sample data)"></picture>
+                <figcaption class="shot-cap mono">Illustrative design · sample data, not a production screenshot</figcaption>
               </figure>
             </div>
             <div class="work-body">
@@ -250,7 +247,7 @@
               <h3 class="work-title">Smart food safety · Weighing-scale app &amp; website</h3>
               <p class="card-text">Digital goods-receiving for school canteens. I built two parts: the smart-scale app running on the canteen's Android weighing terminal, and the public platform website. When a delivery arrives, staff weigh and photograph each ingredient on the scale and submit; orders move from pending to partially accepted to accepted, then into stock.</p>
               <dl class="work-facts">
-                <div class="wf-row"><dt>My role</dt><dd><strong>Terminal app and front-end developer</strong>. I built the scale app and the Next.js static website on my own; the platform back end was not part of my scope.</dd></div>
+                <div class="wf-row"><dt>My role</dt><dd><strong>Built at Runzhen · terminal app and front end</strong>. I built the scale app and the Next.js static website; the platform back end was not part of my scope.</dd></div>
                 <div class="wf-row"><dt>Key design</dt><dd>Stable only when the last 3 readings sit within a threshold; zero, hardware tare and manual tare are mutually exclusive; batch prompts above the device's max load; 3 required photos per ingredient; g / jin / ton specs normalized to kg.</dd></div>
                 <div class="wf-row"><dt>Stack</dt><dd class="tags"><span class="tag-strong">uni-app 3</span><span>Vue 3</span><span class="tag-strong">Serial scale</span><span>Multi-USB UVC cameras</span><span>RTMP</span><span>Next.js 16</span><span>Tailwind 4</span></dd></div>
               </dl>
@@ -274,7 +271,7 @@
         <ul class="svc-list scroller">
           <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-credit-card" aria-hidden="true"></i></span><div><h3 class="svc-title">Payment, acquiring &amp; settlement systems</h3><p class="svc-text">Aggregated payment integration, local pay-in / pay-out overseas, multi-level agent profit-sharing, reconciliation and double-entry accounting.</p><p class="svc-proof">Built: CiftoPay, ECP (overseas payments, India), a family of acquiring platforms, a payment app</p></div></li>
           <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i></span><div><h3 class="svc-title">High-load diagnosis &amp; refactoring</h3><p class="svc-text">Latency, deadlocks and ledger mismatches; distributed-lock idempotency with real-time + scheduled MQ compensation.</p><p class="svc-proof">Acquiring platforms with million-level daily transactions</p></div></li>
-          <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-microchip" aria-hidden="true"></i></span><div><h3 class="svc-title">IoT &amp; hardware integration</h3><p class="svc-text">A unified integration layer and event pipeline over several vendors' security, access-control, parking and face-recognition platforms; Android terminals with serial scales and multiple USB cameras.</p><p class="svc-proof">Built: <a href="/work/runzhen/" hreflang="zh-CN">Runzhen Smart Brain</a>, <a href="/work/food-safety/" hreflang="zh-CN">smart weighing-scale app</a></p></div></li>
+          <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-microchip" aria-hidden="true"></i></span><div><h3 class="svc-title">IoT &amp; hardware integration</h3><p class="svc-text">A unified integration layer and event pipeline over Hikvision, Dahua, Daoer parking and Baidu face-recognition platforms; Android terminals with serial scales and multiple USB cameras.</p><p class="svc-proof">Built: <a href="/work/runzhen/" hreflang="zh-CN">Runzhen Smart Brain</a>, <a href="/work/food-safety/" hreflang="zh-CN">smart weighing-scale app</a></p></div></li>
           <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span><div><h3 class="svc-title">0→1 full-stack delivery</h3><p class="svc-text">Java / Spring Boot back ends, Vue 3 consoles and ECharts dashboards, Next.js sites, uni-app mini-programs and apps.</p><p class="svc-proof">Several products delivered as the sole technical lead</p></div></li>
           <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></span><div><h3 class="svc-title">AI-assisted delivery</h3><p class="svc-text">Claude Code with spec-driven and test-driven development, written decision records and automated validation gates.</p><p class="svc-proof">My daily way of working</p></div></li>
           <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></span><div><h3 class="svc-title">Architecture &amp; code review</h3><p class="svc-text">Review an existing system for money correctness, performance and maintainability; written findings with prioritized fixes.</p><p class="svc-proof">Long-time owner of technical proposals</p></div></li>
@@ -428,7 +425,7 @@
   </footer>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="/main.js?v=202610291900" defer></script>
+  <script src="/main.js?v=202610292100" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>

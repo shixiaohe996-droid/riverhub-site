@@ -36,7 +36,7 @@
       { type: 'cmd', text: 'run payment-engine --scale=million-daily --mq=rocketmq' },
       { type: 'res', text: '[MQ ENGINE] 初始化 RocketMQ 生产者与结算消费组...' },
       { type: 'res', text: '[RECON] 开启多级代理商分润计算与自动扣还机制...' },
-      { type: 'success', text: '[SUCCESS] 实时交易处理完成: 1,248,930 笔 | 资损风险: 0 | 延时: < 0.4ms' }
+      { type: 'success', text: '[SUCCESS] 日均百万级交易实时结算 | 零资损 | 高可用' }
     ],
     iot: [
       { type: 'cmd', text: 'run intg-dispatch --func=person.issue --mode=mock' },
@@ -47,8 +47,8 @@
     vibe: [
       { type: 'cmd', text: 'run vibe-coding --agent=claude-code --sdd=true' },
       { type: 'res', text: '[AI SDD] 读取规格说明书 Specification.md...' },
-      { type: 'res', text: '[TDD] 自动生成 42 组单元测试与架构存根...' },
-      { type: 'success', text: '[CODEGEN] 核心逻辑极速构建完毕，测试覆盖率: 98%+ (人机协同交付效能 3 倍)' }
+      { type: 'res', text: '[TDD] 先生成单元测试与架构存根...' },
+      { type: 'success', text: '[CODEGEN] 核心逻辑构建完毕，测试先行，人机协同交付' }
     ],
     packages: [
       { type: 'cmd', text: 'cat profile.json' },
@@ -248,8 +248,8 @@
       tag: 'HIGH CONCURRENCY',
       metrics: [
         { val: '百万级', lbl: '日均交易量' },
-        { val: '99.999%', lbl: '系统高可用率' },
-        { val: '0 事故', lbl: '线上中等以上事故' }
+        { val: '高可用', lbl: '实时推送 + 定时双补偿' },
+        { val: '零资损', lbl: '幂等校验 + 对账兜底' }
       ],
       code: '// [核心设计模式]: RocketMQ 实时推送 + XXL-Job 定时双补偿机制\n@Service\n@RocketMQMessageListener(topic = "payment-settlement", consumerGroup = "settlement-consumer")\npublic class ReconciliationEngine implements RocketMQListener<TradeMessage> {\n    @Override\n    public void onMessage(TradeMessage trade) {\n        // 1. 幂等性校验 (Redis 分布式状态锁)\n        // 2. 代理商分润多级阶梯算法实时计算\n        // 3. 自动入账与对账明细生成，保障零资损\n    }\n}'
     },
@@ -267,8 +267,8 @@
       title: 'AI Vibe Coding & SDD 规格驱动流程',
       tag: 'AI NATIVE ENGINEERING',
       metrics: [
-        { val: '3 倍', lbl: '人机协同交付效能' },
-        { val: '98%+', lbl: '单元测试覆盖率' },
+        { val: '明显提效', lbl: '人机协同交付' },
+        { val: '测试先行', lbl: 'TDD 覆盖核心逻辑' },
         { val: 'Claude Code', lbl: '工程化实践落地' }
       ],
       code: '// [核心设计模式]: SDD (Specification Driven Development) + TDD\n// 1. 定义清晰的 Markdown 规约与接口契约\n// 2. 借助 Claude Code 自动推导边缘条件测试用例\n// 3. 架构师审视核心范式与高并发安全性，快速闭环'
@@ -277,8 +277,8 @@
       title: '商业售前标书与架构方案',
       tag: 'PRE-SALES & BIDDING',
       metrics: [
-        { val: 'High-Win', lbl: '商务拿单中标率' },
-        { val: '100%', lbl: '大型政企标书独立撰写' },
+        { val: '技术方案', lbl: '架构图与实施排期' },
+        { val: '独立撰写', lbl: '政企标书技术部分' },
         { val: '端到端', lbl: '售前答辩与技术交付' }
       ],
       code: '/* [售前支撑范式]: 架构设计图 + 实施排期 + 风险规避预案\n1. 协助商务团队梳理客户核心痛点与招投标技术指标\n2. 绘制高清系统拓扑图与微服务部署拓扑图\n3. 撰写专业标书，在技术评分环节建立显著优势 */'
