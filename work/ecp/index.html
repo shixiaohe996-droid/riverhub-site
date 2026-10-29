@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ECP 案例：面向印度市场的海外支付平台 · 史晓河</title>
+  <meta name="description" content="史晓河设计并主力开发的 ECP 海外支付平台案例：印度本地代收（UPI / Net Banking）与代付（UPI / IMPS / NEFT / RTGS），开放 API 签名与防重放、代收代付状态机与乐观锁、多腿复式记账、结算批次与对账差错，以及运营端与商户端两套 Vue 3 控台。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/work/ecp/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="ECP 海外支付平台案例 · 史晓河">
+  <meta property="og:description" content="印度本地代收代付平台的架构与全栈实现：签名与幂等、状态机、多腿复式记账、结算与对账。">
+  <meta property="og:url" content="https://riverhub.top/work/ecp/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ECP 海外支付平台案例 · 史晓河">
+  <meta name="twitter:description" content="印度本地代收代付平台的架构与全栈实现：签名与幂等、状态机、多腿复式记账、结算与对账。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "Article", "headline": "ECP：面向印度市场的海外支付平台", "description": "史晓河设计并主力开发的 ECP 海外支付平台案例：印度本地代收（UPI / Net Banking）与代付（UPI / IMPS / NEFT / RTGS），开放 API 签名与防重放、代收代付状态机与乐观锁、多腿复式记账、结算批次与对账差错，以及运营端与商户端两套 Vue 3 控台。", "inLanguage": "zh-CN", "url": "https://riverhub.top/work/ecp/", "image": "https://riverhub.top/assets/og.jpg", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css?v=202610291500">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link" aria-current="true">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#cases" class="nav-link">其他项目</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top" class="anchor-top" aria-hidden="true"></span>
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/#work">代表作品</a><span class="sep">/</span><span aria-current="page">ECP</span></nav>
+        <span class="section-kicker page-kicker"><span class="kicker-idx">Case 03</span><span class="kicker-sep">/</span>Overseas Payments</span>
+        <h1 class="page-title">ECP 海外支付平台<span class="accent-text">在印度把代收、代付和账做对</span></h1>
+        <p class="page-lead">面向印度市场的本地支付平台：商户通过签名 API 发起代收和代付，平台负责状态、手续费、账户余额、结算与对账。我负责服务划分与支付域设计，并写了交易、账务、结算的核心代码和两套前端控台。这页讲清楚它要解决什么问题、关键链路怎么设计。</p>
+        <dl class="page-facts">
+          <div><dt>我的角色</dt><dd>架构设计 · 全栈主力开发</dd></div>
+          <div><dt>时间</dt><dd>2026.04 — 2026.07<small class="mono">（按代码提交记录）</small></dd></div>
+          <div><dt>形态</dt><dd>5 个后端服务 + 运营端 / 商户端两套 Web + 开放 API</dd></div>
+          <div><dt>市场</dt><dd>印度 · INR · UPI / IMPS / NEFT / RTGS</dd></div>
+        </dl>
+        <div class="page-actions">
+          <a class="btn btn-primary" href="/#contact">聊聊类似的项目 <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="#architecture"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> 直接看架构</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <figure class="case-cover reveal" style="margin:0">
+        <span class="browser browser-art">
+          <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-diagram-project"></i> ECP · 代收 / 代付 / 结算 状态流转</span><span class="browser-go">◇</span></span>
+          <span class="art-body"><span class="art-wide"><svg class="dg" viewBox="0 0 656 404" role="img" aria-labelledby="lecp-t" xmlns="http://www.w3.org/2000/svg"><title id="lecp-t">代收、代付与结算批次的状态流转示意</title><defs><linearGradient id="lecp-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><marker id="lecp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-arrow" d="M1 1 L9 5 L1 9 z"/></marker></defs><text class="dg-k" x="16" y="30">PAY-IN · 代收 · UPI / NET BANKING</text><rect class="dg-box" x="16" y="44" width="132" height="42" rx="10"/><text class="dg-t" x="82" y="70" font-size="13.5" text-anchor="middle">已创建</text><path class="dg-line" d="M148 65 L178 65" marker-end="url(#lecp-a)"/><rect class="dg-box" x="180" y="44" width="132" height="42" rx="10"/><text class="dg-t" x="246" y="70" font-size="13.5" text-anchor="middle">待支付</text><path class="dg-line" d="M312 65 L342 65" marker-end="url(#lecp-a)"/><path class="dg-flow" d="M312 65 L342 65" stroke="url(#lecp-g)" pathLength="100"/><rect class="dg-box dg-hi" x="344" y="44" width="132" height="42" rx="10" stroke="url(#lecp-g)"/><text class="dg-t" x="410" y="70" font-size="13.5" text-anchor="middle">支付成功</text><path class="dg-line dg-dash" d="M476 65 L506 65" marker-end="url(#lecp-a)"/><rect class="dg-box" x="508" y="44" width="132" height="42" rx="10" stroke-dasharray="4 4"/><text class="dg-t" x="574" y="70" font-size="13.5" text-anchor="middle">结算回写</text><text class="dg-cap" x="16" y="110">其他终态：失败 · 超时关闭 · 异常 → 人工处理</text><text class="dg-k" x="16" y="148">PAY-OUT · 代付 · UPI / IMPS / NEFT / RTGS</text><rect class="dg-box" x="16" y="162" width="132" height="42" rx="10"/><text class="dg-t" x="82" y="188" font-size="13.5" text-anchor="middle">已创建 · 冻结</text><path class="dg-line" d="M148 183 L178 183" marker-end="url(#lecp-a)"/><rect class="dg-box" x="180" y="162" width="132" height="42" rx="10"/><text class="dg-t" x="246" y="188" font-size="13.5" text-anchor="middle">处理中</text><path class="dg-line" d="M312 183 L342 183" marker-end="url(#lecp-a)"/><path class="dg-flow" d="M312 183 L342 183" stroke="url(#lecp-g)" pathLength="100"/><rect class="dg-box dg-hi" x="344" y="162" width="132" height="42" rx="10" stroke="url(#lecp-g)"/><text class="dg-t" x="410" y="188" font-size="13.5" text-anchor="middle">代付成功</text><path class="dg-line dg-dash" d="M476 183 L506 183" marker-end="url(#lecp-a)"/><rect class="dg-box" x="508" y="162" width="132" height="42" rx="10" stroke-dasharray="4 4"/><text class="dg-t" x="574" y="188" font-size="13.5" text-anchor="middle">失败即解冻</text><text class="dg-cap" x="16" y="228">余额恒等：total = available + frozen</text><text class="dg-k" x="16" y="266">SETTLEMENT · 结算批次</text><rect class="dg-box" x="16" y="280" width="132" height="42" rx="10"/><text class="dg-t" x="82" y="306" font-size="13.5" text-anchor="middle">待审核</text><path class="dg-line" d="M148 301 L178 301" marker-end="url(#lecp-a)"/><rect class="dg-box" x="180" y="280" width="132" height="42" rx="10"/><text class="dg-t" x="246" y="306" font-size="13.5" text-anchor="middle">待打款</text><path class="dg-line" d="M312 301 L342 301" marker-end="url(#lecp-a)"/><path class="dg-flow" d="M312 301 L342 301" stroke="url(#lecp-g)" pathLength="100"/><rect class="dg-box" x="344" y="280" width="132" height="42" rx="10"/><text class="dg-t" x="410" y="306" font-size="13.5" text-anchor="middle">打款中</text><path class="dg-line" d="M476 301 L506 301" marker-end="url(#lecp-a)"/><rect class="dg-box dg-hi" x="508" y="280" width="132" height="42" rx="10" stroke="url(#lecp-g)"/><text class="dg-t" x="574" y="306" font-size="13.5" text-anchor="middle">已完成</text><text class="dg-cap" x="16" y="346">打款失败可幂等重试 · 按银行工作日出批</text><rect class="dg-frame" x="16" y="366" width="624" height="40" rx="12"/><text class="dg-p" x="328" y="391" text-anchor="middle">回调 · 通知 · Job · 重试全部幂等 · 版本号乐观锁 · 重复调用不重复记账</text></svg></span><span class="art-compact"><svg class="dg" viewBox="0 0 340 372" role="img" aria-labelledby="lecpm-t" xmlns="http://www.w3.org/2000/svg"><title id="lecpm-t">代收、代付与结算批次的状态流转示意</title><defs><linearGradient id="lecpm-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><marker id="lecpm-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-arrow" d="M1 1 L9 5 L1 9 z"/></marker></defs><text class="dg-k" x="1" y="16">PAY-IN · UPI / NET BANKING</text><rect class="dg-box" x="1" y="28" width="68" height="36" rx="9"/><text class="dg-t" x="35" y="51" font-size="13" text-anchor="middle">创建</text><path class="dg-line" d="M69 46 L84 46" marker-end="url(#lecpm-a)"/><rect class="dg-box" x="86" y="28" width="68" height="36" rx="9"/><text class="dg-t" x="120" y="51" font-size="13" text-anchor="middle">待支付</text><path class="dg-line" d="M154 46 L169 46" marker-end="url(#lecpm-a)"/><path class="dg-flow" d="M154 46 L169 46" stroke="url(#lecpm-g)" pathLength="100"/><rect class="dg-box dg-hi" x="171" y="28" width="68" height="36" rx="9" stroke="url(#lecpm-g)"/><text class="dg-t" x="205" y="51" font-size="13" text-anchor="middle">成功</text><path class="dg-line dg-dash" d="M239 46 L254 46" marker-end="url(#lecpm-a)"/><rect class="dg-box" x="256" y="28" width="68" height="36" rx="9" stroke-dasharray="4 4"/><text class="dg-t" x="290" y="51" font-size="13" text-anchor="middle">结算</text><text class="dg-cap" x="1" y="84">另有终态：失败 · 超时关闭 · 异常</text><text class="dg-k" x="1" y="122">PAY-OUT · UPI / IMPS / NEFT / RTGS</text><rect class="dg-box" x="1" y="134" width="68" height="36" rx="9"/><text class="dg-t" x="35" y="157" font-size="13" text-anchor="middle">冻结</text><path class="dg-line" d="M69 152 L84 152" marker-end="url(#lecpm-a)"/><rect class="dg-box" x="86" y="134" width="68" height="36" rx="9"/><text class="dg-t" x="120" y="157" font-size="13" text-anchor="middle">处理中</text><path class="dg-line" d="M154 152 L169 152" marker-end="url(#lecpm-a)"/><path class="dg-flow" d="M154 152 L169 152" stroke="url(#lecpm-g)" pathLength="100"/><rect class="dg-box dg-hi" x="171" y="134" width="68" height="36" rx="9" stroke="url(#lecpm-g)"/><text class="dg-t" x="205" y="157" font-size="13" text-anchor="middle">成功</text><path class="dg-line dg-dash" d="M239 152 L254 152" marker-end="url(#lecpm-a)"/><rect class="dg-box" x="256" y="134" width="68" height="36" rx="9" stroke-dasharray="4 4"/><text class="dg-t" x="290" y="157" font-size="13" text-anchor="middle">失败解冻</text><text class="dg-cap" x="1" y="190">total = available + frozen</text><text class="dg-k" x="1" y="228">SETTLEMENT · 结算批次</text><rect class="dg-box" x="1" y="240" width="68" height="36" rx="9"/><text class="dg-t" x="35" y="263" font-size="13" text-anchor="middle">待审核</text><path class="dg-line" d="M69 258 L84 258" marker-end="url(#lecpm-a)"/><rect class="dg-box" x="86" y="240" width="68" height="36" rx="9"/><text class="dg-t" x="120" y="263" font-size="13" text-anchor="middle">待打款</text><path class="dg-line" d="M154 258 L169 258" marker-end="url(#lecpm-a)"/><path class="dg-flow" d="M154 258 L169 258" stroke="url(#lecpm-g)" pathLength="100"/><rect class="dg-box" x="171" y="240" width="68" height="36" rx="9"/><text class="dg-t" x="205" y="263" font-size="13" text-anchor="middle">打款中</text><path class="dg-line" d="M239 258 L254 258" marker-end="url(#lecpm-a)"/><rect class="dg-box dg-hi" x="256" y="240" width="68" height="36" rx="9" stroke="url(#lecpm-g)"/><text class="dg-t" x="290" y="263" font-size="13" text-anchor="middle">已完成</text><text class="dg-cap" x="1" y="296">失败可幂等重试 · 按银行工作日出批</text><rect class="dg-frame" x="1" y="320" width="338" height="38" rx="11"/><text class="dg-p" x="170" y="344" text-anchor="middle">回调 · 通知 · Job · 重试 全部幂等</text></svg></span></span>
+          <span class="art-cap mono">自绘示意 · 基于源码梳理，非产品截图</span>
+        </span>
+      </figure>
+
+      <div class="case-layout">
+        <aside class="toc" aria-label="本页目录">
+          <span class="toc-label">ON THIS PAGE</span>
+          <ol>
+            <li><a href="#background"><span class="mono">01</span>背景</a></li>
+            <li><a href="#role"><span class="mono">02</span>我的角色</a></li>
+            <li><a href="#challenges"><span class="mono">03</span>关键挑战</a></li>
+            <li><a href="#architecture"><span class="mono">04</span>方案与架构</a></li>
+            <li><a href="#stack"><span class="mono">05</span>技术栈</a></li>
+            <li><a href="#results"><span class="mono">06</span>交付情况</a></li>
+          </ol>
+          <a class="btn btn-ghost btn-sm toc-cta" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        </aside>
+
+        <div class="cs">
+          <section class="cs-sec" id="background">
+            <h2 class="cs-h"><span class="mono">01</span>背景</h2>
+            <div class="prose">
+              <p>ECP（Enterprise Cloud Payment）是一套面向海外市场的支付平台，当前部署面向<strong>印度</strong>：币种为 INR，金额按印度数字分组显示。它对商户提供两类核心能力：</p>
+              <ul>
+                <li><strong>代收（Pay-in）</strong>：消费者通过 UPI、Net Banking 付款给商户；</li>
+                <li><strong>代付（Pay-out）</strong>：平台按商户指令，通过 UPI、IMPS、NEFT、RTGS 打款到收款人账户。</li>
+              </ul>
+              <p>围绕这两条资金链路，平台还要承担：</p>
+              <ul>
+                <li><strong>商户</strong>：入驻与开通校验、API 凭证、IP 白名单、费率模板与规则、路由与返佣配置；</li>
+                <li><strong>账户</strong>：商户账户与平台账户（手续费收入、通道清算）、冻结 / 解冻、保证金计划、调账审批；</li>
+                <li><strong>交易</strong>：代收、代付、退款、充值、提现、批量代付，收款人白名单、风险名单、通知重试与人工处理；</li>
+                <li><strong>结算与对账</strong>：结算批次、审核打款、通道对账与差错单；</li>
+                <li><strong>争议</strong>：拒付（Chargeback）与网络投诉类争议的工作台。</li>
+              </ul>
+              <p>商户直接用 API 接入，钱在平台账上进进出出，所以这套系统的底线很明确：<strong>每一分钱都要有来处、有去处，重复请求、重复回调都不能多记一笔</strong>。</p>
+            </div>
+          </section>
+
+          <section class="cs-sec" id="role">
+            <h2 class="cs-h"><span class="mono">02</span>我的角色 · 全栈</h2>
+            <p class="cs-intro">从服务划分、支付域分层，到交易、账务、结算的核心代码，再到两套前端控台，主要由我设计和实现（按代码提交记录约九成）；通道管理模块另有协作者参与。</p>
+            <div class="role-grid">
+              <div class="role-item"><span class="role-k"><i class="fa-solid fa-sitemap" aria-hidden="true"></i>架构与服务划分</span><p>网关、身份与权限、基础设施、支付聚合服务、通道管理 BFF 五个服务；支付域按 core → api → 业务模块 → 装配层分层，core 只放纯 Java 的契约与记账规则。</p></div>
+              <div class="role-item"><span class="role-k"><i class="fa-solid fa-credit-card" aria-hidden="true"></i>交易与账务核心</span><p>代收 / 代付状态机、开放 API 签名与防重放、多腿复式记账与冻结、结算批次与对账差错，以及回调、通知、任务的幂等设计。</p></div>
+              <div class="role-item"><span class="role-k"><i class="fa-solid fa-display" aria-hidden="true"></i>两套前端控台</span><p>Vue 3 Monorepo：运营管理端负责商户、账户、交易、结算、风控与争议；商户端门户使用独立的 OAuth2 客户端与权限体系。</p></div>
+              <div class="role-item"><span class="role-k"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>工程化与 AI 协作</span><p>每个服务独立 CI 构建镜像，Docker Compose 部署；Claude Code 与 Codex 共用同一套仓库规则（AGENTS.md / CLAUDE.md），按同一套约束交付。</p></div>
+            </div>
+          </section>
+
+          <section class="cs-sec" id="challenges">
+            <h2 class="cs-h"><span class="mono">03</span>关键挑战</h2>
+            <div class="chal-grid">
+              <article class="card chal"><span class="chal-no">C1 · 结果不确定</span><h3 class="chal-title">回调会重复、乱序、迟到</h3><p>代收的支付结果靠异步回调和查单确认，代付的结果可能长时间悬而未决。状态只能按合法方向前进，同一事实到达多次只能生效一次。</p></article>
+              <article class="card chal"><span class="chal-no">C2 · 商户直连</span><h3 class="chal-title">开放 API 要防伪造、防重放</h3><p>商户系统直接调用下单与代付接口，请求必须可验证来源、不可被截获重放，网络重试也不能变成重复打款。</p></article>
+              <article class="card chal"><span class="chal-no">C3 · 账要对得上</span><h3 class="chal-title">多账户、多分录、冻结与保证金</h3><p>一笔交易同时影响商户余额、平台手续费收入和通道清算账户；代付要先冻结，还有保证金、调账、退款和争议。</p></article>
+              <article class="card chal"><span class="chal-no">C4 · 本地化</span><h3 class="chal-title">印度市场的支付与合规细节</h3><p>UPI / IMPS / NEFT / RTGS 不同的支付方式，PAN、GSTIN、IFSC、VPA 等 KYC 与收款字段，银行节假日与工作日，INR 的金额精度与显示。</p></article>
+            </div>
+          </section>
+
+          <section class="cs-sec" id="architecture">
+            <h2 class="cs-h"><span class="mono">04</span>方案与架构</h2>
+            <p class="cs-intro">下图基于源码梳理，只展示高层设计，与首页「架构与实现」一致。</p>
+            <div class="cs-arch reveal">
+              <div class="arch-body">
+                <figure class="arch-fig">
+                  <div class="arch-canvas scroller"><svg class="dg" viewBox="0 0 1080 440" role="img" aria-labelledby="decp-t decp-d" xmlns="http://www.w3.org/2000/svg"><title id="decp-t">ECP 海外支付平台架构示意</title><desc id="decp-d">商户系统、运营端与商户端经网关进入支付域；trade 负责代收代付状态机与开放 API 安全，account 负责多腿复式记账与冻结，settlement 负责结算批次与对账差错；通道适配层对接印度本地支付通道并处理异步回调。</desc><defs><linearGradient id="decp-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><marker id="decp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-arrow" d="M1 1 L9 5 L1 9 z"/></marker></defs><text class="dg-k" x="16" y="30">CLIENTS · 接入端</text><rect class="dg-box" x="16" y="46" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="70" font-size="14">商户系统</text><text class="dg-s" x="30" y="88">Open API · 签名接入</text><rect class="dg-box" x="16" y="126" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="150" font-size="14">运营管理端</text><text class="dg-s" x="30" y="168">Vue 3 · Ant Design Vue</text><rect class="dg-box" x="16" y="206" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="230" font-size="14">商户端门户</text><text class="dg-s" x="30" y="248">Vue 3 · 独立账号体系</text><text class="dg-k" x="206" y="30">EDGE · 网关</text><rect class="dg-box" x="206" y="46" width="148" height="268" rx="10"/><text class="dg-t" x="220" y="70" font-size="14">Gateway</text><text class="dg-s" x="220" y="88">统一前缀 · 文档聚合</text><rect class="dg-pill" x="220" y="118" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="135" text-anchor="middle">开放 API</text><rect class="dg-pill" x="220" y="164" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="181" text-anchor="middle">运营端</text><rect class="dg-pill" x="220" y="210" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="227" text-anchor="middle">商户端</text><rect class="dg-pill" x="220" y="256" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="273" text-anchor="middle">代理端 · 预留</text><path class="dg-line" d="M172 75 L204 75" marker-end="url(#decp-a)"/><path class="dg-line" d="M172 155 L204 155" marker-end="url(#decp-a)"/><path class="dg-line" d="M172 235 L204 235" marker-end="url(#decp-a)"/><rect class="dg-frame" x="392" y="14" width="414" height="328" rx="16"/><text class="dg-k" x="408" y="36">PAYMENT · 支付域（core → api → 业务模块）</text><rect class="dg-box" x="410" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="424" y="70" font-size="14">merchant</text><text class="dg-s" x="424" y="88">入驻 · 凭证 · 费率 · 路由</text><rect class="dg-box" x="608" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="622" y="70" font-size="14">settlement</text><text class="dg-s" x="622" y="88">批次 · 审核 · 打款 · 差错</text><rect class="dg-box dg-hi" x="410" y="128" width="180" height="124" rx="10" stroke="url(#decp-g)"/><text class="dg-t" x="424" y="152" font-size="14">trade</text><text class="dg-s" x="424" y="170">代收 / 代付状态机</text><circle class="dg-dot" cx="428" cy="190" r="2.2"/><text class="dg-b" x="437" y="194">签名 · nonce · 幂等键</text><circle class="dg-dot" cx="428" cy="209" r="2.2"/><text class="dg-b" x="437" y="213">回调原文验签</text><circle class="dg-dot" cx="428" cy="228" r="2.2"/><text class="dg-b" x="437" y="232">通知重试 · 人工补单</text><rect class="dg-box dg-hi" x="608" y="128" width="180" height="124" rx="10" stroke="url(#decp-g)"/><text class="dg-t" x="622" y="152" font-size="14">account</text><text class="dg-s" x="622" y="170">多腿复式记账</text><circle class="dg-dot" cx="626" cy="190" r="2.2"/><text class="dg-b" x="635" y="194">total = available + frozen</text><circle class="dg-dot" cx="626" cy="209" r="2.2"/><text class="dg-b" x="635" y="213">冻结 · 保证金 · 调账</text><circle class="dg-dot" cx="626" cy="228" r="2.2"/><text class="dg-b" x="635" y="232">内部对账</text><rect class="dg-box" x="410" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="424" y="300" font-size="13">risk · dispute</text><text class="dg-s" x="424" y="318">风险名单 · 争议工作台</text><rect class="dg-box" x="608" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="622" y="300" font-size="13">core</text><text class="dg-s" x="622" y="318">纯 Java 契约 · 乐观锁收口</text><path class="dg-line" d="M354 190 L408 190" marker-end="url(#decp-a)"/><path class="dg-flow" d="M354 190 L408 190" stroke="url(#decp-g)" pathLength="100"/><text class="dg-lbl" x="381" y="183" text-anchor="middle">请求</text><path class="dg-line" d="M500 104 L500 126" marker-end="url(#decp-a)"/><text class="dg-lbl" x="508" y="120" text-anchor="start">费率 / 路由配置</text><path class="dg-line" d="M590 172 L606 172" marker-end="url(#decp-a)"/><path class="dg-line" d="M698 104 L698 126" marker-end="url(#decp-a)"/><text class="dg-lbl" x="706" y="120" text-anchor="start">结算入账 · 状态回写</text><text class="dg-k" x="846" y="30">UPSTREAM · 上游</text><rect class="dg-box" x="846" y="128" width="226" height="124" rx="10"/><text class="dg-t" x="860" y="152" font-size="14">印度本地支付通道</text><text class="dg-s" x="860" y="170">Channel Adapter 适配</text><circle class="dg-dot" cx="864" cy="190" r="2.2"/><text class="dg-b" x="873" y="194">代收 UPI · Net Banking</text><circle class="dg-dot" cx="864" cy="209" r="2.2"/><text class="dg-b" x="873" y="213">代付 UPI·IMPS·NEFT·RTGS</text><circle class="dg-dot" cx="864" cy="228" r="2.2"/><text class="dg-b" x="873" y="232">查单 · 异步回调</text><path class="dg-line" d="M590 146 L599 146 L599 116 L824 116 L824 150 L844 150" marker-end="url(#decp-a)"/><path class="dg-flow" d="M590 146 L599 146 L599 116 L824 116 L824 150 L844 150" stroke="url(#decp-g)" pathLength="100"/><text class="dg-lbl" x="955" y="120" text-anchor="middle">下单 / 查单</text><path class="dg-line dg-dash" d="M846 238 L826 238 L826 266 L599 266 L599 236 L592 236" marker-end="url(#decp-a)"/><text class="dg-lbl" x="713" y="262" text-anchor="middle">异步回调 · 原文验签</text><text class="dg-cap" x="846" y="282">币种由部署配置决定</text><text class="dg-cap" x="846" y="302">当前以 INR 运行</text><text class="dg-cap" x="846" y="322">金额按最小货币单位存储</text><text class="dg-k" x="16" y="380">INFRA</text><rect class="dg-pill" x="74" y="362" width="58.5" height="26" rx="13"/><text class="dg-p" x="103.25" y="379" text-anchor="middle">MySQL</text><rect class="dg-pill" x="142.5" y="362" width="141.3" height="26" rx="13"/><text class="dg-p" x="213.15" y="379" text-anchor="middle">Redis · Redisson</text><rect class="dg-pill" x="293.8" y="362" width="58.5" height="26" rx="13"/><text class="dg-p" x="323.05" y="379" text-anchor="middle">Nacos</text><rect class="dg-pill" x="362.3" y="362" width="79.2" height="26" rx="13"/><text class="dg-p" x="401.90000000000003" y="379" text-anchor="middle">RocketMQ</text><rect class="dg-pill" x="451.5" y="362" width="155.1" height="26" rx="13"/><text class="dg-p" x="529.05" y="379" text-anchor="middle">XXL-Job · 租户任务</text><rect class="dg-pill" x="616.6" y="362" width="175.8" height="26" rx="13"/><text class="dg-p" x="704.5" y="379" text-anchor="middle">多租户 · 敏感字段加密</text><rect class="dg-pill" x="802.4000000000001" y="362" width="189.6" height="26" rx="13"/><text class="dg-p" x="897.2" y="379" text-anchor="middle">Docker · GitHub Actions</text></svg></div>
+                  <p class="swipe-hint arch-hint mono" aria-hidden="true">← 左右滑动查看完整架构图 →</p>
+                </figure>
+              </div>
+            </div>
+            <div class="prose">
+              <h3>代收与代付：状态机 + 乐观锁 + 幂等</h3>
+              <p>代收订单从“已创建”到“待支付”，再到成功、失败、超时关闭或异常；代付订单从“已创建”到“处理中”，再到成功、失败或异常。每次状态推进都带上版本号做乐观锁更新，并校验当前状态是否允许这次迁移，非法迁移直接拒绝。</p>
+              <p>通道回调、商户通知、定时任务、批量代付、结算重试和对账都按<strong>业务键 + 状态迁移守卫</strong>做幂等：同一事实重复到达，只返回已有结果，不再记账。进入异常态的订单走人工处理工作台，处理过程留痕。</p>
+              <h3>开放 API：签名、防重放、幂等键</h3>
+              <p>商户请求支持 HMAC-SHA256 与 RSA2 两种签名方式，校验时间戳与 nonce 防止重放，叠加 API 凭证、IP 白名单和幂等键；同一幂等键的重复请求不会重复创建订单。通道回调按<strong>原始报文</strong>验签，避免框架反序列化后再序列化造成的验签偏差。</p>
+              <h3>账务：多腿复式记账与余额恒等</h3>
+              <p>所有金额按最小货币单位以 <code>Long</code> 整数存储，不使用浮点数。每个账户维持 <code>total = available + frozen</code> 的恒等式；一笔交易会生成多腿分录，同时作用于商户账户、平台手续费收入账户和通道清算账户，借贷必须平衡。</p>
+              <p>代付发起时先冻结商户余额；成功时先解冻、再做多腿扣减并记入通道清算账户，失败则直接解冻。顺序上坚持<strong>先用乐观锁推进订单状态、成功后才动账</strong>，避免并发回调下重复解冻把冻结余额扣成负数。调账走审批流，保证金按规则冻结与释放；账务侧有定时的内部对账与账本完整性检查。</p>
+              <h3>结算与对账：批次化、可重试、按银行工作日</h3>
+              <p>结算以批次为单位：待审核 → 待打款 → 打款中 → 已完成，失败可幂等重试，并有超时检查；结算过程中把相关订单回写为“结算中 / 已结算”。出批日期按印度银行工作日与节假日日历计算。通道对账记录与平台订单逐笔核对，差异生成差错单，跟踪处理并可导出。</p>
+              <h3>风控、争议与数据安全</h3>
+              <p>风险名单支持拦截与放行两类规则，代付收款人可走白名单；拒付与网络投诉类争议有独立工作台和订单事件时间线。敏感字段（证件号、银行账户等）落库加密、日志脱敏、不进入 <code>toString</code>，并有脚本做审计检查；平台支持多租户，定时任务按租户执行。</p>
+            </div>
+          </section>
+
+          <section class="cs-sec" id="stack">
+            <h2 class="cs-h"><span class="mono">05</span>技术栈</h2>
+            <dl class="stack-groups">
+              <div class="stack-row"><dt>后端</dt><dd class="tags"><span class="tag-strong">Java 17</span><span class="tag-strong">Spring Boot 3.5</span><span>Spring Cloud 2025</span><span>Spring Cloud Alibaba</span><span>Spring Cloud Gateway</span><span>MyBatis-Plus</span><span>OAuth2 · RBAC</span></dd></div>
+              <div class="stack-row"><dt>数据与中间件</dt><dd class="tags"><span>MySQL 8</span><span>Redis / Redisson</span><span>Nacos</span><span>RocketMQ</span><span class="tag-strong">XXL-Job</span></dd></div>
+              <div class="stack-row"><dt>前端</dt><dd class="tags"><span class="tag-strong">Vue 3 Monorepo</span><span>Ant Design Vue 4</span><span>TypeScript</span><span>Vite</span><span>Tailwind 4</span></dd></div>
+              <div class="stack-row"><dt>工程实践</dt><dd class="tags"><span>H2 / Mockito / 集成测试</span><span>GitHub Actions · 按服务构建镜像</span><span>Docker Compose</span><span>Claude Code · Codex 共用仓库规则</span></dd></div>
+            </dl>
+          </section>
+
+          <section class="cs-sec" id="results">
+            <h2 class="cs-h"><span class="mono">06</span>交付情况</h2>
+            <div class="result-list">
+              <div class="result"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i><div><b>代收、代付到结算对账的闭环</b><p>代收、代付、退款、充值、提现、批量代付，到结算批次、通道对账与差错单，整条资金链路在代码里完整实现。</p></div></div>
+              <div class="result"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i><div><b>钱的规则落在了代码约束里</b><p>整数金额、余额恒等式、多腿分录平衡、版本号乐观锁和幂等守卫统一收口在公共层，各业务模块共用同一套实现。</p></div></div>
+              <div class="result"><i class="fa-solid fa-vial-circle-check" aria-hidden="true"></i><div><b>测试覆盖关键链路</b><p>两百余个测试类，覆盖签名与防重放、回调验签、幂等记录、多腿分录构建、账本完整性检查等关键路径（单元测试与集成测试）。</p></div></div>
+              <div class="result"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><div><b>两套控台 + 开放 API</b><p>运营管理端、商户端门户与商户开放 API 共用同一套后端能力；每个服务独立构建镜像、容器化部署。</p></div></div>
+            </div>
+            <p class="note-honest"><i class="fa-solid fa-circle-info" aria-hidden="true"></i>以上数字均按源码统计（Java 主代码约 14 万行、前端 Vue / TS 约 10 万行），描述的是工程规模，不代表交易量；运营数据这里不写。</p>
+          </section>
+
+      <section class="cta-band reveal" aria-label="联系我">
+        <div>
+          <h2 class="cta-title">要做海外本地支付、代收代付或清结算系统？</h2>
+          <p class="cta-text">先约 30 分钟免费聊聊：你的市场、支付方式和时间线。我会如实告诉你我能不能做、怎么做、大概要多久。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+        </div>
+      </section>
+
+          <nav class="pager" aria-label="更多案例">
+            <a href="/work/ecommica/"><small>← 上一个案例</small><b>Ecommica · 多语言优惠券平台</b></a>
+            <a class="is-next" href="/#work"><small>返回 →</small><b>首页 · 代表作品</b></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/work/ecp/" aria-current="page">ECP 案例</a>
+          <a href="/work/ecp/">ECP 案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=202610291500" defer></script>
+  <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
+</body>
+</html>

@@ -537,6 +537,21 @@ button { font: inherit; color: inherit; }
 .browser-go { flex-shrink: 0; width: 22px; text-align: center; color: #9aa3b2; font-family: var(--font-mono); font-size: 13px; transition: color .2s, transform .3s var(--ease-out); }
 .work:hover .browser-go { color: var(--c1); transform: translate(2px, -2px); }
 .browser img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
+/* 自绘示意画框（无产品截图的作品，如 ECP） */
+.work-shot.is-art { cursor: default; }
+.browser-art { margin: 0; background: var(--surface-solid); }
+.browser-art .browser-bar { background: var(--surface-2); border-bottom: 1px solid var(--border); }
+.browser-art .browser-dots i { background: var(--border-strong); }
+.browser-art .browser-url { max-width: 380px; background: var(--bg-alt); color: var(--text-3); }
+.browser-art .browser-url i { color: var(--accent); }
+.browser-art .browser-go { color: var(--text-3); }
+.art-body { display: block; padding: 22px 18px 8px; }
+.art-body svg { display: block; width: 100%; height: auto; }
+.art-compact { display: none; }
+@media (max-width: 559px) { .art-wide { display: none; } .art-compact { display: block; } .art-body { padding: 18px 14px 6px; } }
+.art-cap { display: block; padding: 4px 18px 16px; font-size: 10.5px; letter-spacing: .06em; color: var(--text-3); text-align: right; }
+.work-badge { display: inline-flex; align-items: center; gap: 7px; padding: 4px 11px; border-radius: 999px; border: 1px solid var(--accent-ring); background: var(--accent-soft); color: var(--accent); font-family: var(--font-sans); font-size: 12px; font-weight: 650; letter-spacing: 0; }
+.work-badge i { font-size: 11px; }
 
 .work-body { padding: 26px 22px 28px; display: flex; flex-direction: column; min-width: 0; }
 .work-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-family: var(--font-mono); font-size: 11.5px; color: var(--text-3); letter-spacing: .04em; }
@@ -1343,3 +1358,5 @@ button { font: inherit; color: inherit; }
   .prose .code pre { font-size: 12.3px; padding: 12px 13px; }
   .prose .fig-scroll { padding: 14px 10px 6px; }
 }
+.case-cover .browser-art { border-radius: 16px; border-bottom: 1px solid var(--border-strong); }
+@media (min-width: 900px) { .case-cover .browser-art .art-body { padding: 28px 40px 8px; } .case-cover .browser-art .art-wide { display: block; max-width: 760px; margin: 0 auto; } }
