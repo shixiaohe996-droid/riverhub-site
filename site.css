@@ -561,6 +561,24 @@ button { font: inherit; color: inherit; }
 .shot-cap::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #f2b33d; box-shadow: 0 0 0 3px rgba(242,179,61,.16); }
 .work-badge { display: inline-flex; align-items: center; gap: 7px; padding: 4px 11px; border-radius: 999px; border: 1px solid var(--accent-ring); background: var(--accent-soft); color: var(--accent); font-family: var(--font-sans); font-size: 12px; font-weight: 650; letter-spacing: 0; }
 .work-badge i { font-size: 11px; }
+/* 原比例截图（润臻数据大屏 16:9） */
+.browser-wide { margin: 0; }
+.browser.browser-wide img, .case-cover .browser.browser-wide img { aspect-ratio: auto; object-fit: initial; }
+.case-cover .browser-wide { border-radius: 16px; border-bottom: 1px solid var(--border-strong); }
+/* 智慧食安：官网浏览器 + 验收一体机叠放 */
+.work-shot:has(.fs-stage) { padding-bottom: 22px; }
+.fs-stage { position: relative; margin: 0; width: 100%; padding-bottom: 19%; }
+.fs-stage .fs-web { width: 82%; border-radius: 14px; border-bottom: 1px solid var(--border-strong); transform-origin: 50% 50%; }
+.fs-web img { filter: saturate(.96); }
+.fs-device { position: absolute; right: 0; bottom: 8%; width: 60%; padding: 2.6% 2.6% 3.2%; border-radius: 20px; background: linear-gradient(160deg, #22262f, #0b0d12 60%); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 40px 70px -28px rgba(0,0,0,.75), 0 0 0 1px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08); transition: transform .6s var(--ease-out); }
+.fs-device::before { content: ""; position: absolute; top: 1.1%; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: #30353f; }
+.fs-device img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; border-radius: 9px; }
+.work:hover .fs-device { transform: translate(4px, -8px); }
+.fs-cap { position: absolute; left: 0; bottom: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 10.5px; letter-spacing: .04em; color: var(--text-3); }
+.fs-cap::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #f2b33d; box-shadow: 0 0 0 3px rgba(242,179,61,.16); }
+@media (min-width: 1000px) { .work-lite { min-height: 0; } .work-shot:has(.fs-stage) { padding: 40px 34px; } }
+.svc-proof a { color: inherit; text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+.svc-proof a:hover { color: var(--accent); text-decoration-color: currentColor; }
 
 .work-body { padding: 26px 22px 28px; display: flex; flex-direction: column; min-width: 0; }
 .work-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-family: var(--font-mono); font-size: 11.5px; color: var(--text-3); letter-spacing: .04em; }

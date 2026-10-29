@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>智慧食安案例：智能验收秤 App 与平台官网 · 史晓河</title>
+  <meta name="description" content="史晓河独立完成的智慧食安项目前端部分：学校食堂食材验收用的智能验收秤 App（uni-app 3，Android 一体机，串口电子秤 + 多路 USB 摄像头，稳定判定、去皮、分批验收与必拍照片），以及平台官网（Next.js 16 静态站）。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/work/food-safety/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="智慧食安 · 智能验收秤案例 · 史晓河">
+  <meta property="og:description" content="学校食堂食材验收终端：串口秤稳定判定、去皮、分批验收与必拍照片，以及 Next.js 官网。">
+  <meta property="og:url" content="https://riverhub.top/work/food-safety/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="智慧食安 · 智能验收秤案例 · 史晓河">
+  <meta name="twitter:description" content="学校食堂食材验收终端：串口秤稳定判定、去皮、分批验收与必拍照片，以及 Next.js 官网。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "Article", "headline": "智慧食安：智能验收秤 App 与平台官网", "description": "史晓河独立完成的智慧食安项目前端部分：学校食堂食材验收用的智能验收秤 App（uni-app 3，Android 一体机，串口电子秤 + 多路 USB 摄像头，稳定判定、去皮、分批验收与必拍照片），以及平台官网（Next.js 16 静态站）。", "inLanguage": "zh-CN", "url": "https://riverhub.top/work/food-safety/", "image": "https://riverhub.top/assets/og.jpg", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css?v=202610291900">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link" aria-current="true">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#cases" class="nav-link">其他项目</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top" class="anchor-top" aria-hidden="true"></span>
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/#work">代表作品</a><span class="sep">/</span><span aria-current="page">智慧食安</span></nav>
+        <span class="section-kicker page-kicker"><span class="kicker-idx">Case 05</span><span class="kicker-sep">/</span>Food Safety · Terminal</span>
+        <h1 class="page-title">智慧食安 · 智能验收秤<span class="accent-text">让食材验收在秤上一次做对</span></h1>
+        <p class="page-lead">学校食堂的食材验收数字化：食材配送到校后，验收员在一体机上逐样称重、拍照、提交。我负责其中两块前端：装在验收一体机上的智能秤 App，以及平台对外的官网。平台后端不在我的范围内，这页只讲这两部分。</p>
+        <dl class="page-facts">
+          <div><dt>我的角色</dt><dd>终端与前端开发 · 独立完成</dd></div>
+          <div><dt>范围</dt><dd>智能秤 App + 平台官网<small class="mono">（不含后端）</small></dd></div>
+          <div><dt>形态</dt><dd>Android 一体机 App（uni-app 3）+ Next.js 静态官网</dd></div>
+          <div><dt>硬件</dt><dd>串口电子秤 · 多路 USB（UVC）摄像头</dd></div>
+        </dl>
+        <div class="page-actions">
+          <a class="btn btn-primary" href="/#contact">聊聊类似的项目 <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="#architecture"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> 直接看称重设计</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <figure class="case-cover reveal" style="margin:0">
+        <span class="browser browser-wide">
+          <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-scale-balanced"></i> 智能验收秤 · 称重检测</span><span class="browser-go">◇</span></span>
+          <img src="/assets/work/fs-scale.webp" srcset="/assets/work/fs-scale.webp 1600w, /assets/work/fs-scale-lg.webp 2400w" sizes="(min-width: 1200px) 1140px, 100vw" width="1600" height="1000" fetchpriority="high" decoding="async" alt="智能验收秤 App 称重检测页：实时重量 12.46 kg、目标重量、稳定状态、去皮按钮、验收照片与待验收食材列表（本地运行，示例数据）">
+          <span class="shot-cap mono">本地运行 · 示例数据，非生产截图</span>
+        </span>
+      </figure>
+
+      <div class="case-layout">
+        <aside class="toc" aria-label="本页目录">
+          <span class="toc-label">ON THIS PAGE</span>
+          <ol>
+            <li><a href="#background"><span class="mono">01</span>背景</a></li>
+            <li><a href="#role"><span class="mono">02</span>我的角色</a></li>
+            <li><a href="#challenges"><span class="mono">03</span>关键挑战</a></li>
+            <li><a href="#architecture"><span class="mono">04</span>称重与验收设计</a></li>
+            <li><a href="#website"><span class="mono">05</span>平台官网</a></li>
+            <li><a href="#stack"><span class="mono">06</span>技术栈</a></li>
+            <li><a href="#results"><span class="mono">07</span>交付情况</a></li>
+          </ol>
+          <a class="btn btn-ghost btn-sm toc-cta" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        </aside>
+
+        <div class="cs">
+          <section class="cs-sec" id="background">
+            <h2 class="cs-h"><span class="mono">01</span>背景</h2>
+            <div class="prose">
+              <p>学校食堂每天都有食材配送到校，过去靠纸质单据和人工过秤，重量、照片和单据对不上，事后也难追溯。智慧食安平台把这一步数字化：配送单在平台生成，食材到校后在<strong>验收一体机</strong>上完成称重、拍照和确认，数据回到平台。</p>
+              <p>验收一体机是一台连着电子秤和摄像头的 Android 终端，智能秤 App 就跑在它上面。验收员的典型流程是：</p>
+              <ul>
+                <li>选择今天的配送单，看到待验收的食材、规格和目标重量；</li>
+                <li>逐样上秤，等读数稳定、去皮后确认重量，超过秤的量程就分批称；</li>
+                <li>每样食材拍齐照片（操作人、食材、全景），提交后订单状态随之推进，验收完成后入库。</li>
+              </ul>
+            </div>
+          </section>
+          <section class="cs-sec" id="role">
+            <h2 class="cs-h"><span class="mono">02</span>我的角色 · 终端与前端</h2>
+            <p class="cs-intro">智能秤 App 和平台官网由我独立完成，从硬件对接、交互到发布；平台后端不在我的范围内。</p>
+            <div class="role-grid"><div class="role-item"><span class="role-k"><i class="fa-solid fa-microchip" aria-hidden="true"></i>硬件对接</span><p>串口电子秤：波特率与秤型号预设、读数解析、清零与去皮指令；多路 USB 摄像头：预览、拍照、录像与 RTMP 推流（nvue 原生渲染）。</p></div><div class="role-item"><span class="role-k"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>称重与验收流程</span><p>稳定判定、三种去皮方式、量程与分批、分批 / 追加验收、必拍照片和订单状态，整套验收交互。</p></div><div class="role-item"><span class="role-k"><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i>终端 App 工程</span><p>uni-app 3 + Vue 3 + wot-design-uni；秤配置页、OTA 版本检测、登录态过期处理，面向一体机横屏的布局。</p></div><div class="role-item"><span class="role-k"><i class="fa-solid fa-globe" aria-hidden="true"></i>平台官网</span><p>Next.js 16 静态导出：首页、平台介绍、新闻与政策、操作指南、下载、FAQ 与联系页，自带 sitemap 与 robots。</p></div></div>
+          </section>
+          <section class="cs-sec" id="challenges">
+            <h2 class="cs-h"><span class="mono">03</span>关键挑战</h2>
+            <div class="chal-grid"><article class="card chal"><span class="chal-no">C1 · 读数在跳</span><h3 class="chal-title">秤上的数字什么时候算数</h3><p>食材放上秤的那一刻读数会抖动，过早确认就会记错；验收员又不愿意多等。</p></article><article class="card chal"><span class="chal-no">C2 · 去皮</span><h3 class="chal-title">筐、袋、托盘的皮重怎么扣</h3><p>有的秤支持硬件去皮，有的筐要手动输入皮重，还要能清零；几种方式混用就会重复扣皮。</p></article><article class="card chal"><span class="chal-no">C3 · 量程与规格</span><h3 class="chal-title">大宗食材一次称不完</h3><p>米面油、整箱蔬菜经常超过秤的量程；配送单上的规格又有克、斤、吨等不同单位，要和目标重量对齐。</p></article><article class="card chal"><span class="chal-no">C4 · 可追溯</span><h3 class="chal-title">验收要留下证据</h3><p>每一样食材是谁验的、实际长什么样、现场环境如何，都要有照片；部分到货、补货也要能如实记录。</p></article></div>
+          </section>
+          <section class="cs-sec" id="architecture">
+            <h2 class="cs-h"><span class="mono">04</span>称重与验收设计</h2>
+                        <p class="cs-intro">下图基于源码梳理，只展示 App 内的称重与验收逻辑。</p>
+            <div class="cs-arch reveal">
+              <div class="arch-body">
+                <figure class="arch-fig">
+                  <div class="arch-canvas scroller"><svg class="dg" viewBox="0 0 1080 350" role="img" aria-labelledby="dfs-t dfs-d" xmlns="http://www.w3.org/2000/svg"><title id="dfs-t">智能验收秤 App 称重验收流程示意</title><desc id="dfs-d">串口电子秤读数经稳定判定与去皮换算后，与多路 USB 摄像头拍摄的三张验收照片一起，按食材逐项提交；订单由待验收、部分验收走到已验收并入库。</desc><defs><linearGradient id="dfs-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><marker id="dfs-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-arrow" d="M1 1 L9 5 L1 9 z"/></marker></defs><text class="dg-k" x="16" y="30">HARDWARE · 一体机外设</text><rect class="dg-box" x="16" y="46" width="206" height="96" rx="10"/><text class="dg-t" x="30" y="70" font-size="14">串口电子秤</text><text class="dg-s" x="30" y="88">原生插件 · 秤型号预设</text><circle class="dg-dot" cx="34" cy="108" r="2.2"/><text class="dg-b" x="43" y="112">实时读数 · 去皮指令</text><rect class="dg-box" x="16" y="166" width="206" height="96" rx="10"/><text class="dg-t" x="30" y="190" font-size="14">UVC 多路摄像头</text><text class="dg-s" x="30" y="208">nvue 原生页面</text><circle class="dg-dot" cx="34" cy="228" r="2.2"/><text class="dg-b" x="43" y="232">预览 · 拍照 · 录像 · RTMP</text><text class="dg-k" x="262" y="30">WEIGHING · 称重</text><rect class="dg-box dg-hi" x="262" y="46" width="256" height="190" rx="10" stroke="url(#dfs-g)"/><text class="dg-t" x="276" y="70" font-size="14">称重状态</text><text class="dg-s" x="276" y="88">uni-app 3 · Vue 3</text><circle class="dg-dot" cx="280" cy="108" r="2.2"/><text class="dg-b" x="289" y="112">近 3 次读数在阈值内才算稳定</text><circle class="dg-dot" cx="280" cy="127" r="2.2"/><text class="dg-b" x="289" y="131">清零 / 硬件去皮 / 手动皮重 互斥</text><circle class="dg-dot" cx="280" cy="146" r="2.2"/><text class="dg-b" x="289" y="150">超过设备量程 → 提示分批</text><circle class="dg-dot" cx="280" cy="165" r="2.2"/><text class="dg-b" x="289" y="169">g · 斤 · 吨 规格统一换算 kg</text><circle class="dg-dot" cx="280" cy="184" r="2.2"/><text class="dg-b" x="289" y="188">与目标重量实时比对差异</text><path class="dg-line" d="M222 94 L260 94" marker-end="url(#dfs-a)"/><path class="dg-flow" d="M222 94 L260 94" stroke="url(#dfs-g)" pathLength="100"/><text class="dg-lbl" x="241" y="86" text-anchor="middle">读数</text><text class="dg-k" x="558" y="30">ACCEPTANCE · 逐项验收</text><rect class="dg-box" x="558" y="46" width="236" height="96" rx="10"/><text class="dg-t" x="572" y="70" font-size="14">食材验收</text><text class="dg-s" x="572" y="88">按订单逐样食材</text><circle class="dg-dot" cx="576" cy="108" r="2.2"/><text class="dg-b" x="585" y="112">分批验收 · 追加验收</text><rect class="dg-box" x="558" y="166" width="236" height="96" rx="10"/><text class="dg-t" x="572" y="190" font-size="14">验收照片</text><text class="dg-s" x="572" y="208">每样食材 3 张必拍</text><circle class="dg-dot" cx="576" cy="228" r="2.2"/><text class="dg-b" x="585" y="232">操作人 · 食材 · 全景</text><path class="dg-line" d="M518 94 L556 94" marker-end="url(#dfs-a)"/><path class="dg-flow" d="M518 94 L556 94" stroke="url(#dfs-g)" pathLength="100"/><text class="dg-lbl" x="537" y="86" text-anchor="middle">稳定</text><path class="dg-line" d="M222 250 L556 250" marker-end="url(#dfs-a)"/><text class="dg-lbl" x="390" y="266" text-anchor="middle">抓拍</text><path class="dg-line" d="M676 166 L676 144" marker-end="url(#dfs-a)"/><text class="dg-k" x="834" y="30">ORDER · 订单状态</text><rect class="dg-box" x="834" y="46" width="230" height="44" rx="10"/><text class="dg-t" x="848" y="65" font-size="13">待验收</text><text class="dg-s" x="848" y="81">配送到校</text><path class="dg-line" d="M949 90 L949 100" marker-end="url(#dfs-a)"/><rect class="dg-box" x="834" y="102" width="230" height="44" rx="10"/><text class="dg-t" x="848" y="121" font-size="13">部分验收</text><text class="dg-s" x="848" y="137">分批 / 追加</text><path class="dg-line" d="M949 146 L949 156" marker-end="url(#dfs-a)"/><rect class="dg-box dg-hi" x="834" y="158" width="230" height="44" rx="10" stroke="url(#dfs-g)"/><text class="dg-t" x="848" y="177" font-size="13">已验收</text><text class="dg-s" x="848" y="193">全部食材通过</text><path class="dg-line" d="M949 202 L949 212" marker-end="url(#dfs-a)"/><rect class="dg-box" x="834" y="214" width="230" height="44" rx="10"/><text class="dg-t" x="848" y="233" font-size="13">入库</text><text class="dg-s" x="848" y="249">进入库存</text><path class="dg-line" d="M794 94 L832 94" marker-end="url(#dfs-a)"/><path class="dg-flow" d="M794 94 L832 94" stroke="url(#dfs-g)" pathLength="100"/><text class="dg-lbl" x="813" y="86" text-anchor="middle">提交</text><text class="dg-k" x="16" y="316">APP</text><rect class="dg-pill" x="74" y="298" width="103.4" height="26" rx="13"/><text class="dg-p" x="125.7" y="315" text-anchor="middle">OTA 版本检测</text><rect class="dg-pill" x="187.4" y="298" width="134.4" height="26" rx="13"/><text class="dg-p" x="254.6" y="315" text-anchor="middle">登录过期自动跳转</text><rect class="dg-pill" x="331.8" y="298" width="148.3" height="26" rx="13"/><text class="dg-p" x="406.0" y="315" text-anchor="middle">秤型号 / 波特率配置</text><rect class="dg-pill" x="490.1" y="298" width="117.2" height="26" rx="13"/><text class="dg-p" x="548.7" y="315" text-anchor="middle">Android 一体机</text><rect class="dg-pill" x="617.3" y="298" width="120.6" height="26" rx="13"/><text class="dg-p" x="677.6" y="315" text-anchor="middle">wot-design-uni</text><rect class="dg-pill" x="747.9" y="298" width="62.0" height="26" rx="13"/><text class="dg-p" x="778.9" y="315" text-anchor="middle">Vite 5</text></svg></div>
+                  <p class="swipe-hint arch-hint mono" aria-hidden="true">← 左右滑动查看完整架构图 →</p>
+                </figure>
+              </div>
+            </div>
+            <div class="prose">
+              <h3>稳定判定：看最近 3 次读数</h3>
+              <p>串口持续上报读数，App 保留最近 3 次，只有三者的差值都在阈值内才标记为<strong>稳定</strong>，确认按钮才可用。界面上同时显示当前重量、目标重量和差值，验收员一眼就知道够不够。</p>
+              <h3>三种去皮方式互斥</h3>
+              <p>清零、硬件去皮和手动输入皮重三种方式<strong>互斥</strong>：启用其中一种会清掉另外两种的状态，避免皮重被重复扣除；当前用的是哪种、皮重多少都显示在称重面板上。</p>
+              <h3>量程、分批与规格换算</h3>
+              <p>秤的最大量程在配置页设置，读数接近或超过量程时提示分批称重；一样食材可以分多批累计，也可以在已验收后追加。配送单上的规格（g、斤、吨等）统一换算成 kg 再与目标重量比对。</p>
+              <h3>照片与订单状态</h3>
+              <p>每样食材有 <strong>3 张必拍照片</strong>：操作人、食材特写和现场全景，缺照片时提示还差几张、不能提交。订单状态随验收推进：待验收 → 部分验收 → 已验收，之后进入入库。</p>
+            </div>
+          </section>
+          <section class="cs-sec" id="website">
+            <h2 class="cs-h"><span class="mono">05</span>平台官网</h2>
+            <p class="cs-intro">平台对外的介绍站，同样由我独立完成：Next.js 16 静态导出，部署成纯静态文件。</p>
+            <div class="shots">
+              <figure class="shot" style="grid-column:1/-1">
+                <span class="browser">
+                  <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-globe"></i> 食安平台官网</span><span class="browser-go">◇</span></span>
+                  <img src="/assets/work/fs-site.webp" srcset="/assets/work/fs-site.webp 1600w, /assets/work/fs-site-lg.webp 2400w" sizes="(min-width: 1000px) 420px, 100vw" width="1600" height="1000" loading="lazy" decoding="async" alt="校园食安平台官网首页：「守护校园阳光饮食 保障师生饮食安全」（本地运行，已脱敏）">
+                </span>
+                <figcaption><b>官网首页</b> · 本地运行，名称与标识已脱敏</figcaption>
+              </figure>
+            </div>
+            <div class="prose">
+              <p>官网包括首页、平台介绍、新闻、政策、面向学校和供应商的说明、操作指南、App 下载、FAQ 与联系页；操作指南由脚本从文档生成，页面用 Tailwind 4、shadcn/ui 和 framer-motion 实现，导出时自动生成 sitemap 与 robots。</p>
+            </div>
+          </section>
+          <section class="cs-sec" id="stack">
+            <h2 class="cs-h"><span class="mono">06</span>技术栈</h2>
+            <dl class="stack-groups"><div class="stack-row"><dt>终端 App</dt><dd class="tags"><span class="tag-strong">uni-app 3</span><span class="tag-strong">Vue 3</span><span>wot-design-uni</span><span>Vite 5</span><span>nvue</span><span>Android 一体机</span></dd></div><div class="stack-row"><dt>硬件</dt><dd class="tags"><span class="tag-strong">串口电子秤</span><span>UVC 多路摄像头</span><span>RTMP 推流</span></dd></div><div class="stack-row"><dt>官网</dt><dd class="tags"><span class="tag-strong">Next.js 16</span><span>React 19</span><span>Tailwind 4</span><span>shadcn/ui</span><span>framer-motion</span><span>静态导出</span></dd></div></dl>
+          </section>
+          <section class="cs-sec" id="results">
+            <h2 class="cs-h"><span class="mono">07</span>交付情况</h2>
+            <div class="result-list"><div class="result"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i><div><b>称重规则落在代码里</b><p>稳定判定、去皮互斥、量程分批和规格换算由 App 统一处理，验收员只需要看状态、按确认。</p></div></div><div class="result"><i class="fa-solid fa-camera" aria-hidden="true"></i><div><b>每一笔验收都有照片</b><p>三张必拍照片缺一不可，部分验收和追加验收如实记录，订单状态和照片一起回到平台。</p></div></div><div class="result"><i class="fa-solid fa-code-branch" aria-hidden="true"></i><div><b>持续迭代的终端</b><p>智能秤 App 当前版本 1.5.0，带 OTA 版本检测，秤型号和摄像头可在配置页调整。</p></div></div><div class="result"><i class="fa-solid fa-globe" aria-hidden="true"></i><div><b>官网静态化交付</b><p>官网以静态文件部署，无需服务端运行时，内容与操作指南随版本更新。</p></div></div></div>
+            <p class="note-honest"><i class="fa-solid fa-circle-info" aria-hidden="true"></i>本页只描述我负责的智能秤 App 和官网（代码约 3.4 万行与 4,500 行）；平台后端不在我的范围内。截图均为本地运行，使用示例数据，机构名称已脱敏。</p>
+          </section>
+      <section class="cta-band reveal" aria-label="联系我">
+        <div>
+          <h2 class="cta-title">要做接电子秤、摄像头等外设的 Android 终端 App？</h2>
+          <p class="cta-text">先约 30 分钟免费聊聊：你的硬件、流程和时间线。我会如实告诉你我能不能做、怎么做、大概要多久。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+        </div>
+      </section>
+
+          <nav class="pager" aria-label="更多案例">
+            <a href="/work/runzhen/"><small>← 上一个案例</small><b>润臻智慧大脑 · 物联平台</b></a>
+            <a class="is-next" href="/#work"><small>返回 →</small><b>首页 · 代表作品</b></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/work/ecp/">ECP 案例</a>
+          <a href="/work/runzhen/">润臻智慧大脑案例</a>
+          <a href="/work/food-safety/" aria-current="page">智慧食安案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=202610291900" defer></script>
+  <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
+</body>
+</html>

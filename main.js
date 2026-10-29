@@ -39,10 +39,10 @@
       { type: 'success', text: '[SUCCESS] 实时交易处理完成: 1,248,930 笔 | 资损风险: 0 | 延时: < 0.4ms' }
     ],
     iot: [
-      { type: 'cmd', text: 'run iot-scale --protocol=bluetooth --vendor=hikvision' },
-      { type: 'res', text: '[SERIAL PORT] 建立 RS232 / 蓝牙 BLE 智能秤数据链路...' },
-      { type: 'res-highlight', text: 'HEX DATA: 0x55 0xAA 0x01 0x24 0x89 (重量: 12.50kg, 校验码: PASS)' },
-      { type: 'success', text: '[CLOUD SYNC] 称重台账数据毫秒级上传至食安监管平台数据库.' }
+      { type: 'cmd', text: 'run intg-dispatch --func=person.issue --mode=mock' },
+      { type: 'res', text: '[INTG] 校验启用配置：系统 ✓ 功能 ✓ 机构 ✓ → 路由到对应厂商 Client' },
+      { type: 'res-highlight', text: 'EVENT: 厂商通行事件 → Converter 归一 → Handler 分发（通行 / 考勤 / 家长通知）' },
+      { type: 'success', text: '[WS] 事件已推送至管理后台与数据大屏' }
     ],
     vibe: [
       { type: 'cmd', text: 'run vibe-coding --agent=claude-code --sdd=true' },
@@ -65,7 +65,7 @@
     help: [
       { type: 'cmd', text: 'help' },
       { type: 'res', text: '可用指令 (Available commands):' },
-      { type: 'dim', text: '  run pay-hub         信付通 (pay-hub) 聚合支付底座\n  run ecommica        Ecommica 优惠站与联盟追踪\n  run payment-engine  金融级分润与对账引擎\n  run iot-scale       智慧食安 IoT 智能秤协议解析\n  run vibe-coding     AI Vibe Coding & SDD 敏捷交付\n  cat profile.json    个人信息与合作方式\n  contact             电话 / 微信 / 邮箱 / Telegram\n  clear               清空终端\n  ↑ / ↓               浏览历史指令' }
+      { type: 'dim', text: '  run pay-hub         信付通 (pay-hub) 聚合支付底座\n  run ecommica        Ecommica 优惠站与联盟追踪\n  run payment-engine  金融级分润与对账引擎\n  run iot-scale       润臻集成层 · 智慧食安验收秤\n  run vibe-coding     AI Vibe Coding & SDD 敏捷交付\n  cat profile.json    个人信息与合作方式\n  contact             电话 / 微信 / 邮箱 / Telegram\n  clear               清空终端\n  ↑ / ↓               浏览历史指令' }
     ]
   };
 
@@ -254,14 +254,14 @@
       code: '// [核心设计模式]: RocketMQ 实时推送 + XXL-Job 定时双补偿机制\n@Service\n@RocketMQMessageListener(topic = "payment-settlement", consumerGroup = "settlement-consumer")\npublic class ReconciliationEngine implements RocketMQListener<TradeMessage> {\n    @Override\n    public void onMessage(TradeMessage trade) {\n        // 1. 幂等性校验 (Redis 分布式状态锁)\n        // 2. 代理商分润多级阶梯算法实时计算\n        // 3. 自动入账与对账明细生成，保障零资损\n    }\n}'
     },
     'iot-hub': {
-      title: '智慧社区 / 食安 IoT 云端接入控制塔',
-      tag: 'IOT PROTOCOL & OPENAPI',
+      title: '智慧社区 / 食安 IoT 接入',
+      tag: 'MULTI-VENDOR INTEGRATION',
       metrics: [
-        { val: '< 50ms', lbl: '蓝牙/串口响应延迟' },
-        { val: '4 Major', lbl: '海康/大华/道尔/新开普' },
-        { val: '100%', lbl: '离线缓存恢复率' }
+        { val: '3 级', lbl: '系统 → 功能 → 机构 启用校验' },
+        { val: '1 套', lbl: '统一功能接口对接多家厂商' },
+        { val: '3 次', lbl: '秤读数连续稳定才确认' }
       ],
-      code: '// [核心设计模式]: 蓝牙/串口 Hex 协议解析与离线缓存恢复\npublic class ScaleProtocolParser {\n    public WeighData parseHexBuffer(byte[] buffer) {\n        // 1. 解析 CRC16 校验码校验数据合法性\n        // 2. 抽取毫秒级净重、皮重与状态标志位\n        // 3. 触发云端 API 同步及本地 SQLite 离线归档\n    }\n}'
+      code: '// [设计示意]: 业务只认功能，不认厂商\nabstract class IntgFuncAction<Req, Resp> {\n    Resp execute(Req req) {\n        // 1. 逐级校验 系统 → 功能 → 机构 是否启用\n        // 2. 按机构配置路由到对应厂商 Client（含 Mock Client）\n        // 3. 本地实体 ↔ 厂商实体 ID 映射后发起调用\n    }\n}'
     },
     'vibe-workflow': {
       title: 'AI Vibe Coding & SDD 规格驱动流程',
