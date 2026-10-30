@@ -32,8 +32,13 @@ const results = [];
       await page.screenshot({ path: path.join(output, `home-${lang ? 'en' : 'zh'}-${width}.png`), fullPage: true });
       const lightAudit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
       if (lightAudit.violations.length) results.push({ width, lang, theme: 'light', accessibility: lightAudit.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => ({ target: n.target, summary: n.failureSummary })) })) });
-      const captionsFit = await page.locator('.hero-art .hero-cap').evaluateAll(captions => captions.every(c => c.getBoundingClientRect().bottom <= c.parentElement.getBoundingClientRect().bottom + 1));
-      assert(captionsFit, 'Sample-data captions must not be clipped');
+      const captionsFit = await page.locator('.work-shot .cover-caption').evaluateAll(captions => captions.length === 5 && captions.every(c => c.getBoundingClientRect().bottom <= c.parentElement.getBoundingClientRect().bottom + 1));
+      assert(captionsFit, 'Every project must have a visible concept caption');
+      const coversFit = await page.locator('.work-shot img').evaluateAll(imgs => imgs.every(img => {
+        const box = img.getBoundingClientRect();
+        return Math.abs(box.width / box.height - img.naturalWidth / img.naturalHeight) < .01;
+      }));
+      assert(coversFit, 'Project covers must retain their full landscape composition');
       const theme = await page.locator('html').getAttribute('data-theme');
       await page.locator('#theme-toggle').click();
       assert.notEqual(await page.locator('html').getAttribute('data-theme'), theme);
