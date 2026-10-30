@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ECP 结算批次：为什么审核通过还不等于入账完成 · 史晓河</title>
+  <meta name="description" content="从订单到期、批次抢占、审核和内部入账，解释 ECP 当前结算模型，以及为什么失败重试仍要保留订单占用。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/notes/ecp-settlement-posting/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="ECP 结算批次：为什么审核通过还不等于入账完成 · 史晓河">
+  <meta property="og:description" content="从订单到期、批次抢占、审核和内部入账，解释 ECP 当前结算模型，以及为什么失败重试仍要保留订单占用。">
+  <meta property="og:url" content="https://riverhub.top/notes/ecp-settlement-posting/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ECP 结算批次：为什么审核通过还不等于入账完成 · 史晓河">
+  <meta name="twitter:description" content="从订单到期、批次抢占、审核和内部入账，解释 ECP 当前结算模型，以及为什么失败重试仍要保留订单占用。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "ECP 结算批次：为什么审核通过还不等于入账完成", "description": "从订单到期、批次抢占、审核和内部入账，解释 ECP 当前结算模型，以及为什么失败重试仍要保留订单占用。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/ecp-settlement-posting/", "mainEntityOfPage": "https://riverhub.top/notes/ecp-settlement-posting/", "image": "https://riverhub.top/assets/og.jpg", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/site.css?v=portfolio-focus-1">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#more-work" class="nav-link">更多交付</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link" aria-current="page">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <svg class="fa-solid fa-moon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-moon"></use></svg>
+          <svg class="fa-solid fa-sun icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sun"></use></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero article-hero"><span id="top" class="anchor-top" aria-hidden="true"></span><div class="container"><div class="article-head">
+      <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">技术笔记</a></nav>
+      <h1 class="page-title">ECP 结算批次：为什么审核通过还不等于入账完成</h1>
+      <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 5 分钟</span><span class="dot"></span><span class="note-tag">支付 · 结算</span></div>
+      <nav class="article-toc" aria-label="文章目录"><b>本文内容</b><ol><li><a href="#s1">先说明结算到底完成了什么</a></li><li><a href="#s2">到期日与结算时点要落到订单上</a></li><li><a href="#s3">抢占成功，才有资格生成明细</a></li><li><a href="#s4">审核与入账分别承担不同职责</a></li><li><a href="#s5">失败之后为什么不立即释放订单</a></li></ol></nav>
+    </div></div></section>
+    <div class="container article-wrap"><article class="article"><div class="prose">
+      <p>“结算完成”很容易被理解成银行已经打款，但在 ECP 当前实现里，代收结算批次负责的是把到期资金记入商户账户；渠道代付有自己的订单与执行流程。把这两件事拆开之后，批次生成、审核、入账和重试才有清楚的责任边界。这篇围绕当前代码里的内部结算流程展开。</p><div class="keypoints"><b>关键判断</b><ul><li>订单成功、资金到期、批次审核和账户入账是不同阶段。</li><li>生成批次时要抢占订单，并核对实际更新数量。</li><li>入账失败保留订单占用，重试不能把同一笔业务重新分给另一个批次。</li></ul></div>
+      <h2 id="s1">先说明结算到底完成了什么</h2><p>当前批次的主路径是：<code>PENDING_REVIEW → PENDING_POST → POSTING → COMPLETED</code>。它描述的是内部入账过程，不是银行出款结果。入账失败有 <code>POST_FAILED</code>，取消则有独立的 <code>CANCELLED</code> 状态。</p><p>审核通过意味着批次获得执行资格；进入入账中意味着一个执行者开始处理；完成则需要账户记账和相关订单的结算分配一并推进。把按钮文案、状态名和业务含义对齐很重要，否则运营人员可能把“批准”当作“钱已到账”。</p><p>代付仍然是另一条业务链路，涉及请求、渠道执行、回执与结果收敛。这篇所说的批次完成不能作为外部银行到账凭证。</p><h2 id="s2">到期日与结算时点要落到订单上</h2><p>批次不是对今天所有成功订单直接求和。代码会根据订单完成时间、结算模式与配置时点判断是否到期，再按日期、模式和时点分组。涉及银行工作日的模式还需要节假日计算。</p><p>例如配置两个日内时点时，一笔在最后时点之后完成的订单，不能因为“今天已经成功”就进入之前的批次。手动生成批次同样经过到期判断，不应成为绕开业务时间规则的后门。</p><p>仓库里有对应的测试：到期日期填充、T 类模式的日期映射，以及完成时间晚于最后时点时不生成批次。它们检验的是规则边界；节假日数据的正确性和维护仍是独立的运营责任。</p><h2 id="s3">抢占成功，才有资格生成明细</h2><p>定时任务和人工操作可能同时看到同一批可结算订单。如果只是“先查、求和、插入批次”，两个执行者就可能都认为自己拿到了这些订单。</p><p>实现中会把候选订单标记为结算中，并比较实际标记数量与预期去重后的订单数量。数量不一致就抛出异常，交给事务回滚；批次记录和明细也在事务范围里生成。这样就不会把已经被别的执行者拿走的订单继续算进自己的批次。</p><figure class="code"><figcaption>示意逻辑</figcaption><pre tabindex="0"><code>// 仅表达规则的伪代码
+orders = eligibleOrders.distinctByNumber()
+claimed = claimForBatch(orders, batchNumber)
+if (claimed != orders.size())
+    failAndRollback()
+saveBatchAndDetails(orders)</code></pre></figure><p>这里不能只检查“更新条数大于零”。抢到了九笔中的八笔，并不意味着可以用原来九笔的总额生成批次。</p><h2 id="s4">审核与入账分别承担不同职责</h2><p>审核服务处理自动审核条件、人工通过、拒绝、挂起和取消。当前代收结算审核不会冻结商户原有可用余额；真正的资金转入发生在后续入账阶段。状态更新带有乐观锁约束，避免不同操作静默覆盖。</p><p>入账服务先取得批次执行资格，再调用账户能力，写入账本关联，完成批次并把结算分配应用到订单。代码使用批次业务身份生成入账幂等键。重复执行时，账户侧需要识别同一个结算动作，而不是把每次重试当成一笔新资金。</p><p>这种拆分让权限决策、资金事实和任务恢复能够各自解释：谁批准的、是否入账、用了哪个账本记录，不能只剩一个笼统的“成功”。</p><h2 id="s5">失败之后为什么不立即释放订单</h2><p>失败状态仍然允许重试，所以 <code>POST_FAILED</code> 会保留订单占用。如果一失败就把订单释放回待结算池，另一个任务可能把它们打进新批次；旧批次之后再重试，就有重复分配的风险。</p><p>取消与失败的含义不同。取消需要遵守状态限制，并释放相关订单的占用；已完成或正在入账的批次不能被任意取消。挂起则暂时阻止后续执行，不代表资金事实已经撤销。</p><p>重试还有次数和超时边界。超过边界后的人工处理必须能够看到失败原因、批次状态和账本关联，不能仅靠点一个“重新执行”按钮判断恢复成功。</p><p>这次文章核对了生成、审核、入账服务及相关测试源码，没有重跑支付环境，也没有做真实机构或真实资金验收。设计评审时，我会特别检查到期边界、并发抢占、重复入账、失败保留占用和取消释放这五组场景。</p>
+      <p class="note-src">本文依据截至 2026-10-29 核对的项目主分支代码整理，例子为说明用的简化表达；代码路径的核对不代表本轮执行了业务测试或生产验收。</p>
+    </div>
+    <aside class="author-box"><img src="/assets/avatar.jpg" width="56" height="56" alt="史晓河头像" loading="lazy"><div><b>史晓河</b><p>技术架构师，长期做支付后端与复杂业务系统，也参与物联平台和终端交付。开放远程工作与项目合作。</p></div></aside>
+    <nav class="pager" aria-label="继续阅读"><a href="/notes/"><small>更多实践</small><b>全部技术笔记</b></a><a class="is-next" href="/work/ecp/"><small>相关项目</small><b>ECP · 职责与交付</b></a></nav>
+    <section class="cta-band" aria-label="合作与远程工作"><div><h2 class="cta-title">你的系统也在处理类似的问题？</h2><p class="cta-text">可以介绍现状和目标，或聊聊团队中的后端、架构与远程岗位。</p></div><div class="cta-actions"><a class="btn btn-primary" href="/#contact">聊聊岗位或项目</a><a class="btn btn-ghost" href="/resume/">查看简历</a></div></section>
+    </article></div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/work/ecp/">ECP 案例</a>
+          <a href="/work/runzhen/">润臻智慧大脑案例</a>
+          <a href="/work/food-safety/">智慧食安案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=20261030" defer></script>
+  <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
+</body>
+</html>

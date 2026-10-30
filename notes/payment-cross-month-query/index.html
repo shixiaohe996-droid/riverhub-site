@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>跨月支付查询：分表之后，怎么保证查到的还是同一笔业务 · 史晓河</title>
+  <meta name="description" content="从创建时间与成功时间的差异，讲到精确单号、权限范围、跨月分页和缺表错误：查询优化必须先守住业务语义。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/notes/payment-cross-month-query/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="跨月支付查询：分表之后，怎么保证查到的还是同一笔业务 · 史晓河">
+  <meta property="og:description" content="从创建时间与成功时间的差异，讲到精确单号、权限范围、跨月分页和缺表错误：查询优化必须先守住业务语义。">
+  <meta property="og:url" content="https://riverhub.top/notes/payment-cross-month-query/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="跨月支付查询：分表之后，怎么保证查到的还是同一笔业务 · 史晓河">
+  <meta name="twitter:description" content="从创建时间与成功时间的差异，讲到精确单号、权限范围、跨月分页和缺表错误：查询优化必须先守住业务语义。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "跨月支付查询：分表之后，怎么保证查到的还是同一笔业务", "description": "从创建时间与成功时间的差异，讲到精确单号、权限范围、跨月分页和缺表错误：查询优化必须先守住业务语义。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/payment-cross-month-query/", "mainEntityOfPage": "https://riverhub.top/notes/payment-cross-month-query/", "image": "https://riverhub.top/assets/og.jpg", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/site.css?v=portfolio-focus-1">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#more-work" class="nav-link">更多交付</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link" aria-current="page">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <svg class="fa-solid fa-moon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-moon"></use></svg>
+          <svg class="fa-solid fa-sun icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sun"></use></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero article-hero"><span id="top" class="anchor-top" aria-hidden="true"></span><div class="container"><div class="article-head">
+      <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">技术笔记</a></nav>
+      <h1 class="page-title">跨月支付查询：分表之后，怎么保证查到的还是同一笔业务</h1>
+      <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 5 分钟</span><span class="dot"></span><span class="note-tag">后端 · 查询契约</span></div>
+      <nav class="article-toc" aria-label="文章目录"><b>本文内容</b><ol><li><a href="#s1">先区分两个时间问题</a></li><li><a href="#s2">精确单号覆盖日期，不覆盖授权</a></li><li><a href="#s3">分页有两种情况，不能只做月份拼接</a></li><li><a href="#s4">缺表与查无记录是两件事</a></li><li><a href="#s5">列表、汇总和测试需要使用同一套口径</a></li></ol></nav>
+    </div></div></section>
+    <div class="container article-wrap"><article class="article"><div class="prose">
+      <p>支付订单按创建月份存储之后，查订单就不只是给表名加一个后缀。月末创建、下月成功的订单，按成功时间统计时仍然在旧表里；客服拿着单号查历史订单，也不该被页面默认的“最近七天”挡住。我在信付通的查询设计里，把这些行为收口为后端契约，让运营、商户、代理和统计入口使用同一套规则。</p><div class="keypoints"><b>关键判断</b><ul><li>创建月份决定存储位置，成功时间决定另一种查询语义。</li><li>精确单号可以忽略创建时间，但不能绕过权限或其他筛选条件。</li><li>跨月分页必须保留稳定排序；查询失败不能伪装成空结果。</li></ul></div>
+      <h2 id="s1">先区分两个时间问题</h2><p>假设一笔订单在 9 月 30 日创建，10 月 1 日确认成功。它仍属于 9 月创建分区。按“10 月创建的订单”查询时不应包含它，按“10 月成功的订单”查询时则应该包含它。这两个条件都合理，错误来自把它们当成同一个条件。</p><p>当前实现按创建时间查询时，可以用时间范围缩小月份集合；按成功时间查询时，会保留旧创建分区作为候选，再在分区内筛成功时间。<strong>不能只因为成功发生在 10 月，就只访问 10 月的表。</strong></p><p>这也意味着成功时间查询可能访问更多历史分区。先保证完整性，再根据实际数据量决定是否需要成功时间索引、汇总表或单独的读模型。不能先写一个“更快”的月份过滤，再把漏单解释成业务问题。</p><h2 id="s2">精确单号覆盖日期，不覆盖授权</h2><p>在列表里输入明确的平台单号或商户单号，通常表示“我要找这笔业务”，而不是“我要找最近七天里恰好叫这个名字的业务”。因此精确单号查询忽略创建时间限制，但仍然保留租户、商户、门店、代理范围，以及状态、金额等其他筛选。</p><p>平台单号携带定位月份所需的信息；商户单号则通过路由记录找到应用与月份。同一个商户单号可能出现在不同应用下，所以定位结果不能随手取第一条，更不能靠一个全局单号查询绕开数据范围。</p><p>这条规则放在 DAL 内，对请求生成规范化副本，避免各个前端自行清空日期，也避免服务端修改调用方传进来的对象。权限范围仍由服务层确定，数据访问层负责把范围落实到查询。</p><h2 id="s3">分页有两种情况，不能只做月份拼接</h2><p>按创建时间倒序时，月份和排序方向一致。可以先统计各月数量，跳过不涉及目标页的月份，再只取需要的记录。一个跨月页面可能由上月尾部与本月头部共同构成，不能把每个月的第一页拼起来就叫全局分页。</p><p>按成功时间倒序时，新旧创建分区的结果会交错。项目使用分区内有界分块、分区间归并的方式：每个月提供下一批有序数据，归并器选择全局下一条。月内续读使用上一块末行作为游标，减少重复扫描。</p><p>排序时间相同还要用唯一键打破平局，并让 SQL 与归并比较器使用一致的排序规则。否则相同时间的记录可能在翻页时换位置。<strong>稳定排序也不等于快照隔离</strong>：并发新增或状态更新时，不同请求之间仍可能看到变化；如果需要严格一致的导出，应另外定义快照或截止边界。</p><p>当前接口仍支持外部页码，因此深页需要跳过全局偏移。分块控制了单次内存使用，并没有把任意深分页变成固定成本。</p><h2 id="s4">缺表与查无记录是两件事</h2><div class="table-wrap" role="region" aria-label="查询情况与处理原则" tabindex="0"><table><thead><tr><th>情况</th><th>处理原则</th></tr></thead><tbody><tr><td>列表输入非法单号</td><td>按查询契约返回空结果。</td></tr><tr><td>月份尚未登记，也未建表</td><td>该月份可以没有结果。</td></tr><tr><td>已登记的业务月份缺少物理表</td><td>暴露数据或运维异常，不能当成没有订单。</td></tr><tr><td>SQL 执行或数据库连接失败</td><td>保留失败语义，不能用空列表掩盖。</td></tr></tbody></table></div><p>查询层会核对已登记月份和物理月份目录。这样，“查不到”才有可解释的含义。把所有数据库异常捕获后返回空集合，表面上接口更稳定，实际会让运营人员误判业务事实。</p><h2 id="s5">列表、汇总和测试需要使用同一套口径</h2><p>列表能查到，不代表统计就正确。创建笔数可以统计所有状态，而手续费和应结算金额需要按成功状态聚合。时间窗口、业务范围与状态条件应在列表和汇总之间保持一致，避免页面上的明细和总额互相矛盾。</p><p>仓库的查询契约与分页测试覆盖了精确单号、跨月迟到成功、空权限范围、缺失分区及稳定分页等场景。我认为最有价值的回归例子，是刻意让这些条件发生冲突：精确单号加上不匹配的日期、正确单号加上无权访问的商户、旧月订单加上下月成功时间。</p><p>这类设计体现的不是换了哪一种分库分表框架，而是能否把业务语义放在优化之前。我的取舍是继续使用现有月表目录、执行器和分页器，把重复判断收进一个入口，而不是为查询再新增一层存储框架。</p>
+      <p class="note-src">本文依据截至 2026-10-29 核对的项目主分支代码整理，例子为说明用的简化表达；代码路径的核对不代表本轮执行了业务测试或生产验收。</p>
+    </div>
+    <aside class="author-box"><img src="/assets/avatar.jpg" width="56" height="56" alt="史晓河头像" loading="lazy"><div><b>史晓河</b><p>技术架构师，长期做支付后端与复杂业务系统，也参与物联平台和终端交付。开放远程工作与项目合作。</p></div></aside>
+    <nav class="pager" aria-label="继续阅读"><a href="/notes/"><small>更多实践</small><b>全部技术笔记</b></a><a class="is-next" href="/work/ciftopay/"><small>相关项目</small><b>信付通 · 职责与交付</b></a></nav>
+    <section class="cta-band" aria-label="合作与远程工作"><div><h2 class="cta-title">你的系统也在处理类似的问题？</h2><p class="cta-text">可以介绍现状和目标，或聊聊团队中的后端、架构与远程岗位。</p></div><div class="cta-actions"><a class="btn btn-primary" href="/#contact">聊聊岗位或项目</a><a class="btn btn-ghost" href="/resume/">查看简历</a></div></section>
+    </article></div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/work/ecp/">ECP 案例</a>
+          <a href="/work/runzhen/">润臻智慧大脑案例</a>
+          <a href="/work/food-safety/">智慧食安案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=20261030" defer></script>
+  <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
+</body>
+</html>

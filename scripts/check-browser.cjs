@@ -39,6 +39,18 @@ const results = [];
         return Math.abs(box.width / box.height - img.naturalWidth / img.naturalHeight) < .01;
       }));
       assert(coversFit, 'Project covers must retain their full landscape composition');
+      const caseLinksMatch = await page.locator('.work').evaluateAll(cards => cards.every(card => {
+        const destination = card.querySelector('.work-links a').getAttribute('href');
+        return card.querySelector('a.work-shot')?.getAttribute('href') === destination
+          && card.querySelector('.work-title a')?.getAttribute('href') === destination;
+      }));
+      assert(caseLinksMatch, 'Project images, titles and case buttons must lead to the same case study');
+      const engagement = page.locator('.engagement-details');
+      assert.equal(await engagement.getAttribute('open'), null);
+      await engagement.locator('summary').click();
+      assert(await engagement.locator('.engagement-steps').isVisible());
+      await engagement.locator('summary').click();
+      assert.equal(await engagement.getAttribute('open'), null);
       const theme = await page.locator('html').getAttribute('data-theme');
       await page.locator('#theme-toggle').click();
       assert.notEqual(await page.locator('html').getAttribute('data-theme'), theme);

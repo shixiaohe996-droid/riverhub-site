@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>智能验收秤：从一个重量读数，到一笔可追溯的验收 · 史晓河</title>
+  <meta name="description" content="结合 Android 验收秤 App，说明串口读数、稳定判定、去皮、规格换算、照片提示和分批提交之间的边界。">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://riverhub.top/notes/smart-scale-acceptance/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="史晓河 (Shi Xiaohe)">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="史晓河">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="智能验收秤：从一个重量读数，到一笔可追溯的验收 · 史晓河">
+  <meta property="og:description" content="结合 Android 验收秤 App，说明串口读数、稳定判定、去皮、规格换算、照片提示和分批提交之间的边界。">
+  <meta property="og:url" content="https://riverhub.top/notes/smart-scale-acceptance/">
+  <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="智能验收秤：从一个重量读数，到一笔可追溯的验收 · 史晓河">
+  <meta name="twitter:description" content="结合 Android 验收秤 App，说明串口读数、稳定判定、去皮、规格换算、照片提示和分批提交之间的边界。">
+  <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "智能验收秤：从一个重量读数，到一笔可追溯的验收", "description": "结合 Android 验收秤 App，说明串口读数、稳定判定、去皮、规格换算、照片提示和分批提交之间的边界。", "inLanguage": "zh-CN", "datePublished": "2026-10-29", "dateModified": "2026-10-29", "url": "https://riverhub.top/notes/smart-scale-acceptance/", "mainEntityOfPage": "https://riverhub.top/notes/smart-scale-acceptance/", "image": "https://riverhub.top/assets/og.jpg", "author": {"@type": "Person", "name": "史晓河", "url": "https://riverhub.top/"}}
+  </script>
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/site.css?v=portfolio-focus-1">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-bar">
+      <a href="/" class="brand" aria-label="史晓河 首页">
+        <span class="brand-mark" aria-hidden="true">史</span>
+        <span class="brand-text">
+          <span class="brand-title">史晓河<span class="brand-dot">.dev</span></span>
+          <span class="brand-sub">ARCHITECT · REMOTE</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav-menu" aria-label="主导航">
+        <a href="/#work" class="nav-link">代表作品</a>
+        <a href="/#services" class="nav-link">找我能做什么</a>
+        <a href="/#collab" class="nav-link">合作方式</a>
+        <a href="/#more-work" class="nav-link">更多交付</a>
+        <a href="/#about" class="nav-link">关于我</a>
+        <a href="/notes/" class="nav-link" aria-current="page">笔记</a>
+        <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
+      </nav>
+
+      <div class="nav-tools">
+        <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg>EN</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
+          <svg class="fa-solid fa-moon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-moon"></use></svg>
+          <svg class="fa-solid fa-sun icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sun"></use></svg>
+        </button>
+        <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
+          <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero article-hero"><span id="top" class="anchor-top" aria-hidden="true"></span><div class="container"><div class="article-head">
+      <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span class="sep">/</span><a href="/notes/">技术笔记</a></nav>
+      <h1 class="page-title">智能验收秤：从一个重量读数，到一笔可追溯的验收</h1>
+      <div class="article-meta"><span>史晓河</span><span class="dot"></span><time datetime="2026-10-29">2026-10-29</time><span class="dot"></span><span>约 5 分钟</span><span class="dot"></span><span class="note-tag">终端 · 设备集成</span></div>
+      <nav class="article-toc" aria-label="文章目录"><b>本文内容</b><ol><li><a href="#s1">先找到真正接收串口数据的入口</a></li><li><a href="#s2">稳定判定是采样规则，不是校准证明</a></li><li><a href="#s3">皮重与规格换算要只算一次</a></li><li><a href="#s4">照片提示与提交约束要如实区分</a></li><li><a href="#s5">本次缓存、已上传和追加验收不能混算</a></li></ol></nav>
+    </div></div></section>
+    <div class="container article-wrap"><article class="article"><div class="prose">
+      <p>食堂收货时，秤上的数字只是过程中的一个信号。操作员还要知道这是什么食材、容器扣没扣、数量单位对不对、照片属于哪一批，以及这次结果有没有上传。智慧食安项目中，我负责验收秤 App 与官网前端。这篇聚焦终端已经实现的流程，也明确哪些保证需要后端或真机验证共同完成。</p><div class="keypoints"><b>关键判断</b><ul><li>把原始读数、稳定状态和已确认的验收结果分开。</li><li>硬件去皮和手动皮重不能叠加误扣，单位换算要集中处理。</li><li>页面缓存、服务端已上传与追加验收是不同状态。</li></ul></div>
+      <h2 id="s1">先找到真正接收串口数据的入口</h2><p>仓库里有一个用于模拟的秤 SDK，也有验收页面中的实际串口接入逻辑。只看带 SDK 名字的文件，很容易把模拟连接和随机重量当成设备能力。</p><p>实际页面会读取串口配置、连接设备、解析读数并维护连接状态。称重历史用于判断稳定，界面再把有效读数用于当前食材。模拟路径适合开发页面与联调状态，串口协议、设备断开与重连则必须在实际入口和硬件上核实。</p><p>我会先追一条完整链路：字节从哪里进来，单位在哪里统一，谁决定按钮是否可用，最后提交的是哪一个值。一个漂亮的重量显示框并不能回答这些问题。</p><h2 id="s2">稳定判定是采样规则，不是校准证明</h2><p>当前实现查看最近三次读数，用最大值与最小值的差和配置阈值比较；不足三次时不算稳定。称重商品还要满足正重量和设备量程等条件，才能进入验收动作。</p><figure class="code"><figcaption>示意逻辑</figcaption><pre tabindex="0"><code>// 仅表达判定思路；实际阈值取决于设备配置
+recent = lastThreeReadings()
+if (recent.size &lt; 3) return false
+spread = max(recent) - min(recent)
+stable = spread &lt;= threshold</code></pre></figure><p>规则简单、可解释，代价是它只观察了短窗口内的波动。采样频率、秤的分度值、读数精度与现场振动都会影响效果。三个接近的值能说明短时间内变化不大，不能证明传感器已经校准，也不能自动保证这三个值足够新。</p><p>因此真机验收应覆盖连续放置、快速取放、断线后恢复、超量程和长时间无新数据。若要增加读数新鲜度或更复杂的稳定窗口，应作为明确的新规则验证，不能直接把它写成当前实现已具备的能力。</p><h2 id="s3">皮重与规格换算要只算一次</h2><p>页面将硬件去皮和手动皮重作为互斥路径。使用了手动皮重时，会阻止继续执行硬件去皮；切换食材也会清理相关状态，避免上一种食材的容器影响下一种。</p><p>当前设备路径约定串口返回的是已由硬件处理的重量，页面再减去手动皮重。这个约定必须跟所接秤的协议一致：如果设备返回的是毛重，或者硬件已经去过皮却又减了一次，就会出现系统性的偏差。</p><p>另一个容易出错的地方是订单按规格数量计价，而秤显示实际重量。项目把规格解析、公斤与克等单位处理、计费数量和后端数量格式之间的换算集中在一个工具模块。调用页面复用同一套函数，避免列表、称重页和提交接口各算一遍。</p><p>自由文本规格解析仍有支持范围。不能因为能识别常见规格，就宣称能理解任意包装描述；新规格应先补充样例并核对往返换算。</p><h2 id="s4">照片提示与提交约束要如实区分</h2><p>页面分别维护操作人、食材和全景三个照片位置，并展示缺失项。这能帮助现场把重量与取证材料放进同一次验收流程。</p><p>核对当前代码后，需要明确一个边界：照片或数量问题会进入确认提示流程，不能直接描述为“所有缺照片请求都被后端强制拒绝”。拍照页面、前端提示、上传结果与服务端校验分别证明不同的事情。</p><p>如果业务要求照片严格齐全，应把约束定义到提交接口，并处理图片上传失败、引用失效和跨食材误绑定。本文没有核验平台后端，因此不把这些服务端保证算进我的终端交付范围。</p><h2 id="s5">本次缓存、已上传和追加验收不能混算</h2><p>现场可能分多次称一份订单。当前页面区分首次验收、已缓存待上传和已上传后的追加验收：未上传的缓存不能再次重复确认，已经上传的食材可以进入追加路径，并保留原有已上传数量作为基线。</p><p>整体验收会收集本次缓存，确认部分或整体提交，再批量上传。页面用上传中的状态避免重复点击。这能减少当前页面内的重复操作，但<strong>前端禁用按钮不等于服务端幂等</strong>，刷新、重试或其他终端仍然需要接口侧的业务身份约束。</p><p>这里的页面缓存也不能自动等同于断电可恢复的离线存储。若现场要支持长时间离线、重启恢复和后台补传，需要另行定义持久化、重试与冲突规则。</p><p>我最关注的交付检查是：稳定之前不能确认、两种去皮不能误叠加、规格换算前后可核对、切换食材不串照片、重复点击不重复缓存、追加数量不把历史部分再加一遍。代码阅读能确认处理路径，重量精度、摄像头兼容性和异常恢复仍须在对应硬件上验证。</p>
+      <p class="note-src">本文依据截至 2026-10-29 核对的项目主分支代码整理，例子为说明用的简化表达；代码路径的核对不代表本轮执行了业务测试或生产验收。</p>
+    </div>
+    <aside class="author-box"><img src="/assets/avatar.jpg" width="56" height="56" alt="史晓河头像" loading="lazy"><div><b>史晓河</b><p>技术架构师，长期做支付后端与复杂业务系统，也参与物联平台和终端交付。开放远程工作与项目合作。</p></div></aside>
+    <nav class="pager" aria-label="继续阅读"><a href="/notes/"><small>更多实践</small><b>全部技术笔记</b></a><a class="is-next" href="/work/food-safety/"><small>相关项目</small><b>智慧食安 · 职责与交付</b></a></nav>
+    <section class="cta-band" aria-label="合作与远程工作"><div><h2 class="cta-title">你的系统也在处理类似的问题？</h2><p class="cta-text">可以介绍现状和目标，或聊聊团队中的后端、架构与远程岗位。</p></div><div class="cta-actions"><a class="btn btn-primary" href="/#contact">聊聊岗位或项目</a><a class="btn btn-ghost" href="/resume/">查看简历</a></div></section>
+    </article></div>
+  </main>
+
+  <footer class="footer footer-mini">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 史晓河 (Shi Xiaohe)</div>
+        <nav class="footer-links" aria-label="页脚链接">
+          <a href="/">首页</a>
+          <a href="/work/ciftopay/">信付通案例</a>
+          <a href="/work/ecommica/">Ecommica 案例</a>
+          <a href="/work/ecp/">ECP 案例</a>
+          <a href="/work/runzhen/">润臻智慧大脑案例</a>
+          <a href="/work/food-safety/">智慧食安案例</a>
+          <a href="/notes/">笔记</a>
+          <a href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">简历 PDF</a>
+          <a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener">GitHub</a>
+          <a href="/en/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="to-top" href="#top">回到顶部 <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/main.js?v=20261030" defer></script>
+  <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
+</body>
+</html>

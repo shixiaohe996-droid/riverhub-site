@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>技术笔记 · 史晓河</title>
-  <meta name="description" content="史晓河的技术笔记：支付清结算、系统架构与 AI 工程化的实践记录。">
+  <meta name="description" content="史晓河的工程实践：支付与结算、跨月查询、物联厂商集成、智能验收终端，以及全栈与 AI 辅助交付。">
   <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
   <link rel="canonical" href="https://riverhub.top/notes/">
@@ -14,14 +14,14 @@
   <meta property="og:site_name" content="史晓河">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:title" content="技术笔记 · 史晓河">
-  <meta property="og:description" content="史晓河的技术笔记：支付清结算、系统架构与 AI 工程化的实践记录。">
+  <meta property="og:description" content="史晓河的工程实践：支付与结算、跨月查询、物联厂商集成、智能验收终端，以及全栈与 AI 辅助交付。">
   <meta property="og:url" content="https://riverhub.top/notes/">
   <meta property="og:image" content="https://riverhub.top/assets/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="技术笔记 · 史晓河">
-  <meta name="twitter:description" content="史晓河的技术笔记：支付清结算、系统架构与 AI 工程化的实践记录。">
+  <meta name="twitter:description" content="史晓河的工程实践：支付与结算、跨月查询、物联厂商集成、智能验收终端，以及全栈与 AI 辅助交付。">
   <meta name="twitter:image" content="https://riverhub.top/assets/og.jpg">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307080b'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%E5%8F%B2%3C/text%3E%3C/svg%3E">
@@ -37,7 +37,7 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="stylesheet" href="/site.css?v=20261030">
+  <link rel="stylesheet" href="/site.css?v=portfolio-focus-1">
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -56,7 +56,7 @@
         <a href="/#work" class="nav-link">代表作品</a>
         <a href="/#services" class="nav-link">找我能做什么</a>
         <a href="/#collab" class="nav-link">合作方式</a>
-        <a href="/#cases" class="nav-link">其他项目</a>
+        <a href="/#more-work" class="nav-link">更多交付</a>
         <a href="/#about" class="nav-link">关于我</a>
         <a href="/notes/" class="nav-link" aria-current="page">笔记</a>
         <a href="/#contact" class="nav-link nav-link-cta">联系我</a>
@@ -88,6 +88,7 @@
     </section>
     <div class="container">
       <div class="notes-index">
+<a class="card note-card reveal" href="/notes/payment-cross-month-query/"><span class="note-meta"><span class="note-tag">后端 · 查询契约</span><time datetime="2026-10-29">2026-10-29</time></span><h2 class="note-title">跨月支付查询：分表之后，怎么保证查到的还是同一笔业务</h2><p class="note-excerpt">从创建时间与成功时间的差异，讲到精确单号、权限范围、跨月分页和缺表错误：查询优化必须先守住业务语义。</p><span class="note-more">阅读实现与取舍 <span aria-hidden="true">→</span></span></a><a class="card note-card reveal" href="/notes/ecp-settlement-posting/"><span class="note-meta"><span class="note-tag">支付 · 结算</span><time datetime="2026-10-29">2026-10-29</time></span><h2 class="note-title">ECP 结算批次：为什么审核通过还不等于入账完成</h2><p class="note-excerpt">从订单到期、批次抢占、审核和内部入账，解释 ECP 当前结算模型，以及为什么失败重试仍要保留订单占用。</p><span class="note-more">阅读实现与取舍 <span aria-hidden="true">→</span></span></a><a class="card note-card reveal" href="/notes/iot-vendor-integration/"><span class="note-meta"><span class="note-tag">IoT · 架构</span><time datetime="2026-10-29">2026-10-29</time></span><h2 class="note-title">接入多家物联厂商：把设备协议留在集成层</h2><p class="note-excerpt">结合润臻智慧大脑，拆解统一功能接口、三级启用、实体映射、事件转换与处理状态，并说明 Mock 能证明什么。</p><span class="note-more">阅读实现与取舍 <span aria-hidden="true">→</span></span></a><a class="card note-card reveal" href="/notes/smart-scale-acceptance/"><span class="note-meta"><span class="note-tag">终端 · 设备集成</span><time datetime="2026-10-29">2026-10-29</time></span><h2 class="note-title">智能验收秤：从一个重量读数，到一笔可追溯的验收</h2><p class="note-excerpt">结合 Android 验收秤 App，说明串口读数、稳定判定、去皮、规格换算、照片提示和分批提交之间的边界。</p><span class="note-more">阅读实现与取舍 <span aria-hidden="true">→</span></span></a>
         <a class="card note-card reveal" href="/notes/payment-order-state-machine/">
           <span class="note-meta"><span class="note-tag">支付 · 架构</span><time datetime="2026-10-29">2026-10-29</time><span>约 9 分钟</span></span>
           <h2 class="note-title">支付订单状态机与渠道回调：两层状态、三段执行与结果收敛</h2>
