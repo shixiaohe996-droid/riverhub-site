@@ -37,9 +37,7 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/site.css?v=202610292300">
+  <link rel="stylesheet" href="/site.css?v=20261030">
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -66,10 +64,10 @@
 
       <div class="nav-tools">
         <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg>EN</a>
         <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
-          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
-          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <svg class="fa-solid fa-moon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-moon"></use></svg>
+          <svg class="fa-solid fa-sun icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sun"></use></svg>
         </button>
         <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
           <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -94,7 +92,7 @@
         </dl>
         <div class="page-actions">
           <a class="btn btn-primary" href="/#contact">聊聊类似的项目 <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="#architecture"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> 直接看架构</a>
+          <a class="btn btn-ghost" href="#architecture"><svg class="fa-solid fa-diagram-project" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-diagram-project"></use></svg> 直接看架构</a>
         </div>
       </div>
     </section>
@@ -102,7 +100,7 @@
     <div class="container">
       <figure class="case-cover reveal" style="margin:0">
         <span class="browser browser-ecp">
-          <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-table-columns"></i> ECP · 运营管理端</span><span class="browser-go">◇</span></span>
+          <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><svg class="fa-solid fa-table-columns" focusable="false" aria-hidden="true"><use href="/assets/icons.svg#solid-table-columns"></use></svg> ECP · 运营管理端</span><span class="browser-go">◇</span></span>
           <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 559px)" srcset="/assets/work/ecp-console-m.webp" width="720" height="1080"><img src="/assets/work/ecp-console.webp" width="1920" height="1200" fetchpriority="high" decoding="async" alt="ECP 运营管理端示意界面：代收订单列表、账户余额与结算批次（示例数据）"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 559px)" srcset="/assets/work/ecp-console-m-dark.webp" width="720" height="1080"><img src="/assets/work/ecp-console-dark.webp" width="1920" height="1200" fetchpriority="high" decoding="async" alt="ECP 运营管理端示意界面：代收订单列表、账户余额与结算批次（示例数据）"></picture>
           <span class="shot-cap mono">示意界面 · 示例数据，非生产截图</span>
         </span>
@@ -147,10 +145,10 @@
             <h2 class="cs-h"><span class="mono">02</span>我的角色 · 全栈</h2>
             <p class="cs-intro">以远程兼职方式参与。从服务划分、支付域分层，到交易、账务、结算的核心代码，再到两套前端控台，由我设计和实现。</p>
             <div class="role-grid">
-              <div class="role-item"><span class="role-k"><i class="fa-solid fa-sitemap" aria-hidden="true"></i>架构与服务划分</span><p>网关、身份与权限、基础设施与支付聚合服务；支付域按 core → api → 业务模块 → 装配层分层，core 只放纯 Java 的契约与记账规则。</p></div>
-              <div class="role-item"><span class="role-k"><i class="fa-solid fa-credit-card" aria-hidden="true"></i>交易与账务核心</span><p>代收 / 代付状态机、开放 API 签名与防重放、多腿复式记账与冻结、结算批次与对账差错，以及回调、通知、任务的幂等设计。</p></div>
-              <div class="role-item"><span class="role-k"><i class="fa-solid fa-display" aria-hidden="true"></i>两套前端控台</span><p>Vue 3 Monorepo：运营管理端负责商户、账户、交易、结算、风控与争议；商户端门户使用独立的 OAuth2 客户端与权限体系。</p></div>
-              <div class="role-item"><span class="role-k"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>工程化与 AI 协作</span><p>每个服务独立 CI 构建镜像，Docker Compose 部署；Claude Code 与 Codex 共用同一套仓库规则（AGENTS.md / CLAUDE.md），按同一套约束交付。</p></div>
+              <div class="role-item"><span class="role-k"><svg class="fa-solid fa-sitemap" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sitemap"></use></svg>架构与服务划分</span><p>网关、身份与权限、基础设施与支付聚合服务；支付域按 core → api → 业务模块 → 装配层分层，core 只放纯 Java 的契约与记账规则。</p></div>
+              <div class="role-item"><span class="role-k"><svg class="fa-solid fa-credit-card" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-credit-card"></use></svg>交易与账务核心</span><p>代收 / 代付状态机、开放 API 签名与防重放、多腿复式记账与冻结、结算批次与对账差错，以及回调、通知、任务的幂等设计。</p></div>
+              <div class="role-item"><span class="role-k"><svg class="fa-solid fa-display" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-display"></use></svg>两套前端控台</span><p>Vue 3 Monorepo：运营管理端负责商户、账户、交易、结算、风控与争议；商户端门户使用独立的 OAuth2 客户端与权限体系。</p></div>
+              <div class="role-item"><span class="role-k"><svg class="fa-solid fa-wand-magic-sparkles" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-wand-magic-sparkles"></use></svg>工程化与 AI 协作</span><p>每个服务独立 CI 构建镜像，Docker Compose 部署；Claude Code 与 Codex 共用同一套仓库规则（AGENTS.md / CLAUDE.md），按同一套约束交付。</p></div>
             </div>
           </section>
 
@@ -204,12 +202,12 @@
           <section class="cs-sec" id="results">
             <h2 class="cs-h"><span class="mono">06</span>交付情况</h2>
             <div class="result-list">
-              <div class="result"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i><div><b>代收、代付到结算对账的闭环</b><p>代收、代付、退款、充值、提现、批量代付，到结算批次、通道对账与差错单，整条资金链路在代码里完整实现。</p></div></div>
-              <div class="result"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i><div><b>钱的规则落在了代码约束里</b><p>整数金额、余额恒等式、多腿分录平衡、版本号乐观锁和幂等守卫统一收口在公共层，各业务模块共用同一套实现。</p></div></div>
-              <div class="result"><i class="fa-solid fa-vial-circle-check" aria-hidden="true"></i><div><b>测试覆盖关键链路</b><p>两百余个测试类，覆盖签名与防重放、回调验签、幂等记录、多腿分录构建、账本完整性检查等关键路径（单元测试与集成测试）。</p></div></div>
-              <div class="result"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><div><b>两套控台 + 开放 API</b><p>运营管理端、商户端门户与商户开放 API 共用同一套后端能力；每个服务独立构建镜像、容器化部署。</p></div></div>
+              <div class="result"><svg class="fa-solid fa-arrows-rotate" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-arrows-rotate"></use></svg><div><b>代收、代付到结算对账的闭环</b><p>代收、代付、退款、充值、提现、批量代付，到结算批次、通道对账与差错单，整条资金链路在代码里完整实现。</p></div></div>
+              <div class="result"><svg class="fa-solid fa-scale-balanced" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-scale-balanced"></use></svg><div><b>钱的规则落在了代码约束里</b><p>整数金额、余额恒等式、多腿分录平衡、版本号乐观锁和幂等守卫统一收口在公共层，各业务模块共用同一套实现。</p></div></div>
+              <div class="result"><svg class="fa-solid fa-vial-circle-check" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-vial-circle-check"></use></svg><div><b>测试覆盖关键链路</b><p>两百余个测试类，覆盖签名与防重放、回调验签、幂等记录、多腿分录构建、账本完整性检查等关键路径（单元测试与集成测试）。</p></div></div>
+              <div class="result"><svg class="fa-solid fa-layer-group" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-layer-group"></use></svg><div><b>两套控台 + 开放 API</b><p>运营管理端、商户端门户与商户开放 API 共用同一套后端能力；每个服务独立构建镜像、容器化部署。</p></div></div>
             </div>
-            <p class="note-honest"><i class="fa-solid fa-circle-info" aria-hidden="true"></i>以上数字均按源码统计（Java 主代码约 14 万行、前端 Vue / TS 约 10 万行），描述的是工程规模，不代表交易量；运营数据这里不写。</p>
+            <p class="note-honest"><svg class="fa-solid fa-circle-info" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-circle-info"></use></svg>以上数字均按源码统计（Java 主代码约 14 万行、前端 Vue / TS 约 10 万行），描述的是工程规模，不代表交易量；运营数据这里不写。</p>
           </section>
 
       <section class="cta-band reveal" aria-label="联系我">
@@ -219,8 +217,8 @@
         </div>
         <div class="cta-actions">
           <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
-          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
-          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><svg class="fa-brands fa-weixin" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-weixin"></use></svg> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><svg class="fa-regular fa-file-pdf" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-file-pdf"></use></svg> 简历 PDF</a>
         </div>
       </section>
 
@@ -256,7 +254,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="/main.js?v=202610292300" defer></script>
+  <script src="/main.js?v=20261030" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>

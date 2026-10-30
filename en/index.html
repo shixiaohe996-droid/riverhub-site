@@ -40,11 +40,9 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/site.css?v=202610292300">
+  <link rel="stylesheet" href="/site.css?v=20261030">
 </head>
-<body>
+<body class="home-page">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" id="site-header">
@@ -68,10 +66,10 @@
 
       <div class="nav-tools">
         <a href="#contact" class="btn btn-primary btn-sm header-cta">Contact <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="icon-btn lang-btn" href="/" hreflang="zh-CN" lang="zh-CN" aria-label="切换到中文"><i class="fa-solid fa-globe" aria-hidden="true"></i>中</a>
+        <a class="icon-btn lang-btn" href="/" hreflang="zh-CN" lang="zh-CN" aria-label="切换到中文"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg>中</a>
         <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark / light mode">
-          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
-          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <svg class="fa-solid fa-moon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-moon"></use></svg>
+          <svg class="fa-solid fa-sun icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sun"></use></svg>
         </button>
         <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
           <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -96,12 +94,12 @@
           </h1>
           <p class="hero-sub">13 years hands-on, from architecture design to full-stack delivery</p>
           <p class="hero-lead">
-            I'm Shi Xiaohe, a software architect and full-stack engineer. I currently lead the architecture of <strong>CiftoPay</strong>, an aggregated payment platform, at Henan Xinyan Electronic Technology. My core strengths are payment acquiring, reconciliation and settlement, IoT and hardware integration, and 0→1 full-stack delivery — increasingly with AI coding agents (Claude Code, spec-driven and test-driven development).
+            I'm Shi Xiaohe, a <strong>software architect at Xinyan Technology</strong>, leading the architecture of CiftoPay. I turn complex payment, ledger and device workflows into maintainable systems, from architecture and core Java services to full-stack delivery.
           </p>
           <div class="hero-cta">
-            <a href="#work" class="btn btn-primary"><i class="fa-solid fa-display" aria-hidden="true"></i> See my work</a>
-            <a href="#contact" class="btn btn-ghost"><i class="fa-solid fa-comments" aria-hidden="true"></i> Book a free 30-min call</a>
-          </div>
+            <a href="#work" class="btn btn-primary"><svg class="fa-solid fa-display" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-display"></use></svg> See my work</a>
+            <a href="#contact" class="btn btn-ghost"><svg class="fa-solid fa-comments" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-comments"></use></svg> Contact me to arrange a call</a>
+          <a class="hero-resume" href="/assets/shixiaohe-resume-en.pdf" target="_blank" rel="noopener">Download CV (PDF) <span aria-hidden="true">↗</span></a></div>
         </div>
 
         <aside class="profile-card reveal" aria-label="Profile">
@@ -113,20 +111,20 @@
             <div class="profile-id">
               <div class="profile-name">Shi Xiaohe <span class="profile-en">史晓河</span></div>
               <div class="profile-role">Software Architect · Full-Stack</div>
-              <div class="profile-loc"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Sanmenxia, China · Remote</div>
+              <div class="profile-loc"><svg class="fa-solid fa-location-dot" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-location-dot"></use></svg> Sanmenxia, China · Remote</div>
             </div>
           </div>
           <ul class="trust-list">
-            <li><span class="trust-val"><span class="count" data-count="13">13</span><small>yrs</small></span><span class="trust-lbl">hands-on engineering &amp; architecture</span></li>
-            <li><span class="trust-val">0→1</span><span class="trust-lbl">full-stack delivery, several times as the sole tech lead</span></li>
-            <li><span class="trust-val"><span class="count" data-count="2">2</span><small>live</small></span><span class="trust-lbl">products you can open right now</span></li>
+            <li><span class="trust-val"><span class="count" data-count="13">13</span><small>yrs</small></span><span class="trust-lbl">engineering &amp; architecture</span></li>
+            <li><span class="trust-val">0→1</span><span class="trust-lbl">end-to-end delivery</span></li>
+            <li><span class="trust-val"><span class="count" data-count="2">2</span><small>live</small></span><span class="trust-lbl">live products</span></li>
             <li><span class="trust-val">Remote</span><span class="trust-lbl">2020.10 – 2022.02 as a remote freelancer on a payment platform</span></li>
           </ul>
           <ul class="profile-contact">
-            <li><a href="mailto:shixiaohe996@gmail.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span class="mono">shixiaohe996@gmail.com</span></a><button class="copy-mini btn-copy-contact" type="button" data-copy="shixiaohe996@gmail.com" data-label="Email" aria-label="Copy email"><i class="fa-regular fa-copy" aria-hidden="true"></i></button></li>
-            <li><a href="https://t.me/river_data" target="_blank" rel="noopener"><i class="fa-brands fa-telegram" aria-hidden="true"></i> <span class="mono">@river_data</span></a></li>
-            <li><a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> <span class="mono">shixiaohe996-droid</span></a></li>
-            <li><span class="contact-wx"><i class="fa-brands fa-weixin" aria-hidden="true"></i> WeChat <span class="mono">18618387956</span> <small>(= phone)</small></span><button class="copy-mini btn-copy-contact" type="button" data-copy="18618387956" data-label="WeChat ID" aria-label="Copy WeChat ID"><i class="fa-regular fa-copy" aria-hidden="true"></i></button></li>
+            <li><a href="mailto:shixiaohe996@gmail.com"><svg class="fa-solid fa-envelope" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-envelope"></use></svg> <span class="mono">shixiaohe996@gmail.com</span></a><button class="copy-mini btn-copy-contact" type="button" data-copy="shixiaohe996@gmail.com" data-label="Email" aria-label="Copy email"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button></li>
+            <li><a href="https://t.me/river_data" target="_blank" rel="noopener"><svg class="fa-brands fa-telegram" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-telegram"></use></svg> <span class="mono">@river_data</span></a></li>
+            <li><a href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener"><svg class="fa-brands fa-github" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-github"></use></svg> <span class="mono">shixiaohe996-droid</span></a></li>
+            <li><span class="contact-wx"><svg class="fa-brands fa-weixin" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-weixin"></use></svg> WeChat <span class="mono">18618387956</span> <small>(= phone)</small></span><button class="copy-mini btn-copy-contact" type="button" data-copy="18618387956" data-label="WeChat ID" aria-label="Copy WeChat ID"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button></li>
           </ul>
         </aside>
       </div>
@@ -135,58 +133,30 @@
     <section class="section section-alt" id="work">
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">01</span><span class="kicker-sep">/</span>Featured Work</span>
+          <span class="section-kicker">Featured Work</span>
           <h2 class="section-title">Featured work</h2>
-          <p class="section-desc">Two products running in production, an overseas payment platform for the Indian market, a smart-community IoT platform and a food-safety weighing terminal. Detailed case studies are in Chinese.</p>
+          <p class="section-desc">Payments, settlement and IoT: the problem, my role and what I delivered. Full case studies are in Chinese.</p>
         </header>
-        <div class="works">
-          <article class="work reveal" id="work-ciftopay">
+        <div class="works featured-grid">
+<article class="work reveal" id="work-ciftopay">
             <a class="work-shot" href="https://ciftopay.com/" target="_blank" rel="noopener" aria-label="Open the CiftoPay website">
               <span class="browser">
-                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-lock"></i> ciftopay.com</span><span class="browser-go">↗</span></span>
+                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><svg class="fa-solid fa-lock" focusable="false" aria-hidden="true"><use href="/assets/icons.svg#solid-lock"></use></svg> ciftopay.com</span><span class="browser-go">↗</span></span>
                 <img src="/assets/ciftopay.jpg" width="1200" height="1500" loading="lazy" decoding="async" alt="Screenshot of the CiftoPay website">
               </span>
             </a>
             <div class="work-body">
-              <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>Live</span><span class="work-url mono">ciftopay.com</span></div>
-              <h3 class="work-title">CiftoPay · Aggregated payments for local businesses</h3>
-              <p class="card-text">A payment and digitalization service for merchants in Sanmenxia, China. Aggregated QR payments are the core; partner software covers restaurants, retail, utility bill payment, schools, parking and hotels, with custom development around payments. Funds are settled directly by licensed payment institutions — the platform never holds them. It serves merchants (QR codes and smart speakers), sales agents (profit-sharing back office) and developers (open API).</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>My role</dt><dd><strong>Architect, full-stack</strong> (2026.06 – present). Overall architecture; payment orchestration, channel adapters, double-entry ledger and daily reconciliation; three web portals and four mobile apps.</dd></div>
-                <div class="wf-row"><dt>Key design</dt><dd>Persist-before-call payment flow; unknown results are only queried, never re-sent; transactional outbox + RocketMQ into an append-only double-entry ledger; one codebase deployable as a monolith or microservices.</dd></div>
-                <div class="wf-row"><dt>Stack</dt><dd class="tags"><span class="tag-strong">Java 25</span><span>Spring Boot 4</span><span>Spring Cloud Alibaba</span><span class="tag-strong">RocketMQ</span><span>MySQL</span><span>Redis</span><span>Nacos</span><span>Vue 3</span><span>uni-app x</span></dd></div>
-              </dl>
+              <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>Live</span></div>
+              <h3 class="work-title">CiftoPay · Payments &amp; settlement</h3>
+              <p class="card-text">Connect merchant payments, agent profit-sharing and reconciliation. Licensed payment institutions settle funds directly.</p>
+              <dl class="work-facts"><div class="wf-row"><dt>Role</dt><dd>Software architect; overall architecture and full-stack development (Jun 2026–present).</dd></div><div class="wf-row"><dt>Delivered</dt><dd>Payment orchestration, channel adapters and a double-entry ledger, with merchant, agent and operations portals.</dd></div></dl><p class="work-stack">Java / Spring Boot · RocketMQ · Vue 3</p>
               <div class="work-links">
                 <a class="btn btn-primary btn-sm" href="/work/ciftopay/" hreflang="zh-CN">Case study <small>(中文)</small> <span class="arrow" aria-hidden="true">→</span></a>
                 <a class="btn btn-ghost btn-sm" href="https://ciftopay.com/" target="_blank" rel="noopener">Live site <span class="arrow" aria-hidden="true">↗</span></a>
               </div>
             </div>
           </article>
-
-          <article class="work reveal" id="work-ecommica">
-            <a class="work-shot" href="https://deals.ecommica.com/en" target="_blank" rel="noopener" aria-label="Open the Ecommica website">
-              <span class="browser">
-                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-lock"></i> deals.ecommica.com</span><span class="browser-go">↗</span></span>
-                <img src="/assets/deals.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="Screenshot of the Ecommica website">
-              </span>
-            </a>
-            <div class="work-body">
-              <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>Live</span><span class="work-url mono">deals.ecommica.com</span></div>
-              <h3 class="work-title">Ecommica · Multilingual deals &amp; coupon platform</h3>
-              <p class="card-text">A deals site for shoppers in multiple countries: offers, coupons and promo codes from e-commerce stores such as Walmart US, Sam's Club US and Shopee MX, browsable by store, category and region, in English and Chinese, with a blog.</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>My role</dt><dd><strong>Full-stack</strong>. Next.js storefront, Spring Boot affiliate-tracking service and Vue 3 admin console, both language versions live.</dd></div>
-                <div class="wf-row"><dt>Key design</dt><dd>All outbound clicks recorded before a 302 redirect; affiliate postbacks verified, de-duplicated and attributed by click ID; GeoIP region filtering, ISR caching, sitemap and hreflang.</dd></div>
-                <div class="wf-row"><dt>Stack</dt><dd class="tags"><span class="tag-strong">Next.js 16</span><span>React 19</span><span>Tailwind 4</span><span>next-intl</span><span class="tag-strong">Spring Boot 3.5</span><span>MySQL</span><span>Redis</span><span>Vue 3</span><span>Playwright</span></dd></div>
-              </dl>
-              <div class="work-links">
-                <a class="btn btn-primary btn-sm" href="/work/ecommica/" hreflang="zh-CN">Case study <small>(中文)</small> <span class="arrow" aria-hidden="true">→</span></a>
-                <a class="btn btn-ghost btn-sm" href="https://deals.ecommica.com/en" target="_blank" rel="noopener">Live site <span class="arrow" aria-hidden="true">↗</span></a>
-              </div>
-            </div>
-          </article>
-
-          <article class="work reveal" id="work-ecp">
+<article class="work reveal" id="work-ecp">
             <div class="work-shot is-art">
               <figure class="hero-art hero-ecp">
                 <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 999px)" srcset="../assets/work/ecp-hero-m-en.webp" width="720" height="840"><img src="../assets/work/ecp-hero-en.webp" width="1200" height="1400" loading="lazy" decoding="async" alt="Illustrative design of the ECP payment core: merchant balance as total = available + frozen, a UPI pay-in order state machine with verified callback, payout rails UPI / IMPS / NEFT / RTGS, and the multi-leg double-entry of one pay-in (sample data)"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 999px)" srcset="../assets/work/ecp-hero-m-en-dark.webp" width="720" height="840"><img src="../assets/work/ecp-hero-en-dark.webp" width="1200" height="1400" loading="lazy" decoding="async" alt="Illustrative design of the ECP payment core: merchant balance as total = available + frozen, a UPI pay-in order state machine with verified callback, payout rails UPI / IMPS / NEFT / RTGS, and the multi-leg double-entry of one pay-in (sample data)"></picture>
@@ -194,22 +164,17 @@
               </figure>
             </div>
             <div class="work-body">
-              <div class="work-meta"><span class="work-badge"><i class="fa-solid fa-earth-asia" aria-hidden="true"></i>Overseas payments · India</span><span class="work-url mono">INR · UPI · IMPS · NEFT · RTGS</span></div>
-              <h3 class="work-title">ECP · Overseas payment platform for the Indian market</h3>
-              <p class="card-text">Local pay-in and pay-out in India for merchants: pay-in via UPI and Net Banking, pay-out via UPI, IMPS, NEFT and RTGS. The platform covers merchant onboarding and fees, accounts and double-entry bookkeeping, settlement batches and reconciliation, risk lists and disputes, with an operations console, a merchant portal and a signed merchant API.</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>My role</dt><dd><strong>Remote part-time contract · architecture and full-stack development</strong>. Service boundaries and payment-domain layering, the trade / ledger / settlement core and both Vue 3 consoles.</dd></div>
-                <div class="wf-row"><dt>Key design</dt><dd>HMAC-SHA256 / RSA2 signatures with nonce replay protection and idempotency keys; explicit state machines with optimistic locking; multi-leg double entry in integer minor units (total = available + frozen); settlement batches on Indian bank working days.</dd></div>
-                <div class="wf-row"><dt>Stack</dt><dd class="tags"><span class="tag-strong">Java 17</span><span class="tag-strong">Spring Boot 3.5</span><span>Spring Cloud Alibaba</span><span>Nacos</span><span>MySQL</span><span>Redis · Redisson</span><span>RocketMQ</span><span>XXL-Job</span><span class="tag-strong">Vue 3</span><span>Ant Design Vue</span></dd></div>
-              </dl>
+              <div class="work-meta"><span class="work-badge"><svg class="fa-solid fa-earth-asia" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-earth-asia"></use></svg>Overseas payments · India</span></div>
+              <h3 class="work-title">ECP · Local payments in India</h3>
+              <p class="card-text">Coordinate pay-in and pay-out, payment states, balance holds, settlement batches and reconciliation.</p>
+              <dl class="work-facts"><div class="wf-row"><dt>Role</dt><dd>Remote part-time contract; architecture and full-stack development (Apr–Jul 2026).</dd></div><div class="wf-row"><dt>Delivered</dt><dd>Signed merchant API, payment state machines, multi-leg double entry and two Vue consoles.</dd></div></dl><p class="work-stack">Spring Cloud · MySQL · Redis · Vue 3</p>
               <div class="work-links">
                 <a class="btn btn-primary btn-sm" href="/work/ecp/" hreflang="zh-CN">Case study <small>(中文)</small> <span class="arrow" aria-hidden="true">→</span></a>
-                <a class="btn btn-ghost btn-sm" href="#contact"><i class="fa-solid fa-comments" aria-hidden="true"></i> Talk about a similar project</a>
+
               </div>
             </div>
           </article>
-
-          <article class="work reveal" id="work-runzhen">
+<article class="work reveal" id="work-runzhen">
             <div class="work-shot is-art">
               <figure class="hero-art hero-rz">
                 <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 999px)" srcset="../assets/work/rz-hero-m-en.webp" width="720" height="840"><img src="../assets/work/rz-hero-en.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="Illustrative design of the Smart Brain integration layer: Hikvision, Dahua ICC, Daoer parking and Baidu Face events flow into unified events, with a live door-access event, vehicle entry and the fee engine (sample data)"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 999px)" srcset="../assets/work/rz-hero-m-en-dark.webp" width="720" height="840"><img src="../assets/work/rz-hero-en-dark.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="Illustrative design of the Smart Brain integration layer: Hikvision, Dahua ICC, Daoer parking and Baidu Face events flow into unified events, with a live door-access event, vehicle entry and the fee engine (sample data)"></picture>
@@ -217,61 +182,35 @@
               </figure>
             </div>
             <div class="work-body">
-              <div class="work-meta"><span class="work-badge"><i class="fa-solid fa-city" aria-hidden="true"></i>Smart community · smart campus</span><span class="work-url mono">Spring Boot 3.5 · Vue 3 · uni-app · React</span></div>
-              <h3 class="work-title">Runzhen Smart Brain · Community &amp; campus IoT platform</h3>
-              <p class="card-text">One platform for residential property management and schools: buildings, rooms, parking spaces, meters, residents, teachers and students; property fees with e-invoices; repairs, complaints, visitors, votes and venue booking; campus attendance and leave. Underneath, it integrates Hikvision (Hik-Cloud community &amp; education, C6000), Dahua ICC, Daoer parking and Baidu face recognition and streams device events to the admin console, mobile apps and a live dashboard.</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>My role</dt><dd><strong>Tech lead · architecture and main developer</strong> at Henan Runzhen Technology. The project has been built in phases since 2022; I led the phase-3 rebuild and wrote its architecture, business module, vendor-integration layer and fee engine (about 80% of phase-3 commits).</dd></div>
-                <div class="wf-row"><dt>Key design</dt><dd>A unified integration layer gated by system / function / organization config with local-to-vendor ID mapping; an event pipeline (converter factory → handler factory) over a message queue and WebSocket; a strategy-based fee engine (cyclic / one-time × prepaid / postpaid).</dd></div>
-                <div class="wf-row"><dt>Stack</dt><dd class="tags"><span class="tag-strong">Java 17</span><span class="tag-strong">Spring Boot 3.5</span><span>MySQL</span><span>Redis</span><span>WebSocket</span><span class="tag-strong">Vue 3</span><span>uni-app</span><span>React 19</span><span>ECharts 6</span></dd></div>
-              </dl>
+              <div class="work-meta"><span class="work-badge"><svg class="fa-solid fa-city" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-city"></use></svg>Smart community · smart campus</span></div>
+              <h3 class="work-title">Runzhen · Community &amp; campus IoT</h3>
+              <p class="card-text">Connect access control, parking and security devices with resident, fee and attendance workflows.</p>
+              <dl class="work-facts"><div class="wf-row"><dt>Role</dt><dd>Tech lead; led the phase-3 rebuild, core business modules and vendor integration.</dd></div><div class="wf-row"><dt>Delivered</dt><dd>Unified Hikvision, Dahua and Daoer integration, event dispatch and a fee engine across web, mobile and dashboards.</dd></div></dl><p class="work-stack">Java / Spring Boot · WebSocket · Vue 3</p>
               <div class="work-links">
                 <a class="btn btn-primary btn-sm" href="/work/runzhen/" hreflang="zh-CN">Case study <small>(中文)</small> <span class="arrow" aria-hidden="true">→</span></a>
-                <a class="btn btn-ghost btn-sm" href="#contact"><i class="fa-solid fa-comments" aria-hidden="true"></i> Talk about a similar project</a>
-              </div>
-            </div>
-          </article>
 
-          <article class="work work-lite reveal" id="work-foodsafety">
-            <div class="work-shot is-art">
-              <figure class="hero-art hero-fs">
-                <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 999px)" srcset="../assets/work/fs-hero-m-en.webp" width="720" height="840"><img src="../assets/work/fs-hero-en.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="Illustrative design of the smart acceptance scale: live net weight of 12.46 kg with stability check, tare modes, difference vs. threshold, required photos and order stages (sample data)"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 999px)" srcset="../assets/work/fs-hero-m-en-dark.webp" width="720" height="840"><img src="../assets/work/fs-hero-en-dark.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="Illustrative design of the smart acceptance scale: live net weight of 12.46 kg with stability check, tare modes, difference vs. threshold, required photos and order stages (sample data)"></picture>
-                <figcaption class="hero-cap mono">Illustrative design · sample data</figcaption>
-              </figure>
-            </div>
-            <div class="work-body">
-              <div class="work-meta"><span class="work-badge"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>Food safety · acceptance terminal</span><span class="work-url mono">uni-app 3 · serial scale · UVC · Next.js 16</span></div>
-              <h3 class="work-title">Smart food safety · Weighing-scale app &amp; website</h3>
-              <p class="card-text">Digital goods-receiving for school canteens. I built two parts: the smart-scale app running on the canteen's Android weighing terminal, and the public platform website. When a delivery arrives, staff weigh and photograph each ingredient on the scale and submit; orders move from pending to partially accepted to accepted, then into stock.</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>My role</dt><dd><strong>Built at Runzhen · terminal app and front end</strong>. I built the scale app and the Next.js static website; the platform back end was not part of my scope.</dd></div>
-                <div class="wf-row"><dt>Key design</dt><dd>Stable only when the last 3 readings sit within a threshold; zero, hardware tare and manual tare are mutually exclusive; batch prompts above the device's max load; 3 required photos per ingredient; g / jin / ton specs normalized to kg.</dd></div>
-                <div class="wf-row"><dt>Stack</dt><dd class="tags"><span class="tag-strong">uni-app 3</span><span>Vue 3</span><span class="tag-strong">Serial scale</span><span>Multi-USB UVC cameras</span><span>RTMP</span><span>Next.js 16</span><span>Tailwind 4</span></dd></div>
-              </dl>
-              <div class="work-links">
-                <a class="btn btn-primary btn-sm" href="/work/food-safety/" hreflang="zh-CN">Case study <small>(中文)</small> <span class="arrow" aria-hidden="true">→</span></a>
               </div>
             </div>
           </article>
-        </div>
+</div>
       </div>
     </section>
 
     <section class="section" id="services">
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">02</span><span class="kicker-sep">/</span>Services</span>
+          <span class="section-kicker">Services</span>
           <h2 class="section-title">What I can do for you</h2>
           <p class="section-desc">Things I have built in production and do well</p>
           <p class="swipe-hint mono" aria-hidden="true">← swipe · 6 items →</p>
         </header>
         <ul class="svc-list scroller">
-          <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-credit-card" aria-hidden="true"></i></span><div><h3 class="svc-title">Payment, acquiring &amp; settlement systems</h3><p class="svc-text">Aggregated payment integration, local pay-in / pay-out overseas, multi-level agent profit-sharing, reconciliation and double-entry accounting.</p><p class="svc-proof">Built: CiftoPay, ECP (overseas payments, India), a family of acquiring platforms, a payment app</p></div></li>
-          <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i></span><div><h3 class="svc-title">High-load diagnosis &amp; refactoring</h3><p class="svc-text">Latency, deadlocks and ledger mismatches; distributed-lock idempotency with real-time + scheduled MQ compensation.</p><p class="svc-proof">Acquiring platforms with million-level daily transactions</p></div></li>
-          <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-microchip" aria-hidden="true"></i></span><div><h3 class="svc-title">IoT &amp; hardware integration</h3><p class="svc-text">A unified integration layer and event pipeline over Hikvision, Dahua, Daoer parking and Baidu face-recognition platforms; Android terminals with serial scales and multiple USB cameras.</p><p class="svc-proof">Built: <a href="/work/runzhen/" hreflang="zh-CN">Runzhen Smart Brain</a>, <a href="/work/food-safety/" hreflang="zh-CN">smart weighing-scale app</a></p></div></li>
-          <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span><div><h3 class="svc-title">0→1 full-stack delivery</h3><p class="svc-text">Java / Spring Boot back ends, Vue 3 consoles and ECharts dashboards, Next.js sites, uni-app mini-programs and apps.</p><p class="svc-proof">Several products delivered as the sole technical lead</p></div></li>
-          <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></span><div><h3 class="svc-title">AI-assisted delivery</h3><p class="svc-text">Claude Code with spec-driven and test-driven development, written decision records and automated validation gates.</p><p class="svc-proof">My daily way of working</p></div></li>
-          <li class="svc reveal"><span class="svc-icon"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></span><div><h3 class="svc-title">Architecture &amp; code review</h3><p class="svc-text">Review an existing system for money correctness, performance and maintainability; written findings with prioritized fixes.</p><p class="svc-proof">Long-time owner of technical proposals</p></div></li>
+          <li class="svc reveal"><span class="svc-icon"><svg class="fa-solid fa-credit-card" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-credit-card"></use></svg></span><div><h3 class="svc-title">Payment, acquiring &amp; settlement systems</h3><p class="svc-text">Aggregated payment integration, local pay-in / pay-out overseas, multi-level agent profit-sharing, reconciliation and double-entry accounting.</p><p class="svc-proof">Built: CiftoPay, ECP (overseas payments, India), a family of acquiring platforms, a payment app</p></div></li>
+          <li class="svc reveal"><span class="svc-icon"><svg class="fa-solid fa-gauge-high" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-gauge-high"></use></svg></span><div><h3 class="svc-title">High-load diagnosis &amp; refactoring</h3><p class="svc-text">Latency, deadlocks and ledger mismatches; distributed-lock idempotency with real-time + scheduled MQ compensation.</p><p class="svc-proof">Shanghai Qiuxiang acquiring platforms (2018–2020): million-level daily transactions</p></div></li>
+          <li class="svc reveal"><span class="svc-icon"><svg class="fa-solid fa-microchip" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-microchip"></use></svg></span><div><h3 class="svc-title">IoT &amp; hardware integration</h3><p class="svc-text">A unified integration layer and event pipeline over Hikvision, Dahua, Daoer parking and Baidu face-recognition platforms; Android terminals with serial scales and multiple USB cameras.</p><p class="svc-proof">Built: <a href="/work/runzhen/" hreflang="zh-CN">Runzhen Smart Brain</a>, <a href="/work/food-safety/" hreflang="zh-CN">smart weighing-scale app</a></p></div></li>
+          <li class="svc reveal"><span class="svc-icon"><svg class="fa-solid fa-layer-group" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-layer-group"></use></svg></span><div><h3 class="svc-title">0→1 full-stack delivery</h3><p class="svc-text">Java / Spring Boot back ends, Vue 3 consoles and ECharts dashboards, Next.js sites, uni-app mini-programs and apps.</p><p class="svc-proof">Several products delivered as the sole technical lead</p></div></li>
+          <li class="svc reveal"><span class="svc-icon"><svg class="fa-solid fa-wand-magic-sparkles" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-wand-magic-sparkles"></use></svg></span><div><h3 class="svc-title">AI-assisted delivery</h3><p class="svc-text">Claude Code with spec-driven and test-driven development, written decision records and automated validation gates.</p><p class="svc-proof">My daily way of working</p></div></li>
+          <li class="svc reveal"><span class="svc-icon"><svg class="fa-solid fa-magnifying-glass-chart" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-magnifying-glass-chart"></use></svg></span><div><h3 class="svc-title">Architecture &amp; code review</h3><p class="svc-text">Review an existing system for money correctness, performance and maintainability; written findings with prioritized fixes.</p><p class="svc-proof">Long-time owner of technical proposals</p></div></li>
         </ul>
       </div>
     </section>
@@ -279,15 +218,15 @@
     <section class="section" id="collab">
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">03</span><span class="kicker-sep">/</span>How We Work</span>
+          <span class="section-kicker">How We Work</span>
           <h2 class="section-title">How we can work together</h2>
           <p class="section-desc">Every engagement starts with a free conversation</p>
         </header>
         <ul class="collab-forms">
-          <li class="card cform reveal"><div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-laptop-house" aria-hidden="true"></i></span><span class="cform-idx">FULL-TIME</span></div><h3 class="cform-title">Remote full-time</h3><p class="cform-fit">Architect, tech lead, senior Java back-end or full-stack engineer on your team.</p></li>
-          <li class="card cform reveal"><div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-user-gear" aria-hidden="true"></i></span><span class="cform-idx">ADVISOR</span></div><h3 class="cform-title">Part-time technical advisor</h3><p class="cform-fit">Technology choices, architecture and design reviews, regular office hours for your team.</p></li>
-          <li class="card cform reveal"><div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-box-open" aria-hidden="true"></i></span><span class="cform-idx">DELIVERY</span></div><h3 class="cform-title">Project delivery</h3><p class="cform-fit">Design, build, test and launch — with code, docs and deployment notes handed over.</p></li>
-          <li class="card cform reveal"><div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></span><span class="cform-idx">REVIEW</span></div><h3 class="cform-title">Architecture &amp; code review</h3><p class="cform-fit">A written report on risks and bottlenecks, with prioritized recommendations.</p></li>
+          <li class="card cform reveal"><div class="cform-top"><span class="svc-icon"><svg class="fa-solid fa-laptop-house" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-laptop-house"></use></svg></span><span class="cform-idx">FULL-TIME</span></div><h3 class="cform-title">Remote full-time</h3><p class="cform-fit">Architect, tech lead, senior Java back-end or full-stack engineer on your team.</p></li>
+          <li class="card cform reveal"><div class="cform-top"><span class="svc-icon"><svg class="fa-solid fa-user-gear" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-user-gear"></use></svg></span><span class="cform-idx">ADVISOR</span></div><h3 class="cform-title">Part-time technical advisor</h3><p class="cform-fit">Technology choices, architecture and design reviews, regular office hours for your team.</p></li>
+          <li class="card cform reveal"><div class="cform-top"><span class="svc-icon"><svg class="fa-solid fa-box-open" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-box-open"></use></svg></span><span class="cform-idx">DELIVERY</span></div><h3 class="cform-title">Project delivery</h3><p class="cform-fit">Design, build, test and launch — with code, docs and deployment notes handed over.</p></li>
+          <li class="card cform reveal"><div class="cform-top"><span class="svc-icon"><svg class="fa-solid fa-magnifying-glass-chart" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-magnifying-glass-chart"></use></svg></span><span class="cform-idx">REVIEW</span></div><h3 class="cform-title">Architecture &amp; code review</h3><p class="cform-fit">A written report on risks and bottlenecks, with prioritized recommendations.</p></li>
         </ul>
         <div class="collab-sub reveal"><h3>The process</h3><p>Small projects can merge steps</p></div>
         <ol class="steps reveal">
@@ -297,21 +236,55 @@
           <li class="step"><span class="step-no">STEP 04</span><h4 class="step-title">Iterative delivery</h4><p class="step-text">Small milestones, a weekly sync on progress and risks, docs delivered with the code.</p></li>
         </ol>
         <div class="collab-style reveal">
-          <div class="cstyle"><h4 class="cstyle-title"><i class="fa-solid fa-satellite-dish" aria-hidden="true"></i>Async-first</h4><p>Progress lives in Git, issues and docs; calls are for decisions and milestones.</p></div>
-          <div class="cstyle"><h4 class="cstyle-title"><i class="fa-solid fa-file-lines" aria-hidden="true"></i>Documented</h4><p>Specs, decision records and API docs are maintained alongside the code, so anyone can take over.</p></div>
-          <div class="cstyle"><h4 class="cstyle-title"><i class="fa-solid fa-clock" aria-hidden="true"></i>Flexible time zones</h4><p>Based in China (UTC+8). I can commit to a fixed daily overlap window with your team.</p></div>
+          <div class="cstyle"><h4 class="cstyle-title"><svg class="fa-solid fa-satellite-dish" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-satellite-dish"></use></svg>Async-first</h4><p>Progress lives in Git, issues and docs; calls are for decisions and milestones.</p></div>
+          <div class="cstyle"><h4 class="cstyle-title"><svg class="fa-solid fa-file-lines" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-file-lines"></use></svg>Documented</h4><p>Specs, decision records and API docs are maintained alongside the code, so anyone can take over.</p></div>
+          <div class="cstyle"><h4 class="cstyle-title"><svg class="fa-solid fa-clock" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-clock"></use></svg>Flexible time zones</h4><p>Based in China (UTC+8). We can agree on an overlap window for meetings and decisions.</p></div>
         </div>
         <div class="collab-cta reveal">
-          <a class="btn btn-primary" href="#contact">Book a free 30-min call <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="/assets/shixiaohe-resume-en.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> Download CV (PDF)</a>
+          <a class="btn btn-primary" href="#contact">Contact me to arrange a call <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume-en.pdf" target="_blank" rel="noopener"><svg class="fa-regular fa-file-pdf" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-file-pdf"></use></svg> Download CV (PDF)</a>
         </div>
       </div>
     </section>
 
-    <section class="section section-alt" id="experience">
+    <section class="section section-alt" id="more-work"><div class="container"><header class="section-head"><h2 class="section-title">More work</h2><p class="section-desc">Content products and hardware terminals, built end to end within my scope.</p></header><div class="works more-work-grid"><article class="work reveal" id="work-ecommica">
+            <a class="work-shot" href="https://deals.ecommica.com/en" target="_blank" rel="noopener" aria-label="Open the Ecommica website">
+              <span class="browser">
+                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><svg class="fa-solid fa-lock" focusable="false" aria-hidden="true"><use href="/assets/icons.svg#solid-lock"></use></svg> deals.ecommica.com</span><span class="browser-go">↗</span></span>
+                <img src="/assets/deals.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="Screenshot of the Ecommica website">
+              </span>
+            </a>
+            <div class="work-body">
+              <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>Live</span></div>
+              <h3 class="work-title">Ecommica · Multilingual deals</h3>
+              <p class="card-text">Connect deal discovery, outbound clicks and affiliate conversions in one product.</p>
+              <dl class="work-facts"><div class="wf-row"><dt>Role</dt><dd>Full-stack development: Next.js storefront, Spring Boot tracking service and Vue admin.</dd></div><div class="wf-row"><dt>Delivered</dt><dd>English and Chinese sites live, with regional filtering, click tracking, postback deduplication and attribution.</dd></div></dl><p class="work-stack">Next.js · Spring Boot · Vue 3</p>
+              <div class="work-links">
+                <a class="btn btn-primary btn-sm" href="/work/ecommica/" hreflang="zh-CN">Case study <small>(中文)</small> <span class="arrow" aria-hidden="true">→</span></a>
+                <a class="btn btn-ghost btn-sm" href="https://deals.ecommica.com/en" target="_blank" rel="noopener">Live site <span class="arrow" aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article><article class="work reveal" id="work-foodsafety">
+            <div class="work-shot is-art">
+              <figure class="hero-art hero-fs">
+                <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 999px)" srcset="../assets/work/fs-hero-m-en.webp" width="720" height="840"><img src="../assets/work/fs-hero-en.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="Illustrative design of the smart acceptance scale: live net weight of 12.46 kg with stability check, tare modes, difference vs. threshold, required photos and order stages (sample data)"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 999px)" srcset="../assets/work/fs-hero-m-en-dark.webp" width="720" height="840"><img src="../assets/work/fs-hero-en-dark.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="Illustrative design of the smart acceptance scale: live net weight of 12.46 kg with stability check, tare modes, difference vs. threshold, required photos and order stages (sample data)"></picture>
+                <figcaption class="hero-cap mono">Illustrative design · sample data</figcaption>
+              </figure>
+            </div>
+            <div class="work-body">
+              <div class="work-meta"><span class="work-badge"><svg class="fa-solid fa-scale-balanced" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-scale-balanced"></use></svg>Food safety · acceptance terminal</span></div>
+              <h3 class="work-title">Food safety · Smart acceptance scale</h3>
+              <p class="card-text">Bring weighing, photos and batch acceptance into the canteen receiving workflow.</p>
+              <dl class="work-facts"><div class="wf-row"><dt>Role</dt><dd>Built the Android scale app and public website; platform back end outside my scope.</dd></div><div class="wf-row"><dt>Delivered</dt><dd>Serial scale stability checks, tare, unit conversion and multi-camera evidence for batch acceptance.</dd></div></dl><p class="work-stack">uni-app · Serial / UVC · Next.js</p>
+              <div class="work-links">
+                <a class="btn btn-primary btn-sm" href="/work/food-safety/" hreflang="zh-CN">Case study <small>(中文)</small> <span class="arrow" aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </article></div></div></section>
+<section class="section section-alt" id="experience">
       <div class="container about">
         <div class="about-intro reveal">
-          <span class="section-kicker"><span class="kicker-idx">04</span><span class="kicker-sep">/</span>About</span>
+          <span class="section-kicker">About</span>
           <h2 class="section-title about-title">About me</h2>
           <p class="about-text">Computer Science graduate (Zhengzhou University of Light Industry, 2013). I've written Java since 2013 and grew from back-end developer to tech lead and architect. Payments are where I've spent the most time — acquiring, profit-sharing, reconciliation, settlement — alongside smart-community, smart-education and food-safety IoT projects.</p>
           <p class="about-text"><strong>Remote work is familiar ground.</strong> From 2020.10 to 2022.02 I worked as a remote freelancer on a payment acquiring platform, and I rely on documentation, specs and automated tests to keep collaboration transparent.</p>
@@ -319,9 +292,9 @@
             <span class="stack-label">Daily tools</span>
             <div class="pills"><span class="pill is-key">Java / Spring Boot / Spring Cloud</span><span class="pill">MySQL</span><span class="pill">Redis</span><span class="pill">RocketMQ</span><span class="pill">XXL-Job</span><span class="pill is-key">Vue 3 / Next.js</span><span class="pill">uni-app</span><span class="pill">IoT protocols</span><span class="pill is-key">Claude Code / SDD / TDD</span><span class="pill">Microservices / DDD</span></div>
           </div>
-          <div class="about-actions">
-            <a class="btn btn-primary" href="/assets/shixiaohe-resume-en.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> Download CV (PDF)</a>
-            <a class="btn btn-ghost" href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
+          <div class="about-actions"><a class="btn btn-ghost" href="/resume/en.html">Read CV online</a>
+            <a class="btn btn-primary" href="/assets/shixiaohe-resume-en.pdf" target="_blank" rel="noopener"><svg class="fa-regular fa-file-pdf" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-file-pdf"></use></svg> Download CV (PDF)</a>
+            <a class="btn btn-ghost" href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener"><svg class="fa-brands fa-github" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-github"></use></svg> GitHub</a>
           </div>
         </div>
         <div class="about-exp reveal">
@@ -330,7 +303,7 @@
             <li class="exp-item is-current"><span class="exp-date">2026.06 — now</span><span class="exp-org">Henan Xinyan Electronic Technology</span><span class="exp-role">Software Architect · leads CiftoPay</span></li>
             <li class="exp-item"><span class="exp-date">2022.02 — 2026.04</span><span class="exp-org">Henan Runzhen Technology</span><span class="exp-role">Tech Lead · smart-community &amp; food-safety platforms</span></li>
             <li class="exp-item is-remote"><span class="exp-date">2020.10 — 2022.02</span><span class="exp-org">Freelance · remote <span class="remote-tag">Remote</span></span><span class="exp-role">Continued work on a payment acquiring platform</span></li>
-            <li class="exp-item"><span class="exp-date">2018.05 — 2020.10</span><span class="exp-org">Shanghai Qiuxiang Information Technology</span><span class="exp-role">Deputy Project Lead · acquiring platforms</span></li>
+            <li class="exp-item"><span class="exp-date">2018.05 — 2020.10</span><span class="exp-org">Shanghai Qiuxiang</span><span class="exp-role">Deputy Project Lead · acquiring platforms</span></li>
             <li class="exp-item"><span class="exp-date">2013.11 — 2018.04</span><span class="exp-org">Shanghai Shengxuan / Lewa and others</span><span class="exp-role">Java Developer · payment &amp; lending apps</span></li>
             <li class="exp-item is-edu"><span class="exp-date">2009 — 2013</span><span class="exp-org">Zhengzhou University of Light Industry</span><span class="exp-role">B.Eng. Computer Science &amp; Technology</span></li>
           </ul>
@@ -341,7 +314,7 @@
     <section class="section" id="notes">
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">05</span><span class="kicker-sep">/</span>Notes</span>
+          <span class="section-kicker">Notes</span>
           <h2 class="section-title">Writing</h2>
           <p class="section-desc">Technical notes, currently in Chinese</p>
         </header>
@@ -373,37 +346,37 @@
     <div class="container">
       <div class="contact reveal">
         <div class="contact-copy">
-          <span class="section-kicker"><span class="kicker-idx">06</span><span class="kicker-sep">/</span>Get In Touch</span>
+          <span class="section-kicker">Get In Touch</span>
           <h2 class="contact-title"><span class="nw">Remote role or project?</span> <span class="nw">Let's talk.</span></h2>
           <p class="contact-desc">Email or Telegram is the easiest way to reach me. Tell me about your situation and I'll tell you honestly whether and how I can help.</p>
           <div class="paths">
-            <div class="path"><div class="path-title"><i class="fa-solid fa-laptop-house" aria-hidden="true"></i> Remote roles</div><p>Full-time or part-time: architect, tech lead, senior Java back-end or full-stack.</p></div>
-            <div class="path"><div class="path-title"><i class="fa-solid fa-handshake" aria-hidden="true"></i> Projects</div><p>System delivery, diagnosis and refactoring, technical advisory, architecture review.</p></div>
+            <div class="path"><div class="path-title"><svg class="fa-solid fa-laptop-house" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-laptop-house"></use></svg> Remote roles</div><p>Full-time or part-time: architect, tech lead, senior Java back-end or full-stack.</p></div>
+            <div class="path"><div class="path-title"><svg class="fa-solid fa-handshake" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-handshake"></use></svg> Projects</div><p>System delivery, diagnosis and refactoring, technical advisory, architecture review.</p></div>
           </div>
         </div>
         <div class="contact-actions">
           <div class="contact-row">
-            <a href="mailto:shixiaohe996@gmail.com" class="btn btn-primary btn-lg"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span class="mono">shixiaohe996@gmail.com</span></a>
-            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="shixiaohe996@gmail.com" data-label="Email" aria-label="Copy email"><i class="fa-regular fa-copy" aria-hidden="true"></i></button>
+            <a href="mailto:shixiaohe996@gmail.com" class="btn btn-primary btn-lg"><svg class="fa-solid fa-envelope" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-envelope"></use></svg> <span class="mono">shixiaohe996@gmail.com</span></a>
+            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="shixiaohe996@gmail.com" data-label="Email" aria-label="Copy email"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button>
           </div>
           <div class="contact-row">
-            <a href="https://t.me/river_data" class="btn btn-ghost" target="_blank" rel="noopener"><i class="fa-brands fa-telegram" aria-hidden="true"></i> Telegram <span class="mono">@river_data</span></a>
+            <a href="https://t.me/river_data" class="btn btn-ghost" target="_blank" rel="noopener"><svg class="fa-brands fa-telegram" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-telegram"></use></svg> Telegram <span class="mono">@river_data</span></a>
           </div>
           <div class="contact-row">
-            <a href="tel:+8618618387956" class="btn btn-ghost"><i class="fa-solid fa-phone" aria-hidden="true"></i> <span class="mono">+86 186 1838 7956</span></a>
-            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="+8618618387956" data-label="Phone" aria-label="Copy phone number"><i class="fa-regular fa-copy" aria-hidden="true"></i></button>
+            <a href="tel:+8618618387956" class="btn btn-ghost"><svg class="fa-solid fa-phone" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-phone"></use></svg> <span class="mono">+86 186 1838 7956</span></a>
+            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="+8618618387956" data-label="Phone" aria-label="Copy phone number"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button>
           </div>
           <div class="contact-row">
-            <span class="btn btn-ghost"><i class="fa-brands fa-weixin" aria-hidden="true"></i> WeChat <span class="mono">18618387956</span></span>
-            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="18618387956" data-label="WeChat ID" aria-label="Copy WeChat ID"><i class="fa-regular fa-copy" aria-hidden="true"></i></button>
+            <span class="btn btn-ghost"><svg class="fa-brands fa-weixin" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-weixin"></use></svg> WeChat <span class="mono">18618387956</span></span>
+            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="18618387956" data-label="WeChat ID" aria-label="Copy WeChat ID"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button>
           </div>
           <div class="contact-row">
-            <a href="https://github.com/shixiaohe996-droid" class="btn btn-ghost" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub <span class="mono">shixiaohe996-droid</span></a>
+            <a href="https://github.com/shixiaohe996-droid" class="btn btn-ghost" target="_blank" rel="noopener"><svg class="fa-brands fa-github" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-github"></use></svg> GitHub <span class="mono">shixiaohe996-droid</span></a>
           </div>
           <div class="contact-row contact-resume">
-            <a href="/assets/shixiaohe-resume-en.pdf" class="btn btn-ghost" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> Download CV (PDF)</a>
+            <a href="/assets/shixiaohe-resume-en.pdf" class="btn btn-ghost" target="_blank" rel="noopener"><svg class="fa-regular fa-file-pdf" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-file-pdf"></use></svg> Download CV (PDF)</a>
           </div>
-          <span class="contact-note"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Sanmenxia, China · UTC+8 · remote worldwide</span>
+          <span class="contact-note"><svg class="fa-solid fa-location-dot" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-location-dot"></use></svg> Sanmenxia, China · UTC+8 · remote worldwide</span>
         </div>
       </div>
       <div class="footer-bottom">
@@ -422,7 +395,7 @@
   </footer>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="/main.js?v=202610292300" defer></script>
+  <script src="/main.js?v=20261030" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>

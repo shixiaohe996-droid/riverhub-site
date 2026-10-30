@@ -37,9 +37,7 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/site.css?v=202610292300">
+  <link rel="stylesheet" href="/site.css?v=20261030">
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -66,10 +64,10 @@
 
       <div class="nav-tools">
         <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg>EN</a>
         <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
-          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
-          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <svg class="fa-solid fa-moon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-moon"></use></svg>
+          <svg class="fa-solid fa-sun icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sun"></use></svg>
         </button>
         <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
           <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -94,7 +92,7 @@
         </dl>
         <div class="page-actions">
           <a class="btn btn-primary" href="/#contact">聊聊类似的项目 <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="#architecture"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> 直接看架构</a>
+          <a class="btn btn-ghost" href="#architecture"><svg class="fa-solid fa-diagram-project" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-diagram-project"></use></svg> 直接看架构</a>
         </div>
       </div>
     </section>
@@ -102,7 +100,7 @@
     <div class="container">
       <figure class="case-cover reveal" style="margin:0">
         <span class="browser browser-ecp">
-          <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-tower-broadcast"></i> 润臻智慧大脑 · 物联事件中心</span><span class="browser-go">◇</span></span>
+          <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><svg class="fa-solid fa-tower-broadcast" focusable="false" aria-hidden="true"><use href="/assets/icons.svg#solid-tower-broadcast"></use></svg> 润臻智慧大脑 · 物联事件中心</span><span class="browser-go">◇</span></span>
           <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 559px)" srcset="/assets/work/rz-console-m.webp" width="720" height="1080"><img src="/assets/work/rz-console.webp" width="1920" height="1200" fetchpriority="high" decoding="async" alt="润臻智慧大脑物联事件中心示意设计：海康、大华、道尔、百度等厂商事件经 Converter 归一为统一事件并分发给处理器，右侧为三级启用的集成系统列表（示例数据）"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 559px)" srcset="/assets/work/rz-console-m-dark.webp" width="720" height="1080"><img src="/assets/work/rz-console-dark.webp" width="1920" height="1200" fetchpriority="high" decoding="async" alt="润臻智慧大脑物联事件中心示意设计：海康、大华、道尔、百度等厂商事件经 Converter 归一为统一事件并分发给处理器，右侧为三级启用的集成系统列表（示例数据）"></picture>
           <span class="shot-cap mono">示意设计 · 示例数据，非生产截图</span>
         </span>
@@ -139,7 +137,7 @@
           <section class="cs-sec" id="role">
             <h2 class="cs-h"><span class="mono">02</span>我的角色 · 技术负责人</h2>
             <p class="cs-intro">在河南润臻科技担任技术负责人。项目自 2022 年起分多期建设，第三期由我主导重构：框架之上的业务模块由我设计并编写，第三期代码仓库约八成提交出自我手。</p>
-            <div class="role-grid"><div class="role-item"><span class="role-k"><i class="fa-solid fa-sitemap" aria-hidden="true"></i>架构与模块划分</span><p>在开源后台框架之上新建业务模块，按资产、服务、收费、通行、考勤、看板等领域拆分；统一的状态机、定时任务和消息队列基础设施。</p></div><div class="role-item"><span class="role-k"><i class="fa-solid fa-plug" aria-hidden="true"></i>厂商集成层</span><p>把多家厂商的安防、门禁、停车、人脸平台收敛为同一套功能接口，负责启用配置、ID 映射、事件归一和联调用的 Mock Client。</p></div><div class="role-item"><span class="role-k"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i>收费与发票</span><p>费项、计费策略、折扣 / 赠送 / 减免、滞纳金、欠费通知、退款，以及数电发票的开具与红字确认。</p></div><div class="role-item"><span class="role-k"><i class="fa-solid fa-display" aria-hidden="true"></i>多端协作</span><p>管理后台的业务页面，以及 uni-app 物业端、原生 App、H5、React 数据大屏和官网，共用同一套后端接口。</p></div></div>
+            <div class="role-grid"><div class="role-item"><span class="role-k"><svg class="fa-solid fa-sitemap" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sitemap"></use></svg>架构与模块划分</span><p>在开源后台框架之上新建业务模块，按资产、服务、收费、通行、考勤、看板等领域拆分；统一的状态机、定时任务和消息队列基础设施。</p></div><div class="role-item"><span class="role-k"><svg class="fa-solid fa-plug" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-plug"></use></svg>厂商集成层</span><p>把多家厂商的安防、门禁、停车、人脸平台收敛为同一套功能接口，负责启用配置、ID 映射、事件归一和联调用的 Mock Client。</p></div><div class="role-item"><span class="role-k"><svg class="fa-solid fa-file-invoice-dollar" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-file-invoice-dollar"></use></svg>收费与发票</span><p>费项、计费策略、折扣 / 赠送 / 减免、滞纳金、欠费通知、退款，以及数电发票的开具与红字确认。</p></div><div class="role-item"><span class="role-k"><svg class="fa-solid fa-display" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-display"></use></svg>多端协作</span><p>管理后台的业务页面，以及 uni-app 物业端、原生 App、H5、React 数据大屏和官网，共用同一套后端接口。</p></div></div>
           </section>
           <section class="cs-sec" id="challenges">
             <h2 class="cs-h"><span class="mono">03</span>关键挑战</h2>
@@ -170,7 +168,7 @@
             <div class="shots" style="margin-top:28px">
               <figure class="shot" style="grid-column:1/-1">
                 <span class="browser">
-                  <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-globe"></i> 润臻科技 · 官网</span><span class="browser-go">◇</span></span>
+                  <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><svg class="fa-solid fa-globe" focusable="false" aria-hidden="true"><use href="/assets/icons.svg#solid-globe"></use></svg> 润臻科技 · 官网</span><span class="browser-go">◇</span></span>
                   <img src="/assets/work/rz-site.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="润臻科技官网首页：「智汇科技 赋能美好生活」，three.js 三维背景（本地运行）">
                 </span>
                 <figcaption><b>官网</b> · React 19 + three.js，本地运行截图</figcaption>
@@ -183,8 +181,8 @@
           </section>
           <section class="cs-sec" id="results">
             <h2 class="cs-h"><span class="mono">06</span>交付情况</h2>
-            <div class="result-list"><div class="result"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><div><b>社区与校园共用一套底座</b><p>资产、人员、通行、设备、看板在两种场景下共用同一套模型和代码，按租户开通模块。</p></div></div><div class="result"><i class="fa-solid fa-plug-circle-check" aria-hidden="true"></i><div><b>多家厂商接在同一套接口后面</b><p>海康、大华、道尔、百度的安防、门禁、停车、人脸平台统一走集成层；换厂商或加厂商只新增 Client，业务层不改。</p></div></div><div class="result"><i class="fa-solid fa-bolt" aria-hidden="true"></i><div><b>设备事件实时到达各端</b><p>事件经归一、分发和消息队列处理后，实时推送到管理后台、移动端和数据大屏。</p></div></div><div class="result"><i class="fa-solid fa-file-invoice" aria-hidden="true"></i><div><b>收费到发票的闭环</b><p>从费项、账单、优惠与滞纳金，到欠费通知、退款和数电发票，收费链路完整实现。</p></div></div></div>
-            <p class="note-honest"><i class="fa-solid fa-circle-info" aria-hidden="true"></i>以上规模按第三期代码仓库统计（业务后端约 12 万行 Java、124 个接口控制器，管理端 245 个业务视图），描述的是工程规模，不代表用户量；运营数据这里不写。</p>
+            <div class="result-list"><div class="result"><svg class="fa-solid fa-layer-group" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-layer-group"></use></svg><div><b>社区与校园共用一套底座</b><p>资产、人员、通行、设备、看板在两种场景下共用同一套模型和代码，按租户开通模块。</p></div></div><div class="result"><svg class="fa-solid fa-plug-circle-check" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-plug-circle-check"></use></svg><div><b>多家厂商接在同一套接口后面</b><p>海康、大华、道尔、百度的安防、门禁、停车、人脸平台统一走集成层；换厂商或加厂商只新增 Client，业务层不改。</p></div></div><div class="result"><svg class="fa-solid fa-bolt" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-bolt"></use></svg><div><b>设备事件实时到达各端</b><p>事件经归一、分发和消息队列处理后，实时推送到管理后台、移动端和数据大屏。</p></div></div><div class="result"><svg class="fa-solid fa-file-invoice" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-file-invoice"></use></svg><div><b>收费到发票的闭环</b><p>从费项、账单、优惠与滞纳金，到欠费通知、退款和数电发票，收费链路完整实现。</p></div></div></div>
+            <p class="note-honest"><svg class="fa-solid fa-circle-info" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-circle-info"></use></svg>以上规模按第三期代码仓库统计（业务后端约 12 万行 Java、124 个接口控制器，管理端 245 个业务视图），描述的是工程规模，不代表用户量；运营数据这里不写。</p>
           </section>
       <section class="cta-band reveal" aria-label="联系我">
         <div>
@@ -193,8 +191,8 @@
         </div>
         <div class="cta-actions">
           <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
-          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
-          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><svg class="fa-brands fa-weixin" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-weixin"></use></svg> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><svg class="fa-regular fa-file-pdf" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-file-pdf"></use></svg> 简历 PDF</a>
         </div>
       </section>
 
@@ -230,7 +228,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="/main.js?v=202610292300" defer></script>
+  <script src="/main.js?v=20261030" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>

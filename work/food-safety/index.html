@@ -37,9 +37,7 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/site.css?v=202610292300">
+  <link rel="stylesheet" href="/site.css?v=20261030">
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -66,10 +64,10 @@
 
       <div class="nav-tools">
         <a href="/#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg>EN</a>
         <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
-          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
-          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <svg class="fa-solid fa-moon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-moon"></use></svg>
+          <svg class="fa-solid fa-sun icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sun"></use></svg>
         </button>
         <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
           <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -94,7 +92,7 @@
         </dl>
         <div class="page-actions">
           <a class="btn btn-primary" href="/#contact">聊聊类似的项目 <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="#architecture"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> 直接看称重设计</a>
+          <a class="btn btn-ghost" href="#architecture"><svg class="fa-solid fa-diagram-project" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-diagram-project"></use></svg> 直接看称重设计</a>
         </div>
       </div>
     </section>
@@ -102,7 +100,7 @@
     <div class="container">
       <figure class="case-cover reveal" style="margin:0">
         <span class="browser browser-ecp">
-          <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-scale-balanced"></i> 智能验收秤 · 称重检测</span><span class="browser-go">◇</span></span>
+          <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><svg class="fa-solid fa-scale-balanced" focusable="false" aria-hidden="true"><use href="/assets/icons.svg#solid-scale-balanced"></use></svg> 智能验收秤 · 称重检测</span><span class="browser-go">◇</span></span>
           <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 559px)" srcset="/assets/work/fs-terminal-m.webp" width="720" height="1080"><img src="/assets/work/fs-terminal.webp" width="1920" height="1200" fetchpriority="high" decoding="async" alt="智能验收秤称重检测示意设计：待验收食材列表、实时净重与稳定判定、去皮模式、分批记录、必拍验收照片与订单状态（示例数据）"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 559px)" srcset="/assets/work/fs-terminal-m-dark.webp" width="720" height="1080"><img src="/assets/work/fs-terminal-dark.webp" width="1920" height="1200" fetchpriority="high" decoding="async" alt="智能验收秤称重检测示意设计：待验收食材列表、实时净重与稳定判定、去皮模式、分批记录、必拍验收照片与订单状态（示例数据）"></picture>
           <span class="shot-cap mono">示意设计 · 示例数据，非生产截图</span>
         </span>
@@ -139,7 +137,7 @@
           <section class="cs-sec" id="role">
             <h2 class="cs-h"><span class="mono">02</span>我的角色 · 终端与前端</h2>
             <p class="cs-intro">这是我在河南润臻科技任内负责的项目。智能秤 App 和平台官网由我完成，从硬件对接、交互到发布；平台后端不在我的范围内。</p>
-            <div class="role-grid"><div class="role-item"><span class="role-k"><i class="fa-solid fa-microchip" aria-hidden="true"></i>硬件对接</span><p>串口电子秤：波特率与秤型号预设、读数解析、清零与去皮指令；多路 USB 摄像头：预览、拍照、录像与 RTMP 推流（nvue 原生渲染）。</p></div><div class="role-item"><span class="role-k"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>称重与验收流程</span><p>稳定判定、三种去皮方式、量程与分批、分批 / 追加验收、必拍照片和订单状态，整套验收交互。</p></div><div class="role-item"><span class="role-k"><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i>终端 App 工程</span><p>uni-app 3 + Vue 3 + wot-design-uni；秤配置页、OTA 版本检测、登录态过期处理，面向一体机横屏的布局。</p></div><div class="role-item"><span class="role-k"><i class="fa-solid fa-globe" aria-hidden="true"></i>平台官网</span><p>Next.js 16 静态导出：首页、平台介绍、新闻与政策、操作指南、下载、FAQ 与联系页，自带 sitemap 与 robots。</p></div></div>
+            <div class="role-grid"><div class="role-item"><span class="role-k"><svg class="fa-solid fa-microchip" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-microchip"></use></svg>硬件对接</span><p>串口电子秤：波特率与秤型号预设、读数解析、清零与去皮指令；多路 USB 摄像头：预览、拍照、录像与 RTMP 推流（nvue 原生渲染）。</p></div><div class="role-item"><span class="role-k"><svg class="fa-solid fa-scale-balanced" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-scale-balanced"></use></svg>称重与验收流程</span><p>稳定判定、三种去皮方式、量程与分批、分批 / 追加验收、必拍照片和订单状态，整套验收交互。</p></div><div class="role-item"><span class="role-k"><svg class="fa-solid fa-mobile-screen" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-mobile-screen"></use></svg>终端 App 工程</span><p>uni-app 3 + Vue 3 + wot-design-uni；秤配置页、OTA 版本检测、登录态过期处理，面向一体机横屏的布局。</p></div><div class="role-item"><span class="role-k"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg>平台官网</span><p>Next.js 16 静态导出：首页、平台介绍、新闻与政策、操作指南、下载、FAQ 与联系页，自带 sitemap 与 robots。</p></div></div>
           </section>
           <section class="cs-sec" id="challenges">
             <h2 class="cs-h"><span class="mono">03</span>关键挑战</h2>
@@ -173,7 +171,7 @@
             <div class="shots">
               <figure class="shot" style="grid-column:1/-1">
                 <span class="browser">
-                  <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-globe"></i> 食安平台官网</span><span class="browser-go">◇</span></span>
+                  <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><svg class="fa-solid fa-globe" focusable="false" aria-hidden="true"><use href="/assets/icons.svg#solid-globe"></use></svg> 食安平台官网</span><span class="browser-go">◇</span></span>
                   <img src="/assets/work/fs-site.webp" srcset="/assets/work/fs-site.webp 1600w, /assets/work/fs-site-lg.webp 2400w" sizes="(min-width: 1000px) 420px, 100vw" width="1600" height="1000" loading="lazy" decoding="async" alt="校园食安平台官网首页：「守护校园阳光饮食 保障师生饮食安全」（本地运行，已脱敏）">
                 </span>
                 <figcaption><b>官网首页</b> · 本地运行，名称与标识已脱敏</figcaption>
@@ -189,8 +187,8 @@
           </section>
           <section class="cs-sec" id="results">
             <h2 class="cs-h"><span class="mono">07</span>交付情况</h2>
-            <div class="result-list"><div class="result"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i><div><b>称重规则落在代码里</b><p>稳定判定、去皮互斥、量程分批和规格换算由 App 统一处理，验收员只需要看状态、按确认。</p></div></div><div class="result"><i class="fa-solid fa-camera" aria-hidden="true"></i><div><b>每一笔验收都有照片</b><p>三张必拍照片缺一不可，部分验收和追加验收如实记录，订单状态和照片一起回到平台。</p></div></div><div class="result"><i class="fa-solid fa-code-branch" aria-hidden="true"></i><div><b>持续迭代的终端</b><p>智能秤 App 当前版本 1.5.0，带 OTA 版本检测，秤型号和摄像头可在配置页调整。</p></div></div><div class="result"><i class="fa-solid fa-globe" aria-hidden="true"></i><div><b>官网静态化交付</b><p>官网以静态文件部署，无需服务端运行时，内容与操作指南随版本更新。</p></div></div></div>
-            <p class="note-honest"><i class="fa-solid fa-circle-info" aria-hidden="true"></i>本页只描述我负责的智能秤 App 和官网（代码约 3.4 万行与 4,500 行）；平台后端不在我的范围内。封面为示意设计；官网截图为本地运行，使用示例数据，机构名称已脱敏。</p>
+            <div class="result-list"><div class="result"><svg class="fa-solid fa-scale-balanced" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-scale-balanced"></use></svg><div><b>称重规则落在代码里</b><p>稳定判定、去皮互斥、量程分批和规格换算由 App 统一处理，验收员只需要看状态、按确认。</p></div></div><div class="result"><svg class="fa-solid fa-camera" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-camera"></use></svg><div><b>每一笔验收都有照片</b><p>三张必拍照片缺一不可，部分验收和追加验收如实记录，订单状态和照片一起回到平台。</p></div></div><div class="result"><svg class="fa-solid fa-code-branch" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-code-branch"></use></svg><div><b>持续迭代的终端</b><p>智能秤 App 当前版本 1.5.0，带 OTA 版本检测，秤型号和摄像头可在配置页调整。</p></div></div><div class="result"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg><div><b>官网静态化交付</b><p>官网以静态文件部署，无需服务端运行时，内容与操作指南随版本更新。</p></div></div></div>
+            <p class="note-honest"><svg class="fa-solid fa-circle-info" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-circle-info"></use></svg>本页只描述我负责的智能秤 App 和官网（代码约 3.4 万行与 4,500 行）；平台后端不在我的范围内。封面为示意设计；官网截图为本地运行，使用示例数据，机构名称已脱敏。</p>
           </section>
       <section class="cta-band reveal" aria-label="联系我">
         <div>
@@ -199,8 +197,8 @@
         </div>
         <div class="cta-actions">
           <a class="btn btn-primary" href="/#contact">联系我 <span class="arrow" aria-hidden="true">→</span></a>
-          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 复制微信号</button>
-          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 简历 PDF</a>
+          <button class="btn btn-ghost btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号"><svg class="fa-brands fa-weixin" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-weixin"></use></svg> 复制微信号</button>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><svg class="fa-regular fa-file-pdf" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-file-pdf"></use></svg> 简历 PDF</a>
         </div>
       </section>
 
@@ -236,7 +234,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="/main.js?v=202610292300" defer></script>
+  <script src="/main.js?v=20261030" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>

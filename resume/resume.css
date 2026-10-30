@@ -1,0 +1,38 @@
+:root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif; color: #172234; background: #e9edf2; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 10pt; line-height: 1.65; }
+a { color: #165a79; text-decoration: none; }
+p, ul { margin: 5px 0 10px; }
+ul { padding-left: 18px; }
+li { margin: 3px 0; }
+.resume-page { width: 210mm; min-height: 297mm; margin: 24px auto; padding: 17mm 18mm 14mm; background: white; box-shadow: 0 5px 30px #17223415; }
+header { border-bottom: 2px solid #165a79; padding-bottom: 13px; }
+h1 { font-size: 25pt; line-height: 1.2; letter-spacing: -.6px; margin: 0 0 7px; }
+h1 small { font-size: 12pt; font-weight: 400; letter-spacing: 0; margin-left: 12px; color: #536274; }
+.role { font-size: 12pt; font-weight: 650; margin: 5px 0; }
+.contact { font-size: 9pt; line-height: 1.8; color: #455366; margin: 6px 0 0; }
+.summary { margin: 14px 0 8px; }
+h2 { margin: 17px 0 8px; font-size: 12pt; line-height: 1.4; color: #165a79; border-bottom: 1px solid #d9e1e8; padding-bottom: 5px; }
+h3 { margin: 0; font-size: 10.6pt; line-height: 1.6; }
+.job { margin: 12px 0 14px; break-inside: avoid; }
+.job-head { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; }
+time { white-space: nowrap; font-size: 9pt; color: #536274; }
+.context { color: #536274; margin: 2px 0 6px; font-size: 9.4pt; }
+.continued { font-size: 11pt; color: #536274; margin: 0 0 10px; }
+.skills p { margin: 5px 0; }
+footer { margin-top: 18px; border-top: 1px solid #d9e1e8; padding-top: 8px; display: flex; justify-content: space-between; color: #536274; font-size: 8pt; }
+.actions { max-width: 210mm; margin: 20px auto; text-align: center; font-size: 11pt; }
+.actions a, .actions button { font: inherit; color: #165a79; background: white; border: 1px solid #becad4; border-radius: 6px; padding: 9px 15px; margin: 4px; cursor: pointer; }
+@page { size: A4; margin: 0; }
+@media print {
+  :root { background: white; }
+  .actions { display: none; }
+  .resume-page { margin: 0; box-shadow: none; min-height: 0; height: 297mm; break-after: page; }
+  .resume-page:last-child { break-after: auto; }
+  a { color: inherit; }
+}
+@media screen and (max-width: 800px) {
+  .resume-page { width: 100%; min-height: 0; margin: 12px 0; padding: 24px 20px; }
+  .job-head { flex-wrap: wrap; gap: 0; }
+}
+@media screen { p a, footer a { text-decoration: underline; text-underline-offset: 3px; } }

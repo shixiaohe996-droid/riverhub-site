@@ -11,3 +11,6 @@ wrangler.jsonc
 README.md
 DEPLOY.md
 *.md
+scripts
+package.json
+package-lock.json

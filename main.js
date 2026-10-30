@@ -9,11 +9,6 @@
   var PROMPT = 'shixiaohe@riverhub:~$';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // 手机上「架构与实现」默认收起，减少页面长度
-  if (window.matchMedia && window.matchMedia('(max-width: 719px)').matches) {
-    Array.prototype.forEach.call(document.querySelectorAll('details.arch'), function (d) { d.removeAttribute('open'); });
-  }
-
   /* ------------------------------------------------------------------
    * 1. Terminal 命令行交互引擎
    * ------------------------------------------------------------------ */
@@ -33,10 +28,10 @@
       { type: 'success', text: '[MODEL] 计费 CPS / CPA / CPC / CPL / CPM · 归因 最后点击 / 首次点击 / 线性' }
     ],
     payment: [
-      { type: 'cmd', text: 'run payment-engine --scale=million-daily --mq=rocketmq' },
+      { type: 'cmd', text: 'run payment-engine --mode=demo --mq=rocketmq' },
       { type: 'res', text: '[MQ ENGINE] 初始化 RocketMQ 生产者与结算消费组...' },
       { type: 'res', text: '[RECON] 开启多级代理商分润计算与自动扣还机制...' },
-      { type: 'success', text: '[SUCCESS] 日均百万级交易实时结算 | 零资损 | 高可用' }
+      { type: 'success', text: '[DEMO] 分润处理 → 幂等入账 → 生成对账明细（交互示意）' }
     ],
     iot: [
       { type: 'cmd', text: 'run intg-dispatch --func=person.issue --mode=mock' },
@@ -247,11 +242,11 @@
       title: '金融级分润与对账引擎架构',
       tag: 'HIGH CONCURRENCY',
       metrics: [
-        { val: '百万级', lbl: '日均交易量' },
-        { val: '高可用', lbl: '实时推送 + 定时双补偿' },
-        { val: '零资损', lbl: '幂等校验 + 对账兜底' }
+        { val: '幂等', lbl: '重复消息安全处理' },
+        { val: '补偿', lbl: '实时推送 + 定时补偿' },
+        { val: '对账', lbl: '差异核对与追踪' }
       ],
-      code: '// [核心设计模式]: RocketMQ 实时推送 + XXL-Job 定时双补偿机制\n@Service\n@RocketMQMessageListener(topic = "payment-settlement", consumerGroup = "settlement-consumer")\npublic class ReconciliationEngine implements RocketMQListener<TradeMessage> {\n    @Override\n    public void onMessage(TradeMessage trade) {\n        // 1. 幂等性校验 (Redis 分布式状态锁)\n        // 2. 代理商分润多级阶梯算法实时计算\n        // 3. 自动入账与对账明细生成，保障零资损\n    }\n}'
+      code: '// [核心设计模式]: RocketMQ 实时推送 + XXL-Job 定时双补偿机制\n@Service\n@RocketMQMessageListener(topic = "payment-settlement", consumerGroup = "settlement-consumer")\npublic class ReconciliationEngine implements RocketMQListener<TradeMessage> {\n    @Override\n    public void onMessage(TradeMessage trade) {\n        // 1. 幂等性校验 (Redis 分布式状态锁)\n        // 2. 代理商分润多级阶梯算法实时计算\n        // 3. 生成账务与对账明细，保留核对依据\n    }\n}'
     },
     'iot-hub': {
       title: '智慧社区 / 食安 IoT 接入',
@@ -335,6 +330,9 @@
       var on = n.getAttribute('data-node') === nodeId;
       n.classList.toggle('active', on);
       n.setAttribute('aria-selected', on ? 'true' : 'false');
+      n.tabIndex = on ? 0 : -1;
+      var panel = document.getElementById('topo-detail-panel');
+      if (on && panel) panel.setAttribute('aria-labelledby', n.id);
     });
     var panel = document.getElementById('topo-detail-panel');
     if (!panel || reduceMotion) { renderTopo(nodeId); return; }
@@ -349,6 +347,9 @@
   function initTopology() {
     var nodes = Array.prototype.slice.call(document.querySelectorAll('.topo-node'));
     nodes.forEach(function (node, i) {
+      node.id = 'topo-tab-' + i;
+      node.setAttribute('aria-controls', 'topo-detail-panel');
+      node.tabIndex = node.classList.contains('active') ? 0 : -1;
       node.addEventListener('click', function () { selectTopoNode(node.getAttribute('data-node')); });
       node.addEventListener('keydown', function (e) {
         var next = null;
@@ -358,7 +359,10 @@
       });
     });
     var active = document.querySelector('.topo-node.active');
-    if (active) renderTopo(active.getAttribute('data-node'));
+    if (active) {
+      document.getElementById('topo-detail-panel').setAttribute('aria-labelledby', active.id);
+      renderTopo(active.getAttribute('data-node'));
+    }
   }
 
   /* ------------------------------------------------------------------
@@ -472,12 +476,15 @@
 
     if (toggle && menu) {
       toggle.addEventListener('click', function () { setMenu(!menu.classList.contains('mobile-open')); });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && menu.classList.contains('mobile-open')) { setMenu(false); toggle.focus(); }
+      });
       document.addEventListener('click', function (e) {
         if (menu.classList.contains('mobile-open') && !menu.contains(e.target) && !toggle.contains(e.target)) setMenu(false);
       });
     }
 
+    document.documentElement.classList.add('nav-ready');
     var allLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
     allLinks.forEach(function (link) { link.addEventListener('click', function () { setMenu(false); }); });
     // 只有页内锚点参与滚动高亮；跨页链接（/notes/、/#work）保持静态状态
@@ -505,35 +512,6 @@
     }, { passive: true });
     onScroll();
   }
-
-  /* ------------------------------------------------------------------
-   * 7. 滚动入场动画
-   * ------------------------------------------------------------------ */
-  function initReveal() {
-    var els = document.querySelectorAll('.reveal');
-    if (reduceMotion || !('IntersectionObserver' in window)) {
-      els.forEach(function (el) { el.classList.add('is-visible'); });
-      return;
-    }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-
-    // 同一容器内的卡片错峰入场
-    els.forEach(function (el) {
-      var parent = el.parentElement;
-      var siblings = parent ? Array.prototype.filter.call(parent.children, function (c) { return c.classList.contains('reveal'); }) : [];
-      var idx = siblings.indexOf(el);
-      if (idx > 0) el.style.transitionDelay = Math.min(idx, 6) * 60 + 'ms';
-      io.observe(el);
-    });
-  }
-
 
   /* ------------------------------------------------------------------
    * 8. 视觉动效：光标聚光、作品倾斜、磁吸按钮、数字滚动
@@ -635,30 +613,36 @@
     spy();
   }
 
+  // Native details also opens for existing bookmarked anchors and browser history.
+  function initDetails() {
+    function revealHashTarget() {
+      var target;
+      try { target = document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (e) { return; }
+      if (!target) return;
+      var details = target.closest('details');
+      if (details && !details.open) {
+        details.open = true;
+        target.scrollIntoView({ block: 'start' });
+      }
+    }
+    window.addEventListener('hashchange', revealHashTarget);
+    revealHashTarget();
+  }
+
   function init() {
     initTheme();
     initToc();
     initNav();
+    initDetails();
     initTerminal();
     initTopology();
     initFilters();
     initCopy();
-    initReveal();
     initFx();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  // 移动端折叠：技术细节
-  document.querySelectorAll('.collapse-btn').forEach(function (btn) {
-    var box = document.getElementById(btn.getAttribute('aria-controls'));
-    if (!box) return;
-    btn.addEventListener('click', function () {
-      var open = !box.classList.contains('is-open');
-      box.classList.toggle('is-open', open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (!open) box.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
-    });
-  });
+
 })();

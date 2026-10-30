@@ -42,11 +42,9 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./site.css?v=202610292300">
+  <link rel="stylesheet" href="./site.css?v=20261030">
 </head>
-<body>
+<body class="home-page">
   <a class="skip-link" href="#main">跳到主要内容</a>
 
   <!-- 顶栏导航 -->
@@ -64,7 +62,7 @@
         <a href="#work" class="nav-link">代表作品</a>
         <a href="#services" class="nav-link">找我能做什么</a>
         <a href="#collab" class="nav-link">合作方式</a>
-        <a href="#cases" class="nav-link">其他项目</a>
+        <a href="#more-work" class="nav-link">更多交付</a>
         <a href="#about" class="nav-link">关于我</a>
         <a href="/notes/" class="nav-link">笔记</a>
         <a href="#contact" class="nav-link nav-link-cta">联系我</a>
@@ -72,10 +70,10 @@
 
       <div class="nav-tools">
         <a href="#contact" class="btn btn-primary btn-sm header-cta">联系我 <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><i class="fa-solid fa-globe" aria-hidden="true"></i>EN</a>
+        <a class="icon-btn lang-btn" href="/en/" hreflang="en" lang="en" aria-label="Switch to English"><svg class="fa-solid fa-globe" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-globe"></use></svg>EN</a>
         <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换深色 / 浅色模式">
-          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
-          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <svg class="fa-solid fa-moon icon-moon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-moon"></use></svg>
+          <svg class="fa-solid fa-sun icon-sun" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-sun"></use></svg>
         </button>
         <button class="icon-btn menu-btn" id="mobile-menu-toggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="nav-menu">
           <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -103,17 +101,17 @@
           <p class="hero-sub">13 年一线研发，从架构设计到全栈交付</p>
 
           <p class="hero-lead">
-            我是史晓河，现任<strong>信言科技</strong>（河南信言电子科技有限公司）技术架构师，主导「信付通」聚合支付平台的整体架构。长期做支付收单与清结算、智慧社区 / IoT 硬件对接、0 到 1 全栈交付，近年把 AI 编程（Claude Code / SDD / TDD）用进日常交付。
+            我是史晓河，现任<strong>信言科技技术架构师</strong>，主导「信付通」整体架构。擅长把支付、账务与设备接入等复杂业务，做成可维护、可交接的系统。可参与架构设计、核心后端研发与全栈交付。
           </p>
 
           <div class="hero-cta">
             <a href="#work" class="btn btn-primary">
-              <i class="fa-solid fa-display" aria-hidden="true"></i> 看代表作品
+              <svg class="fa-solid fa-display" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-display"></use></svg> 看代表作品
             </a>
             <a href="#contact" class="btn btn-ghost">
-              <i class="fa-solid fa-comments" aria-hidden="true"></i> 远程岗位 / 项目合作
+              <svg class="fa-solid fa-comments" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-comments"></use></svg> 远程岗位 / 项目合作
             </a>
-          </div>
+          <a class="hero-resume" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener">下载简历 PDF <span aria-hidden="true">↗</span></a></div>
         </div>
 
         <!-- 名片 / 头像区 -->
@@ -127,35 +125,35 @@
             <div class="profile-id">
               <div class="profile-name">史晓河 <span class="profile-en">Shi Xiaohe</span></div>
               <div class="profile-role">技术架构师 · 信言科技</div>
-              <div class="profile-loc"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 三门峡 / 郑州 / 西安 · 全国远程</div>
+              <div class="profile-loc"><svg class="fa-solid fa-location-dot" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-location-dot"></use></svg> 三门峡 / 郑州 / 西安 · 全国远程</div>
             </div>
           </div>
           <ul class="trust-list">
             <li><span class="trust-val"><span class="count" data-count="13">13</span><small>年</small></span><span class="trust-lbl"><span class="nw">一线研发</span><span class="nw">与架构经验</span></span></li>
-            <li><span class="trust-val">百万级</span><span class="trust-lbl"><span class="nw">日均交易系统 ·</span> <span class="nw">零资损</span></span></li>
-            <li><span class="trust-val"><span class="count" data-count="2">2</span><small>个</small></span><span class="trust-lbl"><span class="nw">可直接打开的</span><span class="nw">在线作品</span></span></li>
+            <li><span class="trust-val">支付</span><span class="trust-lbl"><span class="nw">收单与分润</span><br><span class="nw">账务与对账</span></span></li>
+            <li><span class="trust-val"><span class="count" data-count="2">2</span><small>个</small></span><span class="trust-lbl"><span class="nw">可访问的</span><br><span class="nw">在线产品</span></span></li>
             <li><span class="trust-val">远程</span><span class="trust-lbl"><span class="nw">2020.10—2022.02 自由职业 ·</span> <span class="nw">远程兼职参与新银惠通项目</span></span></li>
           </ul>
           <ul class="profile-contact">
-            <li><a href="tel:18618387956"><i class="fa-solid fa-phone" aria-hidden="true"></i> <span class="mono">186 1838 7956</span></a><button class="copy-mini btn-copy-contact" type="button" data-copy="18618387956" data-label="电话" aria-label="复制电话号码"><i class="fa-regular fa-copy" aria-hidden="true"></i></button></li>
-            <li><a href="mailto:shixiaohe996@gmail.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span class="mono">shixiaohe996@gmail.com</span></a><button class="copy-mini btn-copy-contact" type="button" data-copy="shixiaohe996@gmail.com" data-label="邮箱" aria-label="复制邮箱"><i class="fa-regular fa-copy" aria-hidden="true"></i></button></li>
-            <li><a href="https://t.me/river_data" target="_blank" rel="noopener"><i class="fa-brands fa-telegram" aria-hidden="true"></i> <span class="mono">@river_data</span></a></li>
-            <li><span class="contact-wx"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 微信 <span class="mono">18618387956</span> <small>（同手机号）</small></span><button class="copy-mini btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号" aria-label="复制微信号"><i class="fa-regular fa-copy" aria-hidden="true"></i></button></li>
+            <li><a href="tel:18618387956"><svg class="fa-solid fa-phone" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-phone"></use></svg> <span class="mono">186 1838 7956</span></a><button class="copy-mini btn-copy-contact" type="button" data-copy="18618387956" data-label="电话" aria-label="复制电话号码"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button></li>
+            <li><a href="mailto:shixiaohe996@gmail.com"><svg class="fa-solid fa-envelope" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-envelope"></use></svg> <span class="mono">shixiaohe996@gmail.com</span></a><button class="copy-mini btn-copy-contact" type="button" data-copy="shixiaohe996@gmail.com" data-label="邮箱" aria-label="复制邮箱"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button></li>
+            <li><a href="https://t.me/river_data" target="_blank" rel="noopener"><svg class="fa-brands fa-telegram" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-telegram"></use></svg> <span class="mono">@river_data</span></a></li>
+            <li><span class="contact-wx"><svg class="fa-brands fa-weixin" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-weixin"></use></svg> 微信 <span class="mono">18618387956</span> <small>（同手机号）</small></span><button class="copy-mini btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号" aria-label="复制微信号"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button></li>
           </ul>
         </aside>
       </div>
 
       <div class="container hero-peek-wrap">
         <nav class="hero-peek reveal" aria-label="代表作品速览">
-          <a class="scroll-cue" href="#work"><span class="cue-line" aria-hidden="true"></span><span class="cue-txt"><span class="mono">01 / 代表作品</span><span>支付 · 跨境 · 物联 共 5 个项目</span></span></a>
+          <a class="scroll-cue" href="#work"><span class="cue-line" aria-hidden="true"></span><span class="cue-txt"><span class="mono">代表作品</span><span>支付清结算 · 海外支付 · 智慧物联</span></span></a>
           <div class="peek-list">
             <a class="peek" href="#work-ciftopay">
-              <img src="./assets/ciftopay.jpg" width="1200" height="1500" alt="" decoding="async">
+              <img src="./assets/ciftopay-thumb.webp" width="1200" height="1500" alt="" decoding="async">
               <span class="peek-txt"><b>信付通 CiftoPay</b><small class="mono"><span class="pulse" aria-hidden="true"></span>ciftopay.com</small></span>
               <span class="peek-go" aria-hidden="true">↓</span>
             </a>
             <a class="peek" href="#work-ecommica">
-              <img src="./assets/deals.jpg" width="1200" height="750" alt="" decoding="async">
+              <img src="./assets/deals-thumb.webp" width="1200" height="750" alt="" decoding="async">
               <span class="peek-txt"><b>Ecommica</b><small class="mono"><span class="pulse" aria-hidden="true"></span>deals.ecommica.com</small></span>
               <span class="peek-go" aria-hidden="true">↓</span>
             </a>
@@ -169,78 +167,32 @@
       <span id="projects" class="anchor-alias" aria-hidden="true"></span>
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">01</span><span class="kicker-sep">/</span>Featured Work</span>
+          <span class="section-kicker">Featured Work</span>
           <h2 class="section-title">代表作品</h2>
-          <p class="section-desc">两个线上产品、一个面向印度市场的海外支付平台，以及智慧社区物联平台和食安验收终端</p>
+          <p class="section-desc">从支付账务到设备接入，先看业务问题、我的职责与实际交付。</p>
         </header>
 
-        <div class="works">
-          <article class="work reveal" id="work-ciftopay">
+        <div class="works featured-grid">
+<article class="work reveal" id="work-ciftopay">
             <a class="work-shot" href="https://ciftopay.com/" target="_blank" rel="noopener" aria-label="打开 信付通 官网">
               <span class="browser">
-                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-lock"></i> ciftopay.com</span><span class="browser-go">↗</span></span>
+                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><svg class="fa-solid fa-lock" focusable="false" aria-hidden="true"><use href="/assets/icons.svg#solid-lock"></use></svg> ciftopay.com</span><span class="browser-go">↗</span></span>
                 <img src="./assets/ciftopay.jpg" width="1200" height="1500" loading="lazy" decoding="async" alt="信付通 ciftopay.com 行业方案与服务对象页面截图">
               </span>
             </a>
             <div class="work-body">
-              <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>在线运行</span><span class="work-url mono">ciftopay.com</span></div>
-              <h3 class="work-title">信付通 CiftoPay · 三门峡本地支付与行业数字化服务</h3>
-              <p class="card-text">以聚合收款为核心，联合行业软件伙伴服务餐饮、零售商超、民生缴费、教育校园、停车出行、酒店文旅六类行业，并围绕支付做定制开发。资金由持牌机构直接结算，平台不经手。面向三类用户：商户（收款码 + 云音箱）、代理商（分润后台）、平台与开发者（开放 API）。</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>我的角色</dt><dd><strong>全栈</strong>。在信言科技任技术架构师，主导平台整体架构（2026.06 — 至今）。Java 25 微服务底座、复式记账清结算、运营 / 代理 / 商户三端 Web 与 uni-app 四端移动端。</dd></div>
-                <div class="wf-row"><dt>技术栈</dt><dd class="tags"><span class="tag-strong">Java 25</span><span>Spring Boot 4</span><span>Spring Cloud Alibaba</span><span class="tag-strong">复式记账清结算</span><span>RocketMQ</span><span>Redis</span><span>Nacos</span><span>XXL-Job</span><span>Vue 3 Monorepo</span><span>uni-app x</span></dd></div>
-              </dl>
+              <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>在线运行</span></div>
+              <h3 class="work-title">信付通 · 聚合支付与清结算</h3>
+              <p class="card-text">让商户收款、代理商分润与平台对账在同一套系统内协同；资金由持牌机构直接结算。</p>
+              <dl class="work-facts"><div class="wf-row"><dt>职责</dt><dd>技术架构师，主导整体架构与全栈开发（2026.06 至今）。</dd></div><div class="wf-row"><dt>交付</dt><dd>支付编排、渠道适配和复式账本；配套商户、代理商、运营三端 Web 与移动端。</dd></div></dl><p class="work-stack">Java / Spring Boot · RocketMQ · Vue 3</p>
               <div class="work-links">
                 <a class="btn btn-primary btn-sm" href="/work/ciftopay/">查看案例 <span class="arrow" aria-hidden="true">→</span></a>
                 <a class="btn btn-ghost btn-sm" href="https://ciftopay.com/" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
               </div>
             </div>
-                      <details class="arch" open>
-              <summary class="arch-sum"><span class="arch-sum-t">架构与实现</span><span class="arch-sum-n mono">基于源码梳理 · 仅展示高层设计</span><span class="arch-chev" aria-hidden="true"></span></summary>
-              <div class="arch-body">
-                <figure class="arch-fig">
-                  <div class="arch-canvas scroller"><svg class="dg" viewBox="0 0 1080 440" role="img" aria-labelledby="dpay-t dpay-d" xmlns="http://www.w3.org/2000/svg"><title id="dpay-t">信付通（pay-hub）系统架构示意</title><desc id="dpay-d">接入端经 Gateway 进入业务域；payment 幂等落库后经 channel 路由与版本化 Adapter 调用上游持牌机构，回调验签归一后由 payment 收敛状态；支付成功经 Outbox 与 RocketMQ 进入 account 复式记账与日终对账。</desc><defs><linearGradient id="dpay-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><marker id="dpay-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-arrow" d="M1 1 L9 5 L1 9 z"/></marker></defs><text class="dg-k" x="16" y="30">CLIENTS · 接入端</text><rect class="dg-box" x="16" y="46" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="70" font-size="14">Web 三端</text><text class="dg-s" x="30" y="88">运营 · 商户 · 代理</text><rect class="dg-box" x="16" y="116" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="140" font-size="14">移动四端</text><text class="dg-s" x="30" y="158">uni-app x</text><rect class="dg-box" x="16" y="186" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="210" font-size="14">开放 API</text><text class="dg-s" x="30" y="228">商户 / 代理应用</text><rect class="dg-box" x="16" y="256" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="280" font-size="14">官网 · 文档站</text><text class="dg-s" x="30" y="298">Vue 3 + Vite</text><text class="dg-k" x="206" y="30">EDGE · 网关</text><rect class="dg-box" x="206" y="46" width="148" height="268" rx="10"/><text class="dg-t" x="220" y="70" font-size="14">Gateway</text><text class="dg-s" x="220" y="88">按资源域转发</text><rect class="dg-pill" x="220" y="112" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="129" text-anchor="middle">/admin-api</text><rect class="dg-pill" x="220" y="148" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="165" text-anchor="middle">/app-api</text><rect class="dg-pill" x="220" y="184" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="201" text-anchor="middle">/merchant-api</text><rect class="dg-pill" x="220" y="220" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="237" text-anchor="middle">/agent-api</text><rect class="dg-pill" x="220" y="256" width="120" height="26" rx="13"/><text class="dg-p" x="280.0" y="273" text-anchor="middle">/open-api</text><path class="dg-line" d="M172 75 L204 75" marker-end="url(#dpay-a)"/><path class="dg-line" d="M172 145 L204 145" marker-end="url(#dpay-a)"/><path class="dg-line" d="M172 215 L204 215" marker-end="url(#dpay-a)"/><path class="dg-line" d="M172 285 L204 285" marker-end="url(#dpay-a)"/><rect class="dg-frame" x="392" y="14" width="414" height="328" rx="16"/><text class="dg-k" x="408" y="36">DOMAINS · 业务域（api / server 两层）</text><rect class="dg-box" x="410" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="424" y="70" font-size="14">merchant</text><text class="dg-s" x="424" y="88">商户 · 进件 · 路由绑定</text><rect class="dg-box" x="608" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="622" y="70" font-size="14">agent</text><text class="dg-s" x="622" y="88">代理层级 · 分润规则</text><rect class="dg-box dg-hi" x="410" y="140" width="180" height="112" rx="10" stroke="url(#dpay-g)"/><text class="dg-t" x="424" y="164" font-size="14">payment</text><text class="dg-s" x="424" y="182">聚合交易编排</text><circle class="dg-dot" cx="428" cy="202" r="2.2"/><text class="dg-b" x="437" y="206">先落库 · 幂等键</text><circle class="dg-dot" cx="428" cy="221" r="2.2"/><text class="dg-b" x="437" y="225">固定请求号调用</text><circle class="dg-dot" cx="428" cy="240" r="2.2"/><text class="dg-b" x="437" y="244">单入口收敛状态</text><rect class="dg-box dg-hi" x="608" y="140" width="180" height="112" rx="10" stroke="url(#dpay-g)"/><text class="dg-t" x="622" y="164" font-size="14">channel</text><text class="dg-s" x="622" y="182">机构接入与路由</text><circle class="dg-dot" cx="626" cy="202" r="2.2"/><text class="dg-b" x="635" y="206">路由组策略选通道</text><circle class="dg-dot" cx="626" cy="221" r="2.2"/><text class="dg-b" x="635" y="225">版本化 Adapter</text><circle class="dg-dot" cx="626" cy="240" r="2.2"/><text class="dg-b" x="635" y="244">回调验签 · 结果归一</text><rect class="dg-box" x="410" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="424" y="300" font-size="13">account</text><text class="dg-s" x="424" y="318">复式记账 · 日终对账</text><rect class="dg-box" x="608" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="622" y="300" font-size="13">integration · assistant</text><text class="dg-s" x="622" y="318">OCR · 云音响 · 智能客服</text><path class="dg-line" d="M354 196 L408 196" marker-end="url(#dpay-a)"/><path class="dg-flow" d="M354 196 L408 196" stroke="url(#dpay-g)" pathLength="100"/><text class="dg-lbl" x="381.0" y="189" text-anchor="middle">请求</text><path class="dg-line" d="M500 104 L500 138" marker-end="url(#dpay-a)"/><text class="dg-lbl" x="508" y="126" text-anchor="start">路由绑定 / 报价</text><path class="dg-line" d="M590 176 L606 176" marker-end="url(#dpay-a)"/><path class="dg-line dg-dash" d="M606 214 L592 214" marker-end="url(#dpay-a)"/><path class="dg-line" d="M500 252 L500 274" marker-end="url(#dpay-a)"/><text class="dg-lbl" x="508" y="268">Outbox → RocketMQ</text><text class="dg-k" x="846" y="30">UPSTREAM · 上游</text><rect class="dg-box" x="846" y="140" width="218" height="112" rx="10"/><text class="dg-t" x="860" y="164" font-size="14">持牌支付机构 / 银行</text><text class="dg-s" x="860" y="182">资金由机构直接结算</text><circle class="dg-dot" cx="864" cy="202" r="2.2"/><text class="dg-b" x="873" y="206">支付 · 查单 · 关单</text><circle class="dg-dot" cx="864" cy="221" r="2.2"/><text class="dg-b" x="873" y="225">退款 · 结算</text><path class="dg-line" d="M788 176 L844 176" marker-end="url(#dpay-a)"/><path class="dg-flow" d="M788 176 L844 176" stroke="url(#dpay-g)" pathLength="100"/><text class="dg-lbl" x="816.0" y="169" text-anchor="middle">PAY / 查单</text><path class="dg-line dg-dash" d="M844 214 L790 214" marker-end="url(#dpay-a)"/><text class="dg-lbl" x="817" y="232" text-anchor="middle">异步回调</text><text class="dg-cap" x="846" y="290">单体 hub-server ⇄ 微服务</text><text class="dg-cap" x="846" y="310">同一套源码两种部署拓扑</text><text class="dg-k" x="16" y="380">INFRA</text><rect class="dg-pill" x="74" y="362" width="175.0" height="26" rx="13"/><text class="dg-p" x="161.5" y="379" text-anchor="middle">MySQL · biz_month 月表</text><rect class="dg-pill" x="259.0" y="362" width="60.5" height="26" rx="13"/><text class="dg-p" x="289.25" y="379" text-anchor="middle">Redis</text><rect class="dg-pill" x="329.5" y="362" width="60.5" height="26" rx="13"/><text class="dg-p" x="359.75" y="379" text-anchor="middle">Nacos</text><rect class="dg-pill" x="400.0" y="362" width="81.2" height="26" rx="13"/><text class="dg-p" x="440.6" y="379" text-anchor="middle">RocketMQ</text><rect class="dg-pill" x="491.2" y="362" width="144.60000000000002" height="26" rx="13"/><text class="dg-p" x="563.5" y="379" text-anchor="middle">XXL-Job · 状态恢复</text><rect class="dg-pill" x="645.8" y="362" width="158.3" height="26" rx="13"/><text class="dg-p" x="724.9499999999999" y="379" text-anchor="middle">多租户 · 字段加密脱敏</text><rect class="dg-pill" x="814.0999999999999" y="362" width="164.0" height="26" rx="13"/><text class="dg-p" x="896.0999999999999" y="379" text-anchor="middle">Spring Cloud Alibaba</text></svg></div>
-                  <p class="swipe-hint arch-hint mono" aria-hidden="true">← 左右滑动查看完整架构图 →</p>
-                </figure>
-                <ul class="arch-list"><li class="arch-item"><span class="arch-k mono">01 · 先落库再调用</span><p>调用支付机构前，先在本地事务里落库幂等键、订单、路由决策和状态恢复任务；结果未知时只查单、不重发。</p></li><li class="arch-item"><span class="arch-k mono">02 · 路由与适配</span><p>在商户路由组内按优先级或最低预计成本选择通道；机构协议固化在版本化 Adapter 中，回调统一验签、归一。</p></li><li class="arch-item"><span class="arch-k mono">03 · 复式记账</span><p>支付成功经 Outbox + RocketMQ 进入账务域，按业务身份幂等记账；分录只追加、余额不透支，每日做内部对账。</p></li><li class="arch-item"><span class="arch-k mono">04 · 月表与双拓扑</span><p>高频交易、回调和流水按月分表；同一套源码既能单体运行，也能拆成 Gateway + 各业务域微服务。</p></li></ul>
-              </div>
-            </details>
-          </article>
 
-          <article class="work reveal" id="work-ecommica">
-            <a class="work-shot" href="https://deals.ecommica.com/en" target="_blank" rel="noopener" aria-label="打开 Ecommica 网站">
-              <span class="browser">
-                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><i class="fa-solid fa-lock"></i> deals.ecommica.com</span><span class="browser-go">↗</span></span>
-                <img src="./assets/deals.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="Ecommica deals.ecommica.com 首页截图">
-              </span>
-            </a>
-            <div class="work-body">
-              <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>在线运行</span><span class="work-url mono">deals.ecommica.com</span></div>
-              <h3 class="work-title">Ecommica · 多语言优惠券与折扣码平台</h3>
-              <p class="card-text">面向多个国家和地区购物者的优惠信息站：汇集各电商平台的优惠、优惠券与折扣码，可按商家或分类（电子产品、家居园艺、时尚、工具、汽车、健康美妆、玩具、运动）浏览，支持中英文切换与地区选择，并有博客内容。站内商家包括 Walmart US、Sam's Club US、Shopee MX 等。</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>我的角色</dt><dd><strong>全栈</strong>。多语言、多地区的内容型站点，中文版与 English 版均已上线。前台 Next.js，后端 Spring Boot 联盟追踪服务，运营后台 Vue 3。</dd></div>
-                <div class="wf-row"><dt>技术栈</dt><dd class="tags"><span class="tag-strong">Next.js 16</span><span>React 19</span><span>Tailwind 4</span><span>next-intl</span><span class="tag-strong">Spring Boot 3.5</span><span>MySQL</span><span>Redis</span><span>Vue 3 后台</span><span>Docker</span></dd></div>
-              </dl>
-              <div class="work-links">
-                <a class="btn btn-primary btn-sm" href="/work/ecommica/">查看案例 <span class="arrow" aria-hidden="true">→</span></a>
-                <a class="btn btn-ghost btn-sm" href="https://deals.ecommica.com/en" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
-                <a class="btn btn-ghost btn-sm" href="https://deals.ecommica.com/en" target="_blank" rel="noopener"><i class="fa-solid fa-language" aria-hidden="true"></i> English 版</a>
-              </div>
-            </div>
-                      <details class="arch" open>
-              <summary class="arch-sum"><span class="arch-sum-t">架构与实现</span><span class="arch-sum-n mono">基于源码梳理 · 仅展示高层设计</span><span class="arch-chev" aria-hidden="true"></span></summary>
-              <div class="arch-body">
-                <figure class="arch-fig">
-                  <div class="arch-canvas scroller"><svg class="dg" viewBox="0 0 1080 440" role="img" aria-labelledby="dad-t dad-d" xmlns="http://www.w3.org/2000/svg"><title id="dad-t">Ecommica（river-ad-workspace）架构与追踪链路示意</title><desc id="dad-d">访客经 nginx 访问 Next.js 前台或 /go 追踪跳转；river-server 记录点击后 302 跳转到联盟链接，联盟 Postback 去重并按点击归因生成转化；联盟数据定时同步，stats 聚合日统计与告警，运营后台为 Vue 3。</desc><defs><linearGradient id="dad-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><marker id="dad-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-arrow" d="M1 1 L9 5 L1 9 z"/></marker></defs><text class="dg-k" x="16" y="30">VISITOR</text><rect class="dg-box" x="16" y="126" width="132" height="70" rx="10"/><text class="dg-t" x="30" y="150" font-size="14">访客</text><text class="dg-s" x="30" y="168">中 / 英 · 多地区</text><rect class="dg-box" x="176" y="126" width="112" height="70" rx="10"/><text class="dg-t" x="190" y="150" font-size="14">nginx</text><text class="dg-s" x="190" y="168">反向代理</text><path class="dg-line" d="M148 161 L174 161" marker-end="url(#dad-a)"/><text class="dg-k" x="318" y="30">FRONTEND · 前台</text><rect class="dg-box dg-hi" x="318" y="46" width="214" height="128" rx="10" stroke="url(#dad-g)"/><text class="dg-t" x="332" y="70" font-size="14">Next.js 16 前台</text><text class="dg-s" x="332" y="88">React 19 · Tailwind 4</text><circle class="dg-dot" cx="336" cy="108" r="2.2"/><text class="dg-b" x="345" y="112">next-intl 中英路由</text><circle class="dg-dot" cx="336" cy="127" r="2.2"/><text class="dg-b" x="345" y="131">GeoIP 识别地区</text><circle class="dg-dot" cx="336" cy="146" r="2.2"/><text class="dg-b" x="345" y="150">ISR 缓存 · sitemap / hreflang</text><rect class="dg-box" x="318" y="254" width="206" height="74" rx="10"/><text class="dg-t" x="332" y="278" font-size="14">运营后台</text><text class="dg-s" x="332" y="296">Vue 3 · Element Plus · ECharts</text><path class="dg-line" d="M288 146 L316 110" marker-end="url(#dad-a)"/><text class="dg-lbl" x="296" y="146" text-anchor="start">页面</text><path class="dg-line" d="M288 178 L300 178 L300 214 L586 214" marker-end="url(#dad-a)"/><path class="dg-flow" d="M288 178 L300 178 L300 214 L586 214" stroke="url(#dad-g)" pathLength="100"/><text class="dg-lbl" x="440" y="207" text-anchor="middle">/go/{type}/{id}</text><rect class="dg-frame" x="568" y="14" width="302" height="328" rx="16"/><text class="dg-k" x="584" y="36">river-server · Spring Boot 3.5</text><rect class="dg-box" x="586" y="46" width="266" height="52" rx="10"/><text class="dg-t" x="600" y="70" font-size="13">affiliate</text><text class="dg-s" x="600" y="88">联盟网络 · 商家 · Offer · 分类 · 地区</text><rect class="dg-box" x="586" y="106" width="266" height="52" rx="10"/><text class="dg-t" x="600" y="130" font-size="13">coupon · blog</text><text class="dg-s" x="600" y="148">Deal / 优惠券 · 过期处理 · 文章</text><rect class="dg-box dg-hi" x="586" y="176" width="266" height="96" rx="10" stroke="url(#dad-g)"/><text class="dg-t" x="600" y="200" font-size="14">tracking</text><text class="dg-s" x="600" y="218">点击 → 转化 → 归因</text><circle class="dg-dot" cx="604" cy="238" r="2.2"/><text class="dg-b" x="613" y="242">记录点击 · sub1–sub5 · 302 跳转</text><circle class="dg-dot" cx="604" cy="257" r="2.2"/><text class="dg-b" x="613" y="261">Postback 去重 · 按 clickId 归因</text><rect class="dg-box" x="586" y="280" width="266" height="52" rx="10"/><text class="dg-t" x="600" y="304" font-size="13">stats · campaign</text><text class="dg-s" x="600" y="322">日统计聚合 · 告警 · 落地页</text><path class="dg-line" d="M532 100 L584 86" marker-end="url(#dad-a)"/><text class="dg-lbl" x="556" y="84" text-anchor="middle">App API</text><path class="dg-line" d="M526 300 L584 300" marker-end="url(#dad-a)"/><text class="dg-lbl" x="555" y="292" text-anchor="middle">admin-api</text><text class="dg-k" x="904" y="30">EXTERNAL · 外部</text><rect class="dg-box" x="904" y="46" width="160" height="96" rx="10"/><text class="dg-t" x="918" y="70" font-size="14">联盟网络</text><text class="dg-s" x="918" y="88">Offer · 优惠券</text><circle class="dg-dot" cx="922" cy="108" r="2.2"/><text class="dg-b" x="931" y="112">定时同步入库</text><rect class="dg-box" x="904" y="176" width="160" height="96" rx="10"/><text class="dg-t" x="918" y="200" font-size="14">商家站点</text><text class="dg-s" x="918" y="218">用户完成购买</text><circle class="dg-dot" cx="922" cy="238" r="2.2"/><text class="dg-b" x="931" y="242">转化 Postback</text><path class="dg-line dg-dash" d="M902 80 L854 72" marker-end="url(#dad-a)"/><text class="dg-lbl" x="878" y="64" text-anchor="middle">Job</text><path class="dg-line" d="M852 204 L902 204" marker-end="url(#dad-a)"/><path class="dg-flow" d="M852 204 L902 204" stroke="url(#dad-g)" pathLength="100"/><text class="dg-lbl" x="877.0" y="197" text-anchor="middle">302</text><path class="dg-line dg-dash" d="M902 248 L854 248" marker-end="url(#dad-a)"/><text class="dg-cap" x="904" y="296">计费 CPS · CPA · CPC</text><text class="dg-cap" x="904" y="314">CPL · CPM</text><text class="dg-cap" x="904" y="332">归因 最后 / 首次 / 线性</text><text class="dg-k" x="16" y="380">INFRA</text><rect class="dg-pill" x="74" y="362" width="74.30000000000001" height="26" rx="13"/><text class="dg-p" x="111.15" y="379" text-anchor="middle">Java 17</text><rect class="dg-pill" x="158.3" y="362" width="60.5" height="26" rx="13"/><text class="dg-p" x="188.55" y="379" text-anchor="middle">MySQL</text><rect class="dg-pill" x="228.8" y="362" width="60.5" height="26" rx="13"/><text class="dg-p" x="259.05" y="379" text-anchor="middle">Redis</text><rect class="dg-pill" x="299.3" y="362" width="63.2" height="26" rx="13"/><text class="dg-p" x="330.90000000000003" y="379" text-anchor="middle">多租户</text><rect class="dg-pill" x="372.5" y="362" width="122.60000000000001" height="26" rx="13"/><text class="dg-p" x="433.8" y="379" text-anchor="middle">Docker Compose</text><rect class="dg-pill" x="505.1" y="362" width="122.60000000000001" height="26" rx="13"/><text class="dg-p" x="566.4" y="379" text-anchor="middle">Playwright E2E</text></svg></div>
-                  <p class="swipe-hint arch-hint mono" aria-hidden="true">← 左右滑动查看完整架构图 →</p>
-                </figure>
-                <ul class="arch-list"><li class="arch-item"><span class="arch-k mono">01 · 点击追踪</span><p>站内出站链接统一走 /go/{类型}/{id}：记录点击与 sub1–sub5 参数后 302 跳转到联盟链接。</p></li><li class="arch-item"><span class="arch-k mono">02 · 转化归因</span><p>联盟 Postback 支持签名校验，按外部转化号去重，再按点击 ID 关联生成转化；关联不上的单独留存待查。</p></li><li class="arch-item"><span class="arch-k mono">03 · 多语言多地区</span><p>next-intl 中英双语路由，GeoIP 识别访客地区并按地区筛选内容；页面 ISR 缓存，输出 sitemap 与 hreflang。</p></li><li class="arch-item"><span class="arch-k mono">04 · 运营与数据</span><p>联盟数据定时同步、优惠到期自动处理、日统计聚合与小时 / 日告警；运营后台基于 Vue 3 + Element Plus。</p></li></ul>
-              </div>
-            </details>
           </article>
-
-          <article class="work reveal" id="work-ecp">
+<article class="work reveal" id="work-ecp">
             <div class="work-shot is-art">
               <figure class="hero-art hero-ecp">
                 <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 999px)" srcset="./assets/work/ecp-hero-m.webp" width="720" height="840"><img src="./assets/work/ecp-hero.webp" width="1200" height="1400" loading="lazy" decoding="async" alt="ECP 支付核心示意设计：商户账户余额 total = available + frozen、UPI 代收订单状态机与回调验签、代付通道 UPI / IMPS / NEFT / RTGS、一笔代收的多腿复式记账（示例数据）"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 999px)" srcset="./assets/work/ecp-hero-m-dark.webp" width="720" height="840"><img src="./assets/work/ecp-hero-dark.webp" width="1200" height="1400" loading="lazy" decoding="async" alt="ECP 支付核心示意设计：商户账户余额 total = available + frozen、UPI 代收订单状态机与回调验签、代付通道 UPI / IMPS / NEFT / RTGS、一笔代收的多腿复式记账（示例数据）"></picture>
@@ -248,31 +200,18 @@
               </figure>
             </div>
             <div class="work-body">
-              <div class="work-meta"><span class="work-badge"><i class="fa-solid fa-earth-asia" aria-hidden="true"></i>海外支付 · 印度市场</span><span class="work-url mono">INR · UPI · IMPS · NEFT · RTGS</span></div>
-              <h3 class="work-title">ECP · 面向印度市场的海外支付平台</h3>
-              <p class="card-text">为商户提供印度本地的代收与代付：代收走 UPI、Net Banking，代付走 UPI、IMPS、NEFT、RTGS。平台侧覆盖商户入驻与费率、账户与复式记账、结算批次与对账、风险名单与争议处理，配套运营管理端和商户端两套 Web 控台，并对商户开放签名 API。</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>我的角色</dt><dd><strong>远程兼职 · 架构设计与全栈开发</strong>。服务划分与支付域分层、交易 / 账务 / 结算核心代码，以及两套 Vue 3 前端控台。</dd></div>
-                <div class="wf-row"><dt>技术栈</dt><dd class="tags"><span class="tag-strong">Java 17</span><span class="tag-strong">Spring Boot 3.5</span><span>Spring Cloud Alibaba</span><span>Nacos</span><span>MyBatis-Plus</span><span>MySQL</span><span>Redis · Redisson</span><span>RocketMQ</span><span>XXL-Job</span><span class="tag-strong">Vue 3 Monorepo</span><span>Ant Design Vue</span></dd></div>
-              </dl>
+              <div class="work-meta"><span class="work-badge"><svg class="fa-solid fa-earth-asia" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-earth-asia"></use></svg>海外支付 · 印度市场</span></div>
+              <h3 class="work-title">ECP · 印度本地支付平台</h3>
+              <p class="card-text">围绕印度市场的代收代付，处理订单状态、资金冻结、结算批次与对账差异。</p>
+              <dl class="work-facts"><div class="wf-row"><dt>职责</dt><dd>远程兼职，负责架构设计与全栈开发（2026.04—2026.07）。</dd></div><div class="wf-row"><dt>交付</dt><dd>签名开放 API、代收代付状态机、多腿复式记账，以及运营和商户两套控台。</dd></div></dl><p class="work-stack">Spring Cloud · MySQL · Redis · Vue 3</p>
               <div class="work-links">
                 <a class="btn btn-primary btn-sm" href="/work/ecp/">查看案例 <span class="arrow" aria-hidden="true">→</span></a>
-                <a class="btn btn-ghost btn-sm" href="#contact"><i class="fa-solid fa-comments" aria-hidden="true"></i> 聊聊类似项目</a>
+
               </div>
             </div>
-            <details class="arch" open>
-              <summary class="arch-sum"><span class="arch-sum-t">架构与实现</span><span class="arch-sum-n mono">基于源码梳理 · 仅展示高层设计</span><span class="arch-chev" aria-hidden="true"></span></summary>
-              <div class="arch-body">
-                <figure class="arch-fig">
-                  <div class="arch-canvas scroller"><svg class="dg" viewBox="0 0 1080 440" role="img" aria-labelledby="decp-t decp-d" xmlns="http://www.w3.org/2000/svg"><title id="decp-t">ECP 海外支付平台架构示意</title><desc id="decp-d">商户系统、运营端与商户端经网关进入支付域；trade 负责代收代付状态机与开放 API 安全，account 负责多腿复式记账与冻结，settlement 负责结算批次与对账差错；上游印度本地支付通道的异步回调按原文验签后进入交易状态机。</desc><defs><linearGradient id="decp-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><marker id="decp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-arrow" d="M1 1 L9 5 L1 9 z"/></marker></defs><text class="dg-k" x="16" y="30">CLIENTS · 接入端</text><rect class="dg-box" x="16" y="46" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="70" font-size="14">商户系统</text><text class="dg-s" x="30" y="88">Open API · 签名接入</text><rect class="dg-box" x="16" y="126" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="150" font-size="14">运营管理端</text><text class="dg-s" x="30" y="168">Vue 3 · Ant Design Vue</text><rect class="dg-box" x="16" y="206" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="230" font-size="14">商户端门户</text><text class="dg-s" x="30" y="248">Vue 3 · 独立账号体系</text><text class="dg-k" x="206" y="30">EDGE · 网关</text><rect class="dg-box" x="206" y="46" width="148" height="268" rx="10"/><text class="dg-t" x="220" y="70" font-size="14">Gateway</text><text class="dg-s" x="220" y="88">统一前缀 · 文档聚合</text><rect class="dg-pill" x="220" y="118" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="135" text-anchor="middle">开放 API</text><rect class="dg-pill" x="220" y="164" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="181" text-anchor="middle">运营端</text><rect class="dg-pill" x="220" y="210" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="227" text-anchor="middle">商户端</text><rect class="dg-pill" x="220" y="256" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="273" text-anchor="middle">代理端 · 预留</text><path class="dg-line" d="M172 75 L204 75" marker-end="url(#decp-a)"/><path class="dg-line" d="M172 155 L204 155" marker-end="url(#decp-a)"/><path class="dg-line" d="M172 235 L204 235" marker-end="url(#decp-a)"/><rect class="dg-frame" x="392" y="14" width="414" height="328" rx="16"/><text class="dg-k" x="408" y="36">PAYMENT · 支付域（core → api → 业务模块）</text><rect class="dg-box" x="410" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="424" y="70" font-size="14">merchant</text><text class="dg-s" x="424" y="88">入驻 · 凭证 · 费率 · 路由</text><rect class="dg-box" x="608" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="622" y="70" font-size="14">settlement</text><text class="dg-s" x="622" y="88">批次 · 审核 · 打款 · 差错</text><rect class="dg-box dg-hi" x="410" y="128" width="180" height="124" rx="10" stroke="url(#decp-g)"/><text class="dg-t" x="424" y="152" font-size="14">trade</text><text class="dg-s" x="424" y="170">代收 / 代付状态机</text><circle class="dg-dot" cx="428" cy="190" r="2.2"/><text class="dg-b" x="437" y="194">签名 · nonce · 幂等键</text><circle class="dg-dot" cx="428" cy="209" r="2.2"/><text class="dg-b" x="437" y="213">回调原文验签</text><circle class="dg-dot" cx="428" cy="228" r="2.2"/><text class="dg-b" x="437" y="232">通知重试 · 人工补单</text><rect class="dg-box dg-hi" x="608" y="128" width="180" height="124" rx="10" stroke="url(#decp-g)"/><text class="dg-t" x="622" y="152" font-size="14">account</text><text class="dg-s" x="622" y="170">多腿复式记账</text><circle class="dg-dot" cx="626" cy="190" r="2.2"/><text class="dg-b" x="635" y="194">total = available + frozen</text><circle class="dg-dot" cx="626" cy="209" r="2.2"/><text class="dg-b" x="635" y="213">冻结 · 保证金 · 调账</text><circle class="dg-dot" cx="626" cy="228" r="2.2"/><text class="dg-b" x="635" y="232">内部对账</text><rect class="dg-box" x="410" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="424" y="300" font-size="13">risk · dispute</text><text class="dg-s" x="424" y="318">风险名单 · 争议工作台</text><rect class="dg-box" x="608" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="622" y="300" font-size="13">core</text><text class="dg-s" x="622" y="318">纯 Java 契约 · 乐观锁收口</text><path class="dg-line" d="M354 190 L408 190" marker-end="url(#decp-a)"/><path class="dg-flow" d="M354 190 L408 190" stroke="url(#decp-g)" pathLength="100"/><text class="dg-lbl" x="381" y="183" text-anchor="middle">请求</text><path class="dg-line" d="M500 104 L500 126" marker-end="url(#decp-a)"/><text class="dg-lbl" x="508" y="120" text-anchor="start">费率 / 路由配置</text><path class="dg-line" d="M590 172 L606 172" marker-end="url(#decp-a)"/><path class="dg-line" d="M698 104 L698 126" marker-end="url(#decp-a)"/><text class="dg-lbl" x="706" y="120" text-anchor="start">结算入账 · 状态回写</text><text class="dg-k" x="846" y="30">UPSTREAM · 上游</text><rect class="dg-box" x="846" y="128" width="226" height="124" rx="10"/><text class="dg-t" x="860" y="152" font-size="14">印度本地支付通道</text><text class="dg-s" x="860" y="170">外部系统 · INR</text><circle class="dg-dot" cx="864" cy="190" r="2.2"/><text class="dg-b" x="873" y="194">代收 UPI · Net Banking</text><circle class="dg-dot" cx="864" cy="209" r="2.2"/><text class="dg-b" x="873" y="213">代付 UPI·IMPS·NEFT·RTGS</text><circle class="dg-dot" cx="864" cy="228" r="2.2"/><text class="dg-b" x="873" y="232">查单 · 异步回调</text><path class="dg-line" d="M590 146 L599 146 L599 116 L824 116 L824 150 L844 150" marker-end="url(#decp-a)"/><path class="dg-flow" d="M590 146 L599 146 L599 116 L824 116 L824 150 L844 150" stroke="url(#decp-g)" pathLength="100"/><text class="dg-lbl" x="955" y="120" text-anchor="middle">下单 / 查单</text><path class="dg-line dg-dash" d="M846 238 L826 238 L826 266 L599 266 L599 236 L592 236" marker-end="url(#decp-a)"/><text class="dg-lbl" x="713" y="262" text-anchor="middle">异步回调 · 原文验签</text><text class="dg-cap" x="846" y="282">币种由部署配置决定</text><text class="dg-cap" x="846" y="302">当前以 INR 运行</text><text class="dg-cap" x="846" y="322">金额按最小货币单位存储</text><text class="dg-k" x="16" y="380">INFRA</text><rect class="dg-pill" x="74" y="362" width="58.5" height="26" rx="13"/><text class="dg-p" x="103.25" y="379" text-anchor="middle">MySQL</text><rect class="dg-pill" x="142.5" y="362" width="141.3" height="26" rx="13"/><text class="dg-p" x="213.15" y="379" text-anchor="middle">Redis · Redisson</text><rect class="dg-pill" x="293.8" y="362" width="58.5" height="26" rx="13"/><text class="dg-p" x="323.05" y="379" text-anchor="middle">Nacos</text><rect class="dg-pill" x="362.3" y="362" width="79.2" height="26" rx="13"/><text class="dg-p" x="401.90000000000003" y="379" text-anchor="middle">RocketMQ</text><rect class="dg-pill" x="451.5" y="362" width="155.1" height="26" rx="13"/><text class="dg-p" x="529.05" y="379" text-anchor="middle">XXL-Job · 租户任务</text><rect class="dg-pill" x="616.6" y="362" width="175.8" height="26" rx="13"/><text class="dg-p" x="704.5" y="379" text-anchor="middle">多租户 · 敏感字段加密</text><rect class="dg-pill" x="802.4000000000001" y="362" width="189.6" height="26" rx="13"/><text class="dg-p" x="897.2" y="379" text-anchor="middle">Docker · GitHub Actions</text></svg></div>
-                  <p class="swipe-hint arch-hint mono" aria-hidden="true">← 左右滑动查看完整架构图 →</p>
-                </figure>
-                <ul class="arch-list"><li class="arch-item"><span class="arch-k mono">01 · 开放 API 安全</span><p>商户请求做 HMAC-SHA256 / RSA2 签名，带时间戳与 nonce 防重放，叠加 IP 白名单和幂等键；通道回调按原始报文验签后才处理。</p></li><li class="arch-item"><span class="arch-k mono">02 · 状态机与幂等</span><p>代收、代付、结算批次各有明确状态机，状态推进统一走版本号乐观锁；回调、通知、定时任务和重试全部幂等，重复到达不会重复记账。</p></li><li class="arch-item"><span class="arch-k mono">03 · 多腿复式记账</span><p>金额按最小货币单位以整数存储；商户账户与平台手续费、通道清算账户多腿记账，余额恒等 total = available + frozen，代付先冻结、失败即解冻。</p></li><li class="arch-item"><span class="arch-k mono">04 · 结算与对账</span><p>结算按批次走审核、打款、失败重试与超时检查，按印度银行工作日出批；通道对账的差异生成差错单，可追踪、可导出。</p></li></ul>
-              </div>
-            </details>
-          </article>
 
-          <article class="work reveal" id="work-runzhen">
+          </article>
+<article class="work reveal" id="work-runzhen">
             <div class="work-shot is-art">
               <figure class="hero-art hero-rz">
                 <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 999px)" srcset="./assets/work/rz-hero-m.webp" width="720" height="840"><img src="./assets/work/rz-hero.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="润臻智慧大脑物联集成示意设计：海康云眸、大华 ICC、道尔停车、百度人脸等厂商事件汇入统一事件中心，实时推送门禁开门、车辆入场与收费引擎结果（示例数据）"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 999px)" srcset="./assets/work/rz-hero-m-dark.webp" width="720" height="840"><img src="./assets/work/rz-hero-dark.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="润臻智慧大脑物联集成示意设计：海康云眸、大华 ICC、道尔停车、百度人脸等厂商事件汇入统一事件中心，实时推送门禁开门、车辆入场与收费引擎结果（示例数据）"></picture>
@@ -280,53 +219,18 @@
               </figure>
             </div>
             <div class="work-body">
-              <div class="work-meta"><span class="work-badge"><i class="fa-solid fa-city" aria-hidden="true"></i>智慧社区 · 智慧校园</span><span class="work-url mono">Spring Boot 3.5 · Vue 3 · uni-app · React</span></div>
-              <h3 class="work-title">润臻智慧大脑 · 社区与校园一体化物联平台</h3>
-              <p class="card-text">把社区物业和学校管理放进同一个平台：楼栋、房屋、车位、表计与住户、师生档案，物业收费与数电发票，报修、投诉、访客、投票和场馆预约，校园考勤与请假。底层对接海康云眸（社区 / 普教）、海康 C6000、大华 ICC、道尔停车和百度人脸等平台，设备事件实时汇入管理后台、移动端和数据大屏。</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>我的角色</dt><dd><strong>技术负责人 · 架构与主力开发</strong>。项目自 2022 年起分多期建设，第三期由我主导重构：整体架构、业务模块、厂商集成层和收费引擎由我编写，第三期代码仓库约八成提交出自我手。</dd></div>
-                <div class="wf-row"><dt>工程规模</dt><dd>业务后端约 12 万行 Java、124 个接口控制器；管理端 245 个业务视图；另有 uni-app 物业端、原生 App、H5、React 数据大屏与官网。</dd></div>
-                <div class="wf-row"><dt>技术栈</dt><dd class="tags"><span class="tag-strong">Java 17</span><span class="tag-strong">Spring Boot 3.5</span><span>MySQL</span><span>Redis</span><span>WebSocket</span><span class="tag-strong">Vue 3</span><span>uni-app</span><span>React 19</span><span>ECharts 6</span><span>three.js</span></dd></div>
-              </dl>
+              <div class="work-meta"><span class="work-badge"><svg class="fa-solid fa-city" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-city"></use></svg>智慧社区 · 智慧校园</span></div>
+              <h3 class="work-title">润臻智慧大脑 · 社区与校园物联</h3>
+              <p class="card-text">把分散的门禁、停车与安防设备接入业务平台，统一管理人员、收费与通行事件。</p>
+              <dl class="work-facts"><div class="wf-row"><dt>职责</dt><dd>技术负责人，主导第三期重构，负责架构、核心业务与厂商集成。</dd></div><div class="wf-row"><dt>交付</dt><dd>海康 / 大华 / 道尔统一集成层、事件分发与收费策略引擎，覆盖后台、移动端和大屏。</dd></div></dl><p class="work-stack">Java / Spring Boot · WebSocket · Vue 3</p>
               <div class="work-links">
                 <a class="btn btn-primary btn-sm" href="/work/runzhen/">查看案例 <span class="arrow" aria-hidden="true">→</span></a>
-                <a class="btn btn-ghost btn-sm" href="#contact"><i class="fa-solid fa-comments" aria-hidden="true"></i> 聊聊类似项目</a>
-              </div>
-            </div>
-            <details class="arch" open>
-              <summary class="arch-sum"><span class="arch-sum-t">架构与实现</span><span class="arch-sum-n mono">基于源码梳理 · 仅展示高层设计</span><span class="arch-chev" aria-hidden="true"></span></summary>
-              <div class="arch-body">
-                <figure class="arch-fig">
-                  <div class="arch-canvas scroller"><svg class="dg" viewBox="0 0 1080 440" role="img" aria-labelledby="drz-t drz-d" xmlns="http://www.w3.org/2000/svg"><title id="drz-t">润臻智慧大脑系统架构示意</title><desc id="drz-d">管理后台、移动端、数据大屏经 API 层进入 bmo 业务模块；收费策略引擎负责计费、欠费与发票，事件管线把厂商推送的通行、告警、考勤事件归一后分发；intg 集成层按系统、功能、机构三级配置调用海康、大华、道尔、百度等厂商的安防、门禁、停车与人脸平台。</desc><defs><linearGradient id="drz-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient><marker id="drz-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-arrow" d="M1 1 L9 5 L1 9 z"/></marker></defs><text class="dg-k" x="16" y="30">CLIENTS · 多端</text><rect class="dg-box" x="16" y="46" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="70" font-size="14">管理后台</text><text class="dg-s" x="30" y="88">Vue 3 · 245 个业务视图</text><rect class="dg-box" x="16" y="116" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="140" font-size="14">移动端</text><text class="dg-s" x="30" y="158">uni-app · App · H5</text><rect class="dg-box" x="16" y="186" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="210" font-size="14">数据大屏</text><text class="dg-s" x="30" y="228">React 19 · ECharts 6</text><rect class="dg-box" x="16" y="256" width="156" height="58" rx="10"/><text class="dg-t" x="30" y="280" font-size="14">官网 · 知识库</text><text class="dg-s" x="30" y="298">three.js · 本地语义检索</text><text class="dg-k" x="206" y="30">API · 接入层</text><rect class="dg-box" x="206" y="46" width="148" height="268" rx="10"/><text class="dg-t" x="220" y="70" font-size="14">Spring Boot 3.5</text><text class="dg-s" x="220" y="88">多租户 · RBAC</text><rect class="dg-pill" x="220" y="118" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="135" text-anchor="middle">/admin-api</text><rect class="dg-pill" x="220" y="164" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="181" text-anchor="middle">/app-api</text><rect class="dg-pill" x="220" y="210" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="227" text-anchor="middle">WebSocket</text><rect class="dg-pill" x="220" y="256" width="120" height="26" rx="13"/><text class="dg-p" x="280" y="273" text-anchor="middle">看板 API</text><path class="dg-line" d="M172 75 L204 75" marker-end="url(#drz-a)"/><path class="dg-line" d="M172 145 L204 145" marker-end="url(#drz-a)"/><path class="dg-line" d="M172 215 L204 215" marker-end="url(#drz-a)"/><path class="dg-line" d="M172 285 L204 285" marker-end="url(#drz-a)"/><rect class="dg-frame" x="392" y="14" width="414" height="328" rx="16"/><text class="dg-k" x="408" y="36">bmo · 业务模块（约 12 万行 Java）</text><rect class="dg-box" x="410" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="424" y="70" font-size="14">资产与住户</text><text class="dg-s" x="424" y="88">楼栋 · 房屋 · 车位 · 表计</text><rect class="dg-box" x="608" y="46" width="180" height="58" rx="10"/><text class="dg-t" x="622" y="70" font-size="14">社区服务</text><text class="dg-s" x="622" y="88">报修 · 投诉 · 访客 · 投票</text><rect class="dg-box dg-hi" x="410" y="128" width="180" height="124" rx="10" stroke="url(#drz-g)"/><text class="dg-t" x="424" y="152" font-size="14">收费策略引擎</text><text class="dg-s" x="424" y="170">周期 / 一次性 × 预付 / 后付</text><circle class="dg-dot" cx="428" cy="190" r="2.2"/><text class="dg-b" x="437" y="194">折扣 · 赠送 · 减免</text><circle class="dg-dot" cx="428" cy="209" r="2.2"/><text class="dg-b" x="437" y="213">滞纳金 · 欠费通知</text><circle class="dg-dot" cx="428" cy="228" r="2.2"/><text class="dg-b" x="437" y="232">退款 · 数电发票</text><rect class="dg-box dg-hi" x="608" y="128" width="180" height="124" rx="10" stroke="url(#drz-g)"/><text class="dg-t" x="622" y="152" font-size="14">事件管线</text><text class="dg-s" x="622" y="170">厂商事件 → 统一事件</text><circle class="dg-dot" cx="626" cy="190" r="2.2"/><text class="dg-b" x="635" y="194">Converter 工厂归一</text><circle class="dg-dot" cx="626" cy="209" r="2.2"/><text class="dg-b" x="635" y="213">Handler 按类型分发</text><circle class="dg-dot" cx="626" cy="228" r="2.2"/><text class="dg-b" x="635" y="232">消息队列 · 实时推送</text><rect class="dg-box" x="410" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="424" y="300" font-size="13">校园 · 多级看板</text><text class="dg-s" x="424" y="318">考勤 · 请假 · 家长通知</text><rect class="dg-box" x="608" y="276" width="180" height="52" rx="10"/><text class="dg-t" x="622" y="300" font-size="13">状态机 · 定时任务</text><text class="dg-s" x="622" y="318">设备状态 · 权限同步</text><path class="dg-line" d="M354 190 L408 190" marker-end="url(#drz-a)"/><path class="dg-flow" d="M354 190 L408 190" stroke="url(#drz-g)" pathLength="100"/><text class="dg-lbl" x="381" y="183" text-anchor="middle">请求</text><path class="dg-line" d="M500 104 L500 126" marker-end="url(#drz-a)"/><text class="dg-lbl" x="508" y="120" text-anchor="start">房屋 / 车位 计费对象</text><text class="dg-k" x="846" y="30">INTEGRATION · 集成层</text><rect class="dg-box dg-hi" x="846" y="46" width="226" height="124" rx="10" stroke="url(#drz-g)"/><text class="dg-t" x="860" y="70" font-size="14">intg 统一集成层</text><text class="dg-s" x="860" y="88">约 2 万行 · 统一 FuncAction</text><circle class="dg-dot" cx="864" cy="108" r="2.2"/><text class="dg-b" x="873" y="112">系统 → 功能 → 机构 三级启用</text><circle class="dg-dot" cx="864" cy="127" r="2.2"/><text class="dg-b" x="873" y="131">本地 ↔ 厂商实体 ID 映射</text><circle class="dg-dot" cx="864" cy="146" r="2.2"/><text class="dg-b" x="873" y="150">Mock Client 无设备联调</text><rect class="dg-box" x="846" y="206" width="226" height="104" rx="10"/><text class="dg-t" x="860" y="230" font-size="14">海康 · 大华 · 道尔 · 百度</text><text class="dg-s" x="860" y="248">外部系统</text><circle class="dg-dot" cx="864" cy="268" r="2.2"/><text class="dg-b" x="873" y="272">安防 · 门禁 · 停车</text><circle class="dg-dot" cx="864" cy="287" r="2.2"/><text class="dg-b" x="873" y="291">视频云台 · 人脸识别</text><path class="dg-line" d="M788 150 L822 150 L822 108 L844 108" marker-end="url(#drz-a)"/><path class="dg-flow" d="M788 150 L822 150 L822 108 L844 108" stroke="url(#drz-g)" pathLength="100"/><text class="dg-lbl" x="806" y="168" text-anchor="middle">下发人员</text><text class="dg-lbl" x="806" y="181" text-anchor="middle">与权限</text><path class="dg-line" d="M959 170 L959 204" marker-end="url(#drz-a)"/><text class="dg-lbl" x="967" y="192" text-anchor="start">按厂商协议调用</text><path class="dg-line dg-dash" d="M846 282 L822 282 L822 232 L790 232" marker-end="url(#drz-a)"/><text class="dg-lbl" x="818" y="300" text-anchor="middle">事件推送</text><text class="dg-cap" x="846" y="334">换厂商只加一个 Client</text><text class="dg-k" x="16" y="380">INFRA</text><rect class="dg-pill" x="74" y="362" width="68.9" height="26" rx="13"/><text class="dg-p" x="108.5" y="379" text-anchor="middle">Java 17</text><rect class="dg-pill" x="152.9" y="362" width="58.5" height="26" rx="13"/><text class="dg-p" x="182.2" y="379" text-anchor="middle">MySQL</text><rect class="dg-pill" x="221.4" y="362" width="58.5" height="26" rx="13"/><text class="dg-p" x="250.7" y="379" text-anchor="middle">Redis</text><rect class="dg-pill" x="289.9" y="362" width="117.2" height="26" rx="13"/><text class="dg-p" x="348.5" y="379" text-anchor="middle">Redis 消息队列</text><rect class="dg-pill" x="417.1" y="362" width="86.1" height="26" rx="13"/><text class="dg-p" x="460.2" y="379" text-anchor="middle">WebSocket</text><rect class="dg-pill" x="513.2" y="362" width="79.2" height="26" rx="13"/><text class="dg-p" x="552.8" y="379" text-anchor="middle">定时任务</text><rect class="dg-pill" x="602.4" y="362" width="65.4" height="26" rx="13"/><text class="dg-p" x="635.1" y="379" text-anchor="middle">多租户</text><rect class="dg-pill" x="677.8" y="362" width="93.0" height="26" rx="13"/><text class="dg-p" x="724.3" y="379" text-anchor="middle">状态机模块</text><rect class="dg-pill" x="780.8" y="362" width="165.7" height="26" rx="13"/><text class="dg-p" x="863.6" y="379" text-anchor="middle">uni-app · Vue 3 · React</text></svg></div>
-                  <p class="swipe-hint arch-hint mono" aria-hidden="true">← 左右滑动查看完整架构图 →</p>
-                </figure>
-                <ul class="arch-list"><li class="arch-item"><span class="arch-k mono">01 · 统一集成层</span><p>海康、大华、道尔、百度等厂商的安防、门禁、停车、人脸平台抽象成同一套调用接口：先逐级校验系统、功能、机构是否启用，再分发给对应厂商的 Client；本地实体与厂商实体的 ID 单独映射。</p></li><li class="arch-item"><span class="arch-k mono">02 · 事件管线</span><p>厂商推送的通行、告警、考勤事件先由 Converter 工厂归一成统一事件，再由 Handler 工厂分发给通行、考勤、告警、请假、家长通知处理器；经消息队列解耦，WebSocket 推到前端。</p></li><li class="arch-item"><span class="arch-k mono">03 · 收费策略引擎</span><p>周期 / 一次性 × 预付 / 后付四种计费策略由工厂按费项选择；叠加折扣、赠送、减免与滞纳金，按费项发欠费通知，支持退款和数电发票（含红字确认）。</p></li><li class="arch-item"><span class="arch-k mono">04 · 社区 + 校园一体</span><p>同一套资产与人员模型同时覆盖楼栋、房屋、车位和学校、年级、班级；看板从社区、区域一路下钻到教师与学生，支持多租户。</p></li></ul>
-              </div>
-            </details>
-          </article>
 
-          <article class="work work-lite reveal" id="work-foodsafety">
-            <div class="work-shot is-art">
-              <figure class="hero-art hero-fs">
-                <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 999px)" srcset="./assets/work/fs-hero-m.webp" width="720" height="840"><img src="./assets/work/fs-hero.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="智能验收秤示意设计：实时净重 12.46 kg 稳定判定、去皮模式、差值与阈值、必拍验收照片和订单验收阶段（示例数据）"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 999px)" srcset="./assets/work/fs-hero-m-dark.webp" width="720" height="840"><img src="./assets/work/fs-hero-dark.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="智能验收秤示意设计：实时净重 12.46 kg 稳定判定、去皮模式、差值与阈值、必拍验收照片和订单验收阶段（示例数据）"></picture>
-                <figcaption class="hero-cap mono">示意设计 · 示例数据</figcaption>
-              </figure>
-            </div>
-            <div class="work-body">
-              <div class="work-meta"><span class="work-badge"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>校园食安 · 验收终端</span><span class="work-url mono">uni-app 3 · 串口秤 · UVC · Next.js 16</span></div>
-              <h3 class="work-title">智慧食安 · 智能验收秤 App 与平台官网</h3>
-              <p class="card-text">学校食堂的食材验收数字化。我负责其中两块：装在食堂验收一体机上的智能秤 App，以及对外的平台官网。食材配送到校后，验收员在秤上逐样称重、拍照、提交，订单从待验收、部分验收走到已验收，再进入入库。</p>
-              <dl class="work-facts">
-                <div class="wf-row"><dt>我的角色</dt><dd><strong>润臻科技任内项目 · 终端与前端</strong>。智能秤 App（Android 一体机）和官网（Next.js 静态站）由我完成，不含平台后端。</dd></div>
-                <div class="wf-row"><dt>称重逻辑</dt><dd>近 3 次读数在阈值内才判稳定；清零、硬件去皮、手动皮重互斥；超过设备量程提示分批；每样食材必拍 3 张照片；g / 斤 / 吨规格统一换算成 kg。</dd></div>
-                <div class="wf-row"><dt>技术栈</dt><dd class="tags"><span class="tag-strong">uni-app 3</span><span>Vue 3</span><span>wot-design-uni</span><span class="tag-strong">串口电子秤</span><span>UVC 多路摄像头</span><span>RTMP</span><span>Next.js 16</span><span>Tailwind 4</span></dd></div>
-              </dl>
-              <div class="work-links">
-                <a class="btn btn-primary btn-sm" href="/work/food-safety/">查看案例 <span class="arrow" aria-hidden="true">→</span></a>
               </div>
             </div>
+
           </article>
-        </div>
+</div>
       </div>
     </section>
 
@@ -334,7 +238,7 @@
     <section class="section" id="services">
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">02</span><span class="kicker-sep">/</span>What I Can Do For You</span>
+          <span class="section-kicker">What I Can Do For You</span>
           <h2 class="section-title">找我能做什么</h2>
           <p class="section-desc">远程岗位或项目合作都可以，下面这些是我做过、也做得好的事</p>
           <p class="swipe-hint mono" aria-hidden="true">← 左右滑动 · 共 6 项 →</p>
@@ -342,7 +246,7 @@
 
         <ul class="svc-list scroller">
           <li class="svc reveal">
-            <span class="svc-icon"><i class="fa-solid fa-credit-card" aria-hidden="true"></i></span>
+            <span class="svc-icon"><svg class="fa-solid fa-credit-card" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-credit-card"></use></svg></span>
             <div>
               <h3 class="svc-title">支付 / 收单 / 清结算系统</h3>
               <p class="svc-text">聚合支付接入、海外本地支付代收代付、代理商多级分润、交易对账与复式记账。</p>
@@ -356,15 +260,15 @@
             </div>
           </li>
           <li class="svc reveal">
-            <span class="svc-icon"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i></span>
+            <span class="svc-icon"><svg class="fa-solid fa-gauge-high" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-gauge-high"></use></svg></span>
             <div>
               <h3 class="svc-title">高并发系统诊断与重构</h3>
               <p class="svc-text">线上卡顿、死锁、错账排查；分布式锁幂等 + MQ 实时 / 定时双补偿。</p>
-              <p class="svc-proof">结果：百万级日均交易，零资损</p>
+              <p class="svc-proof">经历：上海遒翔收单平台（2018—2020），支撑日均百万级交易</p>
             </div>
           </li>
           <li class="svc reveal">
-            <span class="svc-icon"><i class="fa-solid fa-microchip" aria-hidden="true"></i></span>
+            <span class="svc-icon"><svg class="fa-solid fa-microchip" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-microchip"></use></svg></span>
             <div>
               <h3 class="svc-title">智慧社区 / IoT 硬件对接</h3>
               <p class="svc-text">海康、大华、道尔停车、百度人脸等平台的统一集成层与事件管线；串口电子秤与多路 USB 摄像头的 Android 终端。</p>
@@ -372,7 +276,7 @@
             </div>
           </li>
           <li class="svc reveal">
-            <span class="svc-icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span>
+            <span class="svc-icon"><svg class="fa-solid fa-layer-group" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-layer-group"></use></svg></span>
             <div>
               <h3 class="svc-title">0 到 1 全栈交付</h3>
               <p class="svc-text">Java / Spring Boot 后端，Vue3 管理控台与 ECharts 大屏，uni-app 小程序与 App。</p>
@@ -380,15 +284,15 @@
             </div>
           </li>
           <li class="svc reveal">
-            <span class="svc-icon"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></span>
+            <span class="svc-icon"><svg class="fa-solid fa-wand-magic-sparkles" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-wand-magic-sparkles"></use></svg></span>
             <div>
               <h3 class="svc-title">AI 编程落地（Claude Code / SDD / TDD）</h3>
               <p class="svc-text">帮团队把规格驱动开发和测试驱动用进日常流程。</p>
-              <p class="svc-proof">自己的实践：规格驱动 + 测试先行，交付明显提效</p>
+              <p class="svc-proof">自己的实践：规格说明、代码评审与自动化校验一起交付</p>
             </div>
           </li>
           <li class="svc reveal">
-            <span class="svc-icon"><i class="fa-solid fa-file-signature" aria-hidden="true"></i></span>
+            <span class="svc-icon"><svg class="fa-solid fa-file-signature" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-file-signature"></use></svg></span>
             <div>
               <h3 class="svc-title">技术方案与投标标书</h3>
               <p class="svc-text">政企项目投标技术标书、微服务与部署拓扑图、售前技术答辩。</p>
@@ -404,14 +308,14 @@
     <section class="section" id="collab">
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">03</span><span class="kicker-sep">/</span>How We Work</span>
+          <span class="section-kicker">How We Work</span>
           <h2 class="section-title">合作方式</h2>
           <p class="section-desc">远程岗位、技术顾问、项目交付或评审都可以，从一次免费沟通开始</p>
         </header>
 
         <ul class="collab-forms">
           <li class="card cform reveal">
-            <div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-laptop-house" aria-hidden="true"></i></span><span class="cform-idx">FULL-TIME</span></div>
+            <div class="cform-top"><span class="svc-icon"><svg class="fa-solid fa-laptop-house" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-laptop-house"></use></svg></span><span class="cform-idx">FULL-TIME</span></div>
             <h3 class="cform-title">远程全职</h3>
             <p class="cform-fit">适合需要长期负责人的团队：架构师、技术负责人、Java 后端 / 全栈。</p>
             <ul class="cform-list">
@@ -420,7 +324,7 @@
             </ul>
           </li>
           <li class="card cform reveal">
-            <div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-user-gear" aria-hidden="true"></i></span><span class="cform-idx">ADVISOR</span></div>
+            <div class="cform-top"><span class="svc-icon"><svg class="fa-solid fa-user-gear" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-user-gear"></use></svg></span><span class="cform-idx">ADVISOR</span></div>
             <h3 class="cform-title">兼职技术顾问</h3>
             <p class="cform-fit">适合已有团队、需要一位资深的人定方向、把关键设计。</p>
             <ul class="cform-list">
@@ -429,7 +333,7 @@
             </ul>
           </li>
           <li class="card cform reveal">
-            <div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-box-open" aria-hidden="true"></i></span><span class="cform-idx">DELIVERY</span></div>
+            <div class="cform-top"><span class="svc-icon"><svg class="fa-solid fa-box-open" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-box-open"></use></svg></span><span class="cform-idx">DELIVERY</span></div>
             <h3 class="cform-title">项目外包交付</h3>
             <p class="cform-fit">适合有明确目标的系统：支付清结算、IoT 端云、管理后台、0 到 1 产品。</p>
             <ul class="cform-list">
@@ -438,7 +342,7 @@
             </ul>
           </li>
           <li class="card cform reveal">
-            <div class="cform-top"><span class="svc-icon"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></span><span class="cform-idx">REVIEW</span></div>
+            <div class="cform-top"><span class="svc-icon"><svg class="fa-solid fa-magnifying-glass-chart" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-magnifying-glass-chart"></use></svg></span><span class="cform-idx">REVIEW</span></div>
             <h3 class="cform-title">架构与代码评审</h3>
             <p class="cform-fit">适合系统已经在跑，但担心资金正确性、性能或可维护性。</p>
             <ul class="cform-list">
@@ -478,42 +382,68 @@
 
         <div class="collab-style reveal">
           <div class="cstyle">
-            <h4 class="cstyle-title"><i class="fa-solid fa-satellite-dish" aria-hidden="true"></i>远程协作习惯</h4>
+            <h4 class="cstyle-title"><svg class="fa-solid fa-satellite-dish" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-satellite-dish"></use></svg>远程协作习惯</h4>
             <p>2020 — 2022 年以远程兼职方式持续参与支付项目。以异步为主：进度在 Git、Issue 和文档里留痕，关键节点再开会对齐。</p>
           </div>
           <div class="cstyle">
-            <h4 class="cstyle-title"><i class="fa-solid fa-file-lines" aria-hidden="true"></i>文档化</h4>
+            <h4 class="cstyle-title"><svg class="fa-solid fa-file-lines" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-file-lines"></use></svg>文档化</h4>
             <p>需求、方案、决策记录和接口文档随代码一起维护；为什么这么做写清楚，换人接手也看得懂。</p>
           </div>
           <div class="cstyle">
-            <h4 class="cstyle-title"><i class="fa-solid fa-clock" aria-hidden="true"></i>时区灵活</h4>
+            <h4 class="cstyle-title"><svg class="fa-solid fa-clock" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-clock"></use></svg>时区灵活</h4>
             <p>以北京时间工作为主，可以和不同时区的团队约定固定的重叠时段，用于例会和即时沟通。</p>
           </div>
         </div>
 
         <div class="collab-cta reveal">
-          <a class="btn btn-primary" href="#contact">先约 30 分钟聊聊 <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 下载简历 PDF</a>
+          <a class="btn btn-primary" href="#contact">联系我安排沟通 <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><svg class="fa-regular fa-file-pdf" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-file-pdf"></use></svg> 下载简历 PDF</a>
           <span class="collab-cta-note">不需要先准备完整需求文档，说清楚想解决什么就行。</span>
         </div>
       </div>
     </section>
 
     <!-- 4. 其他项目 -->
-    <section class="section section-alt" id="cases">
-      <div class="container">
-        <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">04</span><span class="kicker-sep">/</span>Other Projects</span>
-          <h2 class="section-title">其他做过的项目</h2>
-          <p class="section-desc">更早期的支付与收单项目</p>
-          <p class="swipe-hint mono" aria-hidden="true">← 左右滑动 · 共 2 个 →</p>
-        </header>
+    <section class="section section-alt" id="more-work"><div class="container"><header class="section-head"><h2 class="section-title">更多交付</h2><p class="section-desc">内容平台与硬件终端，也是我的全栈实践。</p></header><div class="works more-work-grid"><article class="work reveal" id="work-ecommica">
+            <a class="work-shot" href="https://deals.ecommica.com/en" target="_blank" rel="noopener" aria-label="打开 Ecommica 网站">
+              <span class="browser">
+                <span class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url mono"><svg class="fa-solid fa-lock" focusable="false" aria-hidden="true"><use href="/assets/icons.svg#solid-lock"></use></svg> deals.ecommica.com</span><span class="browser-go">↗</span></span>
+                <img src="./assets/deals.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="Ecommica deals.ecommica.com 首页截图">
+              </span>
+            </a>
+            <div class="work-body">
+              <div class="work-meta"><span class="live-dot"><span class="pulse" aria-hidden="true"></span>在线运行</span></div>
+              <h3 class="work-title">Ecommica · 多语言优惠平台</h3>
+              <p class="card-text">连接优惠内容、出站点击与联盟转化，让用户找到优惠，也让运营追踪归因。</p>
+              <dl class="work-facts"><div class="wf-row"><dt>职责</dt><dd>全栈开发：Next.js 前台、Spring Boot 追踪服务与 Vue 3 后台。</dd></div><div class="wf-row"><dt>交付</dt><dd>中英文站点已上线；实现地区筛选、点击记录、回传去重与归因。</dd></div></dl><p class="work-stack">Next.js · Spring Boot · Vue 3</p>
+              <div class="work-links">
+                <a class="btn btn-primary btn-sm" href="/work/ecommica/">查看案例 <span class="arrow" aria-hidden="true">→</span></a>
+                <a class="btn btn-ghost btn-sm" href="https://deals.ecommica.com/en" target="_blank" rel="noopener">访问线上站点 <span class="arrow" aria-hidden="true">↗</span></a>
 
-        <div class="cases scroller">
+              </div>
+            </div>
+
+          </article><article class="work reveal" id="work-foodsafety">
+            <div class="work-shot is-art">
+              <figure class="hero-art hero-fs">
+                <picture class="ecp-pic ecp-pic-light"><source media="(max-width: 999px)" srcset="./assets/work/fs-hero-m.webp" width="720" height="840"><img src="./assets/work/fs-hero.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="智能验收秤示意设计：实时净重 12.46 kg 稳定判定、去皮模式、差值与阈值、必拍验收照片和订单验收阶段（示例数据）"></picture><picture class="ecp-pic ecp-pic-dark"><source media="(max-width: 999px)" srcset="./assets/work/fs-hero-m-dark.webp" width="720" height="840"><img src="./assets/work/fs-hero-dark.webp" width="1200" height="1520" loading="lazy" decoding="async" alt="智能验收秤示意设计：实时净重 12.46 kg 稳定判定、去皮模式、差值与阈值、必拍验收照片和订单验收阶段（示例数据）"></picture>
+                <figcaption class="hero-cap mono">示意设计 · 示例数据</figcaption>
+              </figure>
+            </div>
+            <div class="work-body">
+              <div class="work-meta"><span class="work-badge"><svg class="fa-solid fa-scale-balanced" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-scale-balanced"></use></svg>校园食安 · 验收终端</span></div>
+              <h3 class="work-title">智慧食安 · 智能验收秤</h3>
+              <p class="card-text">把称重、拍照与分批验收串成食堂收货流程，减少终端与人工记录之间的割裂。</p>
+              <dl class="work-facts"><div class="wf-row"><dt>职责</dt><dd>负责 Android 验收秤 App 与官网前端；平台后端不在本人范围内。</dd></div><div class="wf-row"><dt>交付</dt><dd>串口秤稳定判定、去皮、单位换算与多路摄像头取证，支持分批验收。</dd></div></dl><p class="work-stack">uni-app · 串口 / UVC · Next.js</p>
+              <div class="work-links">
+                <a class="btn btn-primary btn-sm" href="/work/food-safety/">查看案例 <span class="arrow" aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </article></div><details class="earlier-work" id="cases"><summary>更早的支付项目 · 2017—2022</summary><div class="cases scroller">
           <article class="card case reveal">
             <div class="case-head"><span class="case-period mono">2018.05 — 2020.10 · 远程至 2022.02</span><span class="role-badge">项目副组长 / 核心后端</span></div>
             <h3 class="case-title">收单业务平台矩阵（闪POS / 帮展业 / 新银惠通）</h3>
-            <p class="card-text">多品牌收单系统：交易、代理体系、分润与对账结算。主导分润与对账引擎，MQ 实时 + 定时双推送补偿，日均百万级交易、零资损；带 4–5 人研发小组。2020.10 — 2022.02 以自由职业、远程兼职的方式继续参与新银惠通项目。</p>
+            <p class="card-text">多品牌收单系统：交易、代理体系、分润与对账结算。主导分润与对账引擎，MQ 实时 + 定时双推送补偿，支撑日均百万级交易；带 4–5 人研发小组。2020.10 — 2022.02 以自由职业、远程兼职的方式继续参与新银惠通项目。</p>
             <div class="tags"><span>Java</span><span>RocketMQ</span><span>XXL-Job</span><span>Redis</span><span>React Native</span></div>
           </article>
 
@@ -522,128 +452,17 @@
             <h3 class="case-title">考拉畅付（聚合支付 APP）与业务重构</h3>
             <p class="card-text">刷卡、无卡快捷与扫码支付的聚合平台。主导分润与代还业务重构、风控拦截，OCR 与商户报备模块，定时任务迁移至 XXL-Job。</p>
             <div class="tags"><span>Java</span><span>Spring Cloud</span><span>XXL-Job</span><span>风控</span></div>
-          </article>
-        </div>
-      </div>
-    </section>
+          </article></div></details></div></section>
+
 
     <!-- 5. 技术细节：拓扑 + 终端 -->
-    <section class="section" id="approach">
-      <span id="topology" class="anchor-alias" aria-hidden="true"></span>
-      <span id="terminal" class="anchor-alias" aria-hidden="true"></span>
-      <div class="container">
-        <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">05</span><span class="kicker-sep">/</span>Under The Hood</span>
-          <h2 class="section-title">技术细节</h2>
-          <p class="section-desc">给技术同行看的：几个项目里的关键设计，点左侧切换，或在终端里输入 help</p>
-        </header>
 
-        <div class="collapse" id="approach-body">
-        <div class="topology reveal">
-          <div class="topo-list" role="tablist" aria-label="架构节点">
-            <button class="topo-node active" type="button" role="tab" aria-selected="true" data-node="payment-recon">
-              <span class="topo-icon"><i class="fa-solid fa-credit-card" aria-hidden="true"></i></span>
-              <span class="topo-text">
-                <span class="topo-node-title">金融级分润与对账引擎</span>
-                <span class="topo-node-sub">日均百万级交易 · 双推送补偿机制 · 零资损保障</span>
-              </span>
-              <i class="fa-solid fa-chevron-right topo-arrow" aria-hidden="true"></i>
-            </button>
-            <button class="topo-node" type="button" role="tab" aria-selected="false" data-node="iot-hub">
-              <span class="topo-icon"><i class="fa-solid fa-network-wired" aria-hidden="true"></i></span>
-              <span class="topo-text">
-                <span class="topo-node-title">智慧社区 / 食安 IoT 云端接入</span>
-                <span class="topo-node-sub">海康 / 大华 / 道尔统一集成层 · 事件管线 · 串口秤与 USB 摄像头终端</span>
-              </span>
-              <i class="fa-solid fa-chevron-right topo-arrow" aria-hidden="true"></i>
-            </button>
-            <button class="topo-node" type="button" role="tab" aria-selected="false" data-node="vibe-workflow">
-              <span class="topo-icon"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></span>
-              <span class="topo-text">
-                <span class="topo-node-title">AI Vibe Coding &amp; SDD 敏捷交付</span>
-                <span class="topo-node-sub">Claude Code 规格驱动 · TDD 测试先行 · 人机协同提效</span>
-              </span>
-              <i class="fa-solid fa-chevron-right topo-arrow" aria-hidden="true"></i>
-            </button>
-            <button class="topo-node" type="button" role="tab" aria-selected="false" data-node="bidding-proposals">
-              <span class="topo-icon"><i class="fa-solid fa-file-signature" aria-hidden="true"></i></span>
-              <span class="topo-text">
-                <span class="topo-node-title">商业售前标书与架构方案</span>
-                <span class="topo-node-sub">大型政企标书撰写 · 架构图绘制 · 助力商务拿单</span>
-              </span>
-              <i class="fa-solid fa-chevron-right topo-arrow" aria-hidden="true"></i>
-            </button>
-          </div>
-
-          <div class="topo-panel" id="topo-detail-panel" role="tabpanel">
-            <div class="topo-panel-head">
-              <h3 class="topo-panel-title" id="topo-title">金融级分润与对账引擎架构</h3>
-              <span class="topo-tag" id="topo-tag">HIGH CONCURRENCY</span>
-            </div>
-            <div class="topo-metrics" id="topo-metrics">
-              <div class="topo-metric"><span class="val">百万级</span><span class="lbl">日均交易量</span></div>
-              <div class="topo-metric"><span class="val">高可用</span><span class="lbl">实时推送 + 定时双补偿</span></div>
-              <div class="topo-metric"><span class="val">零资损</span><span class="lbl">幂等校验 + 对账兜底</span></div>
-            </div>
-            <div class="topo-code-wrap"><span class="sim-tag" aria-label="示意代码，非生产源码">示意代码</span><pre class="topo-code" id="topo-code"><code>// [核心设计模式]: RocketMQ 实时推送 + XXL-Job 定时双补偿机制
-@Service
-@RocketMQMessageListener(topic = "payment-settlement", consumerGroup = "settlement-consumer")
-public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt; {
-    @Override
-    public void onMessage(TradeMessage trade) {
-        // 1. 幂等性校验 (Redis 分布式状态锁)
-        // 2. 代理商分润多级阶梯算法实时计算
-        // 3. 自动入账与对账明细生成，保障零资损
-    }
-}</code></pre></div>
-          </div>
-        </div>
-
-        <div class="approach-term">
-        <div class="terminal reveal" id="terminal-window">
-          <div class="terminal-bar">
-            <div class="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-            <div class="terminal-title">shixiaohe@riverhub:~ (interactive zsh)</div>
-            <div class="terminal-live" title="浏览器内模拟的终端，非真实服务器"><span class="pulse" aria-hidden="true"></span>交互演示</div>
-          </div>
-
-          <div class="terminal-body" id="terminal-output" aria-live="polite">
-            <div class="terminal-logs" id="terminal-logs-list">
-              <div class="log-line"><span class="log-prompt">shixiaohe@riverhub:~$</span> <span class="log-cmd">whoami</span></div>
-              <div class="log-line log-res">[SYSTEM] 史晓河 · 技术架构师 · 三门峡 / 全国远程</div>
-              <div class="log-line log-res">[ROLE] 信言科技 · 技术架构师 | 主导「信付通」架构 | 开放远程工作与项目合作</div>
-              <div class="log-line log-res">[TIP] 点击下方快捷指令，看看几个项目里的关键设计：</div>
-            </div>
-            <form class="terminal-input-row" id="terminal-form" autocomplete="off">
-              <label class="log-prompt" for="terminal-input">shixiaohe@riverhub:~$</label>
-              <input id="terminal-input" class="terminal-input" type="text" spellcheck="false" autocapitalize="off" placeholder="help" aria-label="输入终端指令，例如 help">
-            </form>
-          </div>
-
-          <div class="terminal-actions">
-            <span class="terminal-actions-label"><i class="fa-solid fa-play" aria-hidden="true"></i> 快捷可执行指令 (Quick Executable Commands)</span>
-            <div class="terminal-chips">
-              <button class="cmd-chip" type="button" data-cmd="payhub">run pay-hub</button>
-              <button class="cmd-chip" type="button" data-cmd="ecommica">run ecommica</button>
-              <button class="cmd-chip" type="button" data-cmd="payment">run payment-engine</button>
-              <button class="cmd-chip" type="button" data-cmd="iot">run iot-scale</button>
-              <button class="cmd-chip" type="button" data-cmd="vibe">run vibe-coding</button>
-              <button class="cmd-chip" type="button" data-cmd="packages">cat profile.json</button>
-              <button class="cmd-chip cmd-chip-muted" type="button" data-cmd="clear">clear</button>
-            </div>
-          </div>
-        </div>
-        </div>
-        </div>
-        <button class="collapse-btn" type="button" aria-expanded="false" aria-controls="approach-body"><span class="cb-more">展开全部技术细节</span><span class="cb-less">收起</span> <span class="cb-ico" aria-hidden="true">↓</span></button>
-      </div>
-    </section>
 
     <!-- 6. 关于 -->
     <section class="section section-alt" id="about">
       <div class="container about">
         <div class="about-intro reveal">
-          <span class="section-kicker"><span class="kicker-idx">06</span><span class="kicker-sep">/</span>About</span>
+          <span class="section-kicker">About</span>
           <h2 class="section-title about-title">关于我</h2>
           <p class="about-text">
             郑州轻工业学院计算机科学与技术专业毕业，2013 年起做 Java 后端，之后一路走到技术负责人和架构师。做得最久的是支付：收单、分润、对账、清结算；也做过智慧社区、智慧教育和食安 IoT。现在在<strong>河南信言电子科技有限公司</strong>任技术架构师，主导「信付通」。
@@ -657,9 +476,9 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
               <span class="pill is-key">Java / Spring Boot / Spring Cloud</span><span class="pill">MySQL</span><span class="pill">Redis</span><span class="pill">RocketMQ</span><span class="pill">XXL-Job</span><span class="pill is-key">Vue3 / ECharts</span><span class="pill is-key">uni-app / React Native</span><span class="pill">IoT 多厂商集成 / 串口秤</span><span class="pill is-key">Claude Code / SDD / TDD</span><span class="pill">微服务 / DDD</span>
             </div>
           </div>
-          <div class="about-actions">
-            <a class="btn btn-primary" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 下载简历 PDF</a>
-            <a class="btn btn-ghost" href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
+          <div class="about-actions"><a class="btn btn-ghost" href="/resume/">在线阅读简历</a>
+            <a class="btn btn-primary" href="/assets/shixiaohe-resume.pdf" target="_blank" rel="noopener"><svg class="fa-regular fa-file-pdf" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-file-pdf"></use></svg> 下载简历 PDF</a>
+            <a class="btn btn-ghost" href="https://github.com/shixiaohe996-droid" target="_blank" rel="noopener"><svg class="fa-brands fa-github" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-github"></use></svg> GitHub</a>
           </div>
         </div>
 
@@ -669,7 +488,7 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
             <li class="exp-item is-current"><span class="exp-date">2026.06 — 至今</span><span class="exp-org">河南信言电子科技有限公司</span><span class="exp-role">技术架构师 · 主导「信付通」</span></li>
             <li class="exp-item"><span class="exp-date">2022.02 — 2026.04</span><span class="exp-org">河南润臻科技有限公司</span><span class="exp-role">技术负责人 · 润臻智慧大脑 / 智慧食安</span></li>
             <li class="exp-item is-remote"><span class="exp-date">2020.10 — 2022.02</span><span class="exp-org">自由职业 · 远程兼职 <span class="remote-tag">远程</span></span><span class="exp-role">继续参与新银惠通项目</span></li>
-            <li class="exp-item"><span class="exp-date">2018.05 — 2020.10</span><span class="exp-org">上海遒翔信息科技有限公司</span><span class="exp-role">项目副组长 · 新银惠通等收单平台</span></li>
+            <li class="exp-item"><span class="exp-date">2018.05 — 2020.10</span><span class="exp-org">上海遒翔</span><span class="exp-role">项目副组长 · 新银惠通等收单平台</span></li>
             <li class="exp-item"><span class="exp-date">2013.11 — 2018.04</span><span class="exp-org">上海胜炫电子科技有限公司 / 乐蛙科技等</span><span class="exp-role">Java 开发 · 考拉畅付 / 贷你还</span></li>
             <li class="exp-item is-edu"><span class="exp-date">2009 — 2013</span><span class="exp-org">郑州轻工业学院</span><span class="exp-role">计算机科学与技术 · 工学学士</span></li>
           </ul>
@@ -681,7 +500,7 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
     <section class="section" id="notes">
       <div class="container">
         <header class="section-head reveal">
-          <span class="section-kicker"><span class="kicker-idx">07</span><span class="kicker-sep">/</span>Notes</span>
+          <span class="section-kicker">Notes</span>
           <h2 class="section-title">技术笔记</h2>
           <p class="section-desc">把做项目时想清楚的事写下来，也方便你判断我怎么思考问题</p>
         </header>
@@ -711,6 +530,114 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
         </div>
       </div>
     </section>
+<section class="section" id="approach">
+      <div class="container">
+        <header class="section-head reveal">
+          <span class="section-kicker">Under The Hood</span>
+          <h2 class="section-title">技术细节</h2>
+          <p class="section-desc">想继续了解实现方式，可以展开架构演示；完整背景和设计取舍见各项目案例。</p>
+        </header>
+
+        <details class="tech-details"><summary>查看架构设计与交互演示 <span aria-hidden="true">＋</span></summary><div id="approach-body"><span id="topology" class="anchor-alias" aria-hidden="true"></span><span id="terminal" class="anchor-alias" aria-hidden="true"></span>
+        <div class="topology reveal">
+          <div class="topo-list" role="tablist" aria-label="架构节点">
+            <button class="topo-node active" type="button" role="tab" aria-selected="true" data-node="payment-recon">
+              <span class="topo-icon"><svg class="fa-solid fa-credit-card" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-credit-card"></use></svg></span>
+              <span class="topo-text">
+                <span class="topo-node-title">金融级分润与对账引擎</span>
+                <span class="topo-node-sub">幂等处理 · 双推送补偿 · 交易对账</span>
+              </span>
+              <svg class="fa-solid fa-chevron-right topo-arrow" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-chevron-right"></use></svg>
+            </button>
+            <button class="topo-node" type="button" role="tab" aria-selected="false" data-node="iot-hub">
+              <span class="topo-icon"><svg class="fa-solid fa-network-wired" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-network-wired"></use></svg></span>
+              <span class="topo-text">
+                <span class="topo-node-title">智慧社区 / 食安 IoT 云端接入</span>
+                <span class="topo-node-sub">海康 / 大华 / 道尔统一集成层 · 事件管线 · 串口秤与 USB 摄像头终端</span>
+              </span>
+              <svg class="fa-solid fa-chevron-right topo-arrow" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-chevron-right"></use></svg>
+            </button>
+            <button class="topo-node" type="button" role="tab" aria-selected="false" data-node="vibe-workflow">
+              <span class="topo-icon"><svg class="fa-solid fa-wand-magic-sparkles" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-wand-magic-sparkles"></use></svg></span>
+              <span class="topo-text">
+                <span class="topo-node-title">AI Vibe Coding &amp; SDD 敏捷交付</span>
+                <span class="topo-node-sub">Claude Code 规格驱动 · TDD 测试先行 · 人机协同提效</span>
+              </span>
+              <svg class="fa-solid fa-chevron-right topo-arrow" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-chevron-right"></use></svg>
+            </button>
+            <button class="topo-node" type="button" role="tab" aria-selected="false" data-node="bidding-proposals">
+              <span class="topo-icon"><svg class="fa-solid fa-file-signature" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-file-signature"></use></svg></span>
+              <span class="topo-text">
+                <span class="topo-node-title">商业售前标书与架构方案</span>
+                <span class="topo-node-sub">大型政企标书撰写 · 架构图绘制 · 助力商务拿单</span>
+              </span>
+              <svg class="fa-solid fa-chevron-right topo-arrow" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-chevron-right"></use></svg>
+            </button>
+          </div>
+
+          <div class="topo-panel" id="topo-detail-panel" role="tabpanel">
+            <div class="topo-panel-head">
+              <h3 class="topo-panel-title" id="topo-title">金融级分润与对账引擎架构</h3>
+              <span class="topo-tag" id="topo-tag">HIGH CONCURRENCY</span>
+            </div>
+            <div class="topo-metrics" id="topo-metrics">
+              <div class="topo-metric"><span class="val">幂等</span><span class="lbl">重复消息安全处理</span></div>
+              <div class="topo-metric"><span class="val">补偿</span><span class="lbl">实时推送 + 定时补偿</span></div>
+              <div class="topo-metric"><span class="val">对账</span><span class="lbl">差异核对与追踪</span></div>
+            </div>
+            <div class="topo-code-wrap"><span class="sim-tag" aria-label="示意代码，非生产源码">示意代码</span><pre class="topo-code" id="topo-code"><code>// [核心设计模式]: RocketMQ 实时推送 + XXL-Job 定时双补偿机制
+@Service
+@RocketMQMessageListener(topic = "payment-settlement", consumerGroup = "settlement-consumer")
+public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt; {
+    @Override
+    public void onMessage(TradeMessage trade) {
+        // 1. 幂等性校验 (Redis 分布式状态锁)
+        // 2. 代理商分润多级阶梯算法实时计算
+        // 3. 生成账务与对账明细，保留核对依据
+    }
+}</code></pre></div>
+          </div>
+        </div>
+
+        <div class="approach-term">
+        <div class="terminal reveal" id="terminal-window">
+          <div class="terminal-bar">
+            <div class="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="terminal-title">shixiaohe@riverhub:~ (interactive zsh)</div>
+            <div class="terminal-live" title="浏览器内模拟的终端，非真实服务器"><span class="pulse" aria-hidden="true"></span>交互演示</div>
+          </div>
+
+          <div class="terminal-body" id="terminal-output" aria-live="polite">
+            <div class="terminal-logs" id="terminal-logs-list">
+              <div class="log-line"><span class="log-prompt">shixiaohe@riverhub:~$</span> <span class="log-cmd">whoami</span></div>
+              <div class="log-line log-res">[SYSTEM] 史晓河 · 技术架构师 · 三门峡 / 全国远程</div>
+              <div class="log-line log-res">[ROLE] 信言科技 · 技术架构师 | 主导「信付通」架构 | 开放远程工作与项目合作</div>
+              <div class="log-line log-res">[TIP] 点击下方快捷指令，看看几个项目里的关键设计：</div>
+            </div>
+            <form class="terminal-input-row" id="terminal-form" autocomplete="off">
+              <label class="log-prompt" for="terminal-input">shixiaohe@riverhub:~$</label>
+              <input id="terminal-input" class="terminal-input" type="text" spellcheck="false" autocapitalize="off" placeholder="help" aria-label="输入终端指令，例如 help">
+            </form>
+          </div>
+
+          <div class="terminal-actions">
+            <span class="terminal-actions-label"><svg class="fa-solid fa-play" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-play"></use></svg> 快捷可执行指令 (Quick Executable Commands)</span>
+            <div class="terminal-chips">
+              <button class="cmd-chip" type="button" data-cmd="payhub">run pay-hub</button>
+              <button class="cmd-chip" type="button" data-cmd="ecommica">run ecommica</button>
+              <button class="cmd-chip" type="button" data-cmd="payment">run payment-engine</button>
+              <button class="cmd-chip" type="button" data-cmd="iot">run iot-scale</button>
+              <button class="cmd-chip" type="button" data-cmd="vibe">run vibe-coding</button>
+              <button class="cmd-chip" type="button" data-cmd="packages">cat profile.json</button>
+              <button class="cmd-chip cmd-chip-muted" type="button" data-cmd="clear">clear</button>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+        </details>
+      </div>
+    </section>
   </main>
 
   <!-- 9. 联系 -->
@@ -718,16 +645,16 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
     <div class="container">
       <div class="contact reveal">
         <div class="contact-copy">
-          <span class="section-kicker"><span class="kicker-idx">08</span><span class="kicker-sep">/</span>Get In Touch</span>
+          <span class="section-kicker">Get In Touch</span>
           <h2 class="contact-title"><span class="nw">远程工作或项目合作，</span><span class="nw">都欢迎聊聊</span></h2>
           <p class="contact-desc">打电话、加微信、发邮件或 Telegram 说说你的情况就行，我会如实告诉你我能不能做、怎么做。</p>
           <div class="paths">
             <div class="path">
-              <div class="path-title"><i class="fa-solid fa-laptop-house" aria-hidden="true"></i> 远程岗位</div>
+              <div class="path-title"><svg class="fa-solid fa-laptop-house" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-laptop-house"></use></svg> 远程岗位</div>
               <p>远程全职或兼职的技术岗位：架构、技术负责人、Java 后端 / 全栈。</p>
             </div>
             <div class="path">
-              <div class="path-title"><i class="fa-solid fa-handshake" aria-hidden="true"></i> 项目合作</div>
+              <div class="path-title"><svg class="fa-solid fa-handshake" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-handshake"></use></svg> 项目合作</div>
               <p>系统开发与交付、已有系统诊断重构、技术顾问、方案与标书支持。</p>
             </div>
           </div>
@@ -735,36 +662,36 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
         <div class="contact-actions">
           <div class="contact-row">
             <a href="tel:18618387956" class="btn btn-primary btn-lg">
-              <i class="fa-solid fa-phone" aria-hidden="true"></i> <span class="mono">186 1838 7956</span>
+              <svg class="fa-solid fa-phone" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-phone"></use></svg> <span class="mono">186 1838 7956</span>
             </a>
-            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="18618387956" data-label="电话" aria-label="复制电话号码"><i class="fa-regular fa-copy" aria-hidden="true"></i></button>
+            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="18618387956" data-label="电话" aria-label="复制电话号码"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button>
           </div>
           <div class="contact-row">
             <a href="mailto:shixiaohe996@gmail.com" class="btn btn-ghost">
-              <i class="fa-solid fa-envelope" aria-hidden="true"></i> <span class="mono">shixiaohe996@gmail.com</span>
+              <svg class="fa-solid fa-envelope" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-envelope"></use></svg> <span class="mono">shixiaohe996@gmail.com</span>
             </a>
-            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="shixiaohe996@gmail.com" data-label="邮箱" aria-label="复制邮箱"><i class="fa-regular fa-copy" aria-hidden="true"></i></button>
+            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="shixiaohe996@gmail.com" data-label="邮箱" aria-label="复制邮箱"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button>
           </div>
           <div class="contact-row">
             <a href="https://t.me/river_data" class="btn btn-ghost" target="_blank" rel="noopener">
-              <i class="fa-brands fa-telegram" aria-hidden="true"></i> Telegram <span class="mono">@river_data</span>
+              <svg class="fa-brands fa-telegram" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-telegram"></use></svg> Telegram <span class="mono">@river_data</span>
             </a>
           </div>
           <div class="contact-row">
-            <span class="btn btn-ghost"><i class="fa-brands fa-weixin" aria-hidden="true"></i> 微信 <span class="mono">18618387956</span><span class="wx-note">（同手机号）</span></span>
-            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号" aria-label="复制微信号"><i class="fa-regular fa-copy" aria-hidden="true"></i></button>
+            <span class="btn btn-ghost"><svg class="fa-brands fa-weixin" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-weixin"></use></svg> 微信 <span class="mono">18618387956</span><span class="wx-note">（同手机号）</span></span>
+            <button class="btn btn-ghost btn-icon btn-copy-contact" type="button" data-copy="18618387956" data-label="微信号" aria-label="复制微信号"><svg class="fa-regular fa-copy" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-copy"></use></svg></button>
           </div>
           <div class="contact-row">
             <a href="https://github.com/shixiaohe996-droid" class="btn btn-ghost" target="_blank" rel="noopener">
-              <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub <span class="mono">shixiaohe996-droid</span>
+              <svg class="fa-brands fa-github" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#brands-github"></use></svg> GitHub <span class="mono">shixiaohe996-droid</span>
             </a>
           </div>
           <div class="contact-row contact-resume">
             <a href="/assets/shixiaohe-resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener">
-              <i class="fa-regular fa-file-pdf" aria-hidden="true"></i> 下载简历 PDF
+              <svg class="fa-regular fa-file-pdf" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#regular-file-pdf"></use></svg> 下载简历 PDF
             </a>
           </div>
-          <span class="contact-note"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 三门峡 · 可远程对接全国</span>
+          <span class="contact-note"><svg class="fa-solid fa-location-dot" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#solid-location-dot"></use></svg> 三门峡 · 可远程对接全国</span>
         </div>
       </div>
 
@@ -786,7 +713,7 @@ public class ReconciliationEngine implements RocketMQListener&lt;TradeMessage&gt
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="./main.js?v=202610292300" defer></script>
+  <script src="./main.js?v=20261030" defer></script>
   <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "85e3efd9106e4c09a49187e2cf7f1771"}'></script>
 </body>
 </html>
